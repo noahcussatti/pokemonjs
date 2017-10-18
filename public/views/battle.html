@@ -1,0 +1,82 @@
+<audio autoplay loop>
+    <source src="../audio/battle.mp3" type="audio/mpeg">
+</audio>
+
+<div>
+    <div class="pokemon1-health animated slideInRight">
+        <p>
+            <div class="text-capitalize">{{ pokemon1.name }} Lv50
+                <span ng-show="show_poison_1" class="status-effect psn">PSN</span>
+                <span ng-show="show_burned_1" class="status-effect brn">BRN</span>
+                <span ng-show="show_paralyzed_1" class="status-effect par">PAR</span>
+                <span ng-show="show_sleep_1" class="status-effect slp">SLP</span>
+                <span ng-show="show_frozen_1" class="status-effect frz">FRZ</span>
+            </div>
+            <div class="progress">
+                <div id="pokemon1Bar" class="progress-bar progress-bar-success" role="progressbar" style="width: 100%"></div>
+            </div>
+            <div> {{ pokemon1.currentHealth }}/{{ pokemon1.maxHealth }}</div>
+        </p>
+    </div>
+    <div class="pokemon1-battle-text animated slideInDown" ng-show="showFightButton">
+        <p class="text-capitalize">What will {{ pokemon1.name }} do?</p>
+    </div>
+    <div class="top-button-container animated slideInDown" ng-show="showFightButton">
+        <div class="battle-buttons">
+            <button class="battle-button" ng-click="pokemon1MoveSelect(pokemon1move1.url)">{{ pokemon1move1.name }}</button>
+            <button class="battle-button" ng-click="pokemon1MoveSelect(pokemon1move2.url)">{{ pokemon1move2.name }}</button>
+        </div>
+        <div class="battle-buttons">
+            <button class="battle-button" ng-click="pokemon1MoveSelect(pokemon1move3.url)">{{ pokemon1move3.name }}</button>
+            <button class="battle-button" ng-click="pokemon1MoveSelect(pokemon1move4.url)">{{ pokemon1move4.name }}</button>
+        </div>
+    </div>
+    <div class="pokemon-top pull-right">
+        <img id="pokemon1" src="{{ pokemon1.front_img }}" class="pokemon1-img animated">
+    </div>
+</div>
+
+<div>
+    <div class="pokemon2-health animated slideInLeft" id="test">
+        <p>
+            <div class="text-capitalize">{{ pokemon2.name }} Lv50
+                <span ng-show="show_poison_2" class="status-effect psn">PSN</span>
+                <span ng-show="show_burned_2" class="status-effect brn">BRN</span>
+                <span ng-show="show_paralyzed_2" class="status-effect par">PAR</span>
+                <span ng-show="show_sleep_2" class="status-effect slp">SLP</span>
+                <span ng-show="show_frozen_2" class="status-effect frz">FRZ</span>
+            </div>
+            <div class="progress">
+                <div id="pokemon2Bar" class="progress-bar progress-bar-success" role="progressbar" style="width: 100%"></div>
+            </div>
+            <div> {{ pokemon2.currentHealth }}/{{ pokemon2.maxHealth }}</div>
+
+        </p>
+
+    </div>
+    <div class="pokemon-top animated slideInUp" id="footer">
+        <img id="pokemon2" src="{{ pokemon2.back_img }}" class="pokemon2-img animated">
+    </div>
+    <div class="pokemon2-battle-text animated slideInUp" ng-show="showFightButton">
+        <p class="text-capitalize">What will {{ pokemon2.name }} do?</p>
+    </div>
+    <div class="bottom-button-container animated slideInUp" ng-show="showFightButton">
+        <div class="battle-buttons">
+            <button class="battle-button" ng-click="pokemon2MoveSelect(pokemon2move1.url)">{{ pokemon2move1.name }}</button>
+            <button class="battle-button" ng-click="pokemon2MoveSelect(pokemon2move2.url)">{{ pokemon2move2.name }}</button>
+        </div>
+        <div class="battle-buttons">
+            <button class="battle-button" ng-click="pokemon2MoveSelect(pokemon2move3.url)">{{ pokemon2move3.name }}</button>
+            <button class="battle-button" ng-click="pokemon2MoveSelect(pokemon2move4.url)">{{ pokemon2move4.name }}</button>
+        </div>
+    </div>
+</div>
+
+<button ng-show="showFightButton" class="btn btn-danger fight-button" ng-click="startFight();">Start Fight</button>
+
+
+<div ng-show="!showFightButton" id="pokemon-attack-box" class="pokemon-attack-box">
+    <span>
+        <p class="text-capitalize" id="pokemon-attack-text"></p>
+    </span>
+</div>

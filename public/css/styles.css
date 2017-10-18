@@ -1,0 +1,447 @@
+* {
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
+   font-family: 'VT323', monospace;
+}
+
+body {
+   font-size: 16px;
+   font-weight: 400;
+   font-family: 'VT323', monospace;
+}
+
+.top-button-container, .bottom-button-container {
+    border: solid 3px rgb(12, 0, 66);
+    border-radius: 10px;
+    width: 520px;
+    background-color: white;
+}
+
+.pokemon2-battle-text {
+    width: 300px;
+    border-radius: 10px;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    border: solid 3px white;
+    height: 206px;
+    position: absolute;
+    bottom: 2%;
+    right: 40%;
+    font-size: 40px;
+    padding: 30px;
+}
+
+.pokemon1-battle-text {
+    width: 300px;
+    border-radius: 10px;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    border: solid 3px white;
+    height: 206px;
+    position: absolute;
+    top: 2%;
+    left: 40%;
+    font-size: 40px;
+    padding: 30px;
+}
+
+
+
+.battle-button {
+    padding: 10px;
+    border: 0;
+    width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    height: 100px;
+    font-size: 30px;
+    text-transform: capitalize;
+}
+
+.bottom-button-container {
+    float: right;
+    position: absolute;
+    right: 13%;
+    bottom: 2%;
+}
+
+.top-button-container {
+    position: absolute;
+    left: 13%;
+    top: 2%;
+}
+
+.pokemon1-img {
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    bottom: 28%;
+    right: 13%;
+}
+
+.pokemon2-img {
+    position: absolute;
+    height: 500px;
+    width: 500px;
+    bottom: 0;
+    left: 130px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    margin-left: 10%;
+    margin-right: 10%
+}
+
+
+
+.pokemon1-health {
+    position: absolute;
+    width: 300px;
+    height: 165px;
+    color: black;
+    background-color: white;
+    top: 5%;
+    right: 1%;
+    border-radius: 10px;
+    font-size: 30px;
+    padding: 10px;
+}
+
+.pokemon2-health {
+    position: absolute;
+    width: 300px;
+    height: 165px;
+    color: black;
+    background-color: white;
+    bottom: 5%;
+    left: 1%;
+    border-radius: 10px;
+    font-size: 30px;
+    padding: 10px;
+}
+
+.pokemon-health-bar {
+    background-color: green;
+}
+
+.pokemon-attack-box {
+    color: black;
+    background-color: white;
+    width: 350px;
+    height: 150px;
+    font-size: 30px;
+    border-radius: 10px;
+    border: solid 2px black;
+    position: absolute;
+    right: 40%;
+    top: 33%;
+    padding: 10px;
+}
+
+.pokemon-body {
+    color: white;
+}
+
+.pokemon-container {
+    
+    padding: 8px;
+    border-radius: 5px;
+    margin: 10px;
+    text-transform: capitalize;
+}
+
+.view-pokemon {
+    width: 30%;
+}
+
+.all-pokemon {
+    margin-top: 70px;
+    height: 850px;
+    overflow-y: auto;
+    margin-left: 33%
+  }
+  
+  .span-card {
+    color: white;
+    padding: 0px 8px;
+    border-radius: 7px;
+    margin: 2px 5px 2px 0;
+    line-height: 35px;
+    display: inline-block;
+  }
+  
+  .normal {
+      background-color: #A8A878;
+  }
+
+  .water {
+      background-color: #6890F0;
+  }
+  
+  .fire {
+      background-color: #F08030;
+  }
+
+  .fighting {
+      background-color: #C03028;
+  }
+
+  .flying {
+      background-color: #A890F0;
+  }
+
+  .grass {
+      background-color: #78C850;
+  }
+
+  .poison {
+      background-color: #A040A0;
+  }
+
+  .electric {
+      background-color: #F8D030;
+  }
+
+  .ground {
+      background-color: #E0C068;
+  }
+
+  .psychic {
+      background-color: #F85888;
+  }
+
+  .rock {
+      background-color: #B8A038;
+  }
+
+  .ice {
+      background-color: #98D8D8;
+  }
+
+  .bug {
+      background-color: #A8B820;
+  }
+
+  .dragon {
+      background-color: #7038F8;
+  }
+
+  .ghost {
+      background-color: #705898;
+  }
+
+  .dark {
+      background-color: #705848;
+  }
+
+  .steel {
+      background-color: #B8B8D0;
+  }
+
+  .fairy {
+      background-color: #EE99AC;
+  }
+
+
+  .move {
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+  .move-list {
+      width: 22%;
+  }
+
+  .status-effect {
+      height: 20px;
+      width: 32px;
+      border-radius: 6px;
+  }
+
+  .psn {
+      background-color: purple;
+      color: white;
+  }
+
+  .brn {
+      background-color: red;
+      color: white;
+  }
+
+  .par {
+      background-color: yellow;
+      color: white;
+  }
+
+  .slp {
+      background-color: gray;
+      color: white;
+  }
+
+  .frz {
+      background-color: blue;
+      color: white;
+  }
+
+
+
+
+
+  .selection-background {
+    background: url("../img/Pokemon-Background.jpg") no-repeat center center fixed;
+  }
+
+  .battle-background {
+    background: url("https://i.imgur.com/A0izVIk.png") no-repeat center center fixed;
+  }
+
+
+.current-pokemon {
+    color: black;
+    width: 33%;
+    float: left;
+    margin-left: -27%
+}
+
+.progress-orange {
+    background-color: #F5AC78;
+}
+
+.progress-bar-orange {
+    background-color: #F08030;
+}
+
+.progress-bar-red {
+    background-color: #FF0000;
+}
+
+.progress-red {
+    background-color: #FF5959;
+}
+
+.progress-yellow {
+    background-color: #FAE078;
+}
+
+.progress-yellow, .progress-red, .progress-orange, .progress-blue, .progress-green, .progress-pink {
+    width: 81%;
+    float: right;
+    margin-top: 3px;
+}
+
+
+.progress-bar-yellow, .progress-bar-orange, .progress-bar-red, .progress-bar-green, .progress-bar-blue, .progress-bar-pink {
+    font-size: 20px;
+}
+
+.progress-bar-yellow {
+    background-color: #F8D030;
+}
+
+.progress-bar-blue {
+    background-color: #6890F0;
+}
+
+.progress-bar-green {
+    background-color: #78C850;
+}
+
+.progress-bar-pink {
+    background-color: #F85888;
+}
+
+.progress-blue {
+    background-color: #9DB7F5;
+}
+
+.progress-pink {
+    background-color: #FA92B2;
+}
+
+.progress-green {
+    background-color: #A7DB8D;
+}
+
+
+.statName {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+
+.selected-pokemon-img {
+    height: 128px;
+    width: 128px;
+}
+
+.pokemon-view-button {
+    width: 216px;
+    overflow: hidden;
+}
+
+.pokemon-search {
+    width: 65%;
+    float: right;
+    margin-top: 20px;
+}
+
+.start-battle-button {
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.fight-button {
+    width: 250px;
+    height: 150px;
+    font-size: 30px;
+    border-radius: 10px;
+    position: absolute;
+    right: 45%;
+    top: 33%;
+    padding: 10px;
+    font-size: 50px;
+}
+
+.pokemon-typing {
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-animation: type 5s steps(50, end);
+    animation: type 5s steps(50, end);
+}
+
+@keyframes type {
+    from { width: 0; }
+}
+
+@-webkit-keyframes type {
+    from { width: 0; }
+}
+
+.pokeball-loading {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    left: 520px;
+    bottom: 160px;
+}
+
+.new-game-button {
+    height: 200px;
+    width: 200x;
+    font-size: 50px;
+    border-radius: 100px;
+    background-color: white;
+    color: black;
+    position: absolute;
+    bottom: 160px;
+    left: 510px;
+}
+
+.winning-text {
+    font-size: 100px;
+    color: black;
+}

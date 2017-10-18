@@ -1,0 +1,14 @@
+<audio autoplay loop>
+    <source src="../audio/youwin.mp3" type="audio/mpeg">
+</audio>
+<div class="container">
+    <p class="text-center winning-text">TRAINER 2 WINS!</p>
+    <div class="row winning-pokemon" ng-repeat="p in trainer2">
+        <img src="{{ p.front_img }}">
+    </div>
+    <div>
+        <button class="btn new-game-button" ng-click="resetTeams()" ui-sref="pokemon">New Game?</button>
+    </div>
+    
+
+</div>
