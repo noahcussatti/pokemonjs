@@ -2,9 +2,12 @@
     <source src="../audio/youwin.mp3" type="audio/mpeg">
 </audio>
 
-<h1>TRAINER 1 WINS!</h1>
-<button class="btn btn-white new-game-button" ng-click="resetTeams()" ui-sref="pokemon">New Game?</button>
-
-<div ng-repeat="p in trainer1">
-    <img src="{{ p.front_img }}">
+<div class="container">
+    <p class="text-center winning-text">TRAINER 1 WINS!</p>
+    <div class="row winning-pokemon" ng-repeat="p in trainer1">
+        <img src="{{ p.front_img }}">
+    </div>
+    <div>
+        <button class="btn new-game-button" ng-click="resetTeams()" ui-sref="pokemon">New Game?</button>
+    </div>
 </div>

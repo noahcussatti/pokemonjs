@@ -35,4 +35,5 @@ Now you can go to <http://localhost:3000/#/pokemon/> to play!
 
 ## Acknowledgements ##
 
-* Thank you to pokeapi for allowing us to use their open source API
+* Pokeapi for allowing us to use their open source API - [pokeapi](https://pokeapi.co)
+* Bulbapedia for information on the core mechanics of Pokemon - [bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)
