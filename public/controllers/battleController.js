@@ -1,8 +1,7 @@
 app.controller("battleController", function ($scope, $state, $http, $timeout, pokemonService) {
 
-
-    document.getElementById("body").classList.remove("selection-background");
-    document.getElementById("body").classList.add("battle-background");
+    document.getElementById("body").classList.add("selection-background");
+    
 
     $scope.show_sleep_1 = false;
     $scope.show_poison_1 = false;

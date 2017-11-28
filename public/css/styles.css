@@ -303,10 +303,6 @@ body {
     background: url("../img/background.png");
   }
 
-  .battle-background {
-    background: url("../img/background-true.png") no-repeat;
-    background-size: 100%;
-  }
 
 
 .current-pokemon {
