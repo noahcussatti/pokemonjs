@@ -3,6 +3,11 @@ app.service("pokemonService", function ($http, $state) {
     var _trainer1 = []
     var _trainer2 = []
 
+    var _trainer1_img_front = "../img/trainer-sprites/hilbert/front.png"
+    var _trainer1_img_back = "../img/trainer-sprites/hilbert/back.png"
+    var _trainer2_img_front = "../img/trainer-sprites/hilda/front.png"
+    var _trainer2_img_back = "../img/trainer-sprites/hilda/back.png"
+
     function Pokemon(name, currentHealth, maxHealth, attack, special_attack, defense, special_defense,
         speed, types, moves, health_stage, attack_stage, special_attack_stage, defense_stage,
         special_defense_stage, speed_stage, evade_stage, accuracy_stage, is_burned, is_frozen, is_paralyzed, is_poisoned, is_sleeping, is_confused, front_img, back_img, health_multiplier, attack_multiplier, special_attack_multiplier, defense_multiplier, special_defense_multiplier, speed_multiplier) {
@@ -163,7 +168,27 @@ app.service("pokemonService", function ($http, $state) {
         _trainer2 = [];
     }
 
+    this.addTrainer1 = function (url, url2) {
+        _trainer1_img_front = url;
+        _trainer1_img_back = url2;
+    } 
+
+    this.addTrainer2 = function (url, url2) {
+        _trainer2_img_front = url;
+        _trainer2_img_back = url2;
+    }
+
+
+    this.getTrainer1Img = function () {
+        return _trainer1_img_front;
+    }
+
+    this.getTrainer2Img = function () {
+        return _trainer2_img_back;
+    }
 })
+
+
 
 
 // If cors error, add this to the begining of the URL

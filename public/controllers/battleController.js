@@ -2006,6 +2006,9 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
     // ========= DELCARING AND RANDOMIZING STATS ============ //
     var trainer1 = pokemonService.getTrainer1();
     var trainer2 = pokemonService.getTrainer2();
+
+    $scope.trainer1img = pokemonService.getTrainer1Img();
+    $scope.trainer2img = pokemonService.getTrainer2Img();
     
     if (trainer1.length == 0) {
         trainer1 = [

@@ -410,6 +410,13 @@ body {
     border: 0;
 }
 
+.not-fight-button {
+    width: 248px;
+    height: 51px;
+    background: url("../img/waiting-for-fight.png");
+    border: 0;
+}
+
 .pokemon-typing {
     white-space: nowrap;
     overflow: hidden;
@@ -556,4 +563,18 @@ body {
 
 .battle-button-row {
     margin-top: 2%;
+}
+
+.pokemon-search-bar {
+    background-image: url("../img/search-bar.png");
+    height: 65px;
+    width: 474px;
+    border: 0;
+    color: white;
+    padding-left:55px;
+    font-size: 34px;
+    letter-spacing: 21px;
+    overflow-x: hidden;
+    margin-top: 30px;
+    text-shadow: 2px 2px #a1a1a1;
 }

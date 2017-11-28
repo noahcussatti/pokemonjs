@@ -8,7 +8,7 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
     $scope.disableStart = true;
     $scope.loading = true;
 
-
+    
     
 
     var _pokemons = pokemonService.getPokemon()
@@ -33,6 +33,10 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
             })
     }
     $scope.getPokemon();
+
+   
+
+
 
     $scope.setCurrentPokemon = function (url) {
         selectedMoves = [];
@@ -268,10 +272,24 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         }
     }
 
+    $scope.addTrainer1 = function (url, url2) {
+        console.log(url)
+        pokemonService.addTrainer1(url, url2);
+        $scope.trainer1img = url;
+    }
+
+    $scope.addTrainer2 = function (url, url2) {
+        pokemonService.addTrainer2(url, url2);
+        $scope.trainer2img = url;
+    }
+
     $scope.trainer1 = pokemonService.getTrainer1();
     $scope.trainer2 = pokemonService.getTrainer2();
 
     $scope.resetTeams = function () {
         pokemonService.resetTeams();
     }
+
+    $scope.trainer1img = "../img/trainer-sprites/hilbert/front.png";
+    $scope.trainer2img = "../img/trainer-sprites/hilda/front.png";
 })
