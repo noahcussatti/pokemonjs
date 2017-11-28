@@ -24,4 +24,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: "./views/trainer2win.html",
         controller: "pokemonController"
     })
+    .state("testPokemon", {
+        url: "/test-pokemon",
+        templateUrl: "./views/pokemon-select.html",
+        controller: "pokemonController"
+    })
+    .state("selectTrainer", {
+        url: "/trainer-select",
+        templateUrl: "./views/trainer-select.html",
+        controller: "pokemonController"
+    })
+    .state("viewTrainersPokemon", {
+        url: "/before-battle",
+        templateUrl: "./views/view-trainers-pokemon.html",
+        controller: "pokemonController"
+    })
+    .state("pokemonBattle", {
+        url: "/pokemon-battle",
+        templateUrl: "./views/pokemon-battle.html",
+        controller: "battleController"
+    })
 })

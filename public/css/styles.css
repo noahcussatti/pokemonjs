@@ -2,13 +2,21 @@
    padding: 0;
    margin: 0;
    box-sizing: border-box;
-   font-family: 'VT323', monospace;
+   font-family: "Pokemon";
+   color: white;
+}
+
+@font-face {
+    font-family: "Pokemon";
+    src: url("./fonts/Pokemon-Pixel_Font.eot");
+    src:
+    url("./fonts/Pokemon-Pixel-Font.woff") format("woff")
 }
 
 body {
    font-size: 16px;
    font-weight: 400;
-   font-family: 'VT323', monospace;
+   font-family: "Pokemon";
 }
 
 .top-button-container, .bottom-button-container {
@@ -49,14 +57,11 @@ body {
 
 
 .battle-button {
-    padding: 10px;
+    background-image: url("../img/battle-button.png");
+    height: 44px;
+    width: 127px;
     border: 0;
-    width: 250px;
-    background-color: white;
-    border-radius: 10px;
-    height: 100px;
-    font-size: 30px;
-    text-transform: capitalize;
+    background-color: rgba(255, 0, 0, 0)
 }
 
 .bottom-button-container {
@@ -73,11 +78,8 @@ body {
 }
 
 .pokemon1-img {
-    height: 400px;
-    width: 400px;
-    position: absolute;
-    bottom: 28%;
-    right: 13%;
+    width: 200px;
+    height: 200px;
 }
 
 .pokemon2-img {
@@ -98,16 +100,17 @@ body {
 
 
 .pokemon1-health {
-    position: absolute;
-    width: 300px;
-    height: 165px;
-    color: black;
-    background-color: white;
-    top: 5%;
-    right: 1%;
-    border-radius: 10px;
+    width: 193px;
+    color: white;
     font-size: 30px;
-    padding: 10px;
+    height: 30px;
+    margin-left: 118px;
+    padding-top: 1px;
+}
+
+.progress-bar {
+    box-shadow: 0;
+    border-radius: 1px;
 }
 
 .pokemon2-health {
@@ -128,17 +131,11 @@ body {
 }
 
 .pokemon-attack-box {
-    color: black;
-    background-color: white;
-    width: 350px;
-    height: 150px;
-    font-size: 30px;
-    border-radius: 10px;
-    border: solid 2px black;
-    position: absolute;
-    right: 40%;
-    top: 33%;
-    padding: 10px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.514);
+    width: 100%;
+    height: 100px;
+    font-size: 50px;
 }
 
 .pokemon-body {
@@ -161,16 +158,17 @@ body {
     margin-top: 70px;
     height: 850px;
     overflow-y: auto;
-    margin-left: 33%
   }
   
   .span-card {
     color: white;
-    padding: 0px 8px;
-    border-radius: 7px;
+    font-size: 20px;
+    border-radius: 1px;
     margin: 2px 5px 2px 0;
-    line-height: 35px;
+    border: solid 1px black;
     display: inline-block;
+    width: 75px;
+    height: 30px;
   }
   
   .normal {
@@ -249,7 +247,18 @@ body {
   .move {
     margin-right: 5px;
     margin-bottom: 5px;
-  }
+    border: solid 1px white;
+    background-color: rgb(20, 20, 20);
+    color: white;
+    border-radius: 2px;
+    font-size: 15px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    height: 40px;
+    text-align: center;
+    padding-top: 8px;
+}
+  
 
   .move-list {
       width: 22%;
@@ -291,11 +300,12 @@ body {
 
 
   .selection-background {
-    background: url("../img/Pokemon-Background.jpg") no-repeat center center fixed;
+    background: url("../img/background.png");
   }
 
   .battle-background {
-    background: url("https://i.imgur.com/A0izVIk.png") no-repeat center center fixed;
+    background: url("../img/background-true.png") no-repeat;
+    background-size: 100%;
   }
 
 
@@ -380,6 +390,9 @@ body {
 .pokemon-view-button {
     width: 216px;
     overflow: hidden;
+    background: url("../img/button.png");
+    border: 0;
+    height: 72px;
 }
 
 .pokemon-search {
@@ -395,15 +408,10 @@ body {
 }
 
 .fight-button {
-    width: 250px;
-    height: 150px;
-    font-size: 30px;
-    border-radius: 10px;
-    position: absolute;
-    right: 45%;
-    top: 33%;
-    padding: 10px;
-    font-size: 50px;
+    width: 248px;
+    height: 51px;
+    background: url("../img/fight-button.png");
+    border: 0;
 }
 
 .pokemon-typing {
@@ -422,11 +430,14 @@ body {
 }
 
 .pokeball-loading {
-    position: absolute;
-    height: 200px;
-    width: 200px;
-    left: 520px;
-    bottom: 160px;
+    position: fixed;
+    height: 210px;
+    width: 280px;
+    left: 50%;
+    top: 50%;
+    margin-left: -140px;
+    margin-top: -105px;
+    
 }
 
 .new-game-button {
@@ -434,7 +445,7 @@ body {
     width: 200x;
     font-size: 50px;
     border-radius: 100px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     color: black;
     position: absolute;
     bottom: 160px;
@@ -444,4 +455,109 @@ body {
 .winning-text {
     font-size: 100px;
     color: black;
+}
+
+
+
+
+
+
+/* Testing Area */
+
+.pokemon-select-stats {
+    height: 80%;
+    width: 60%;
+}
+
+
+.trainer-select-img {
+    height: 200px;
+    width: 200px;
+}
+
+.trainer-select-button-1 {
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    font-size: 20px;
+}
+
+.trainer-select-button-2 {
+    font-size: 20px;
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+    padding: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+.progress {
+    border-radius: 2px;
+    box-shadow: 0;
+}
+
+
+
+.select-move-button {
+    border: solid 1px white;
+}
+
+.chosen-moves {
+    font-size: 20px;
+    margin: 5px;
+    margin-left: 0;
+}
+
+.chosen-move {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.row {
+    margin-left: 0;
+}
+
+
+.pokemon-health-icon {
+    background: url("../img/battle-hud.png") no-repeat;
+    height: 87px;
+    width: 400px;
+    padding-left: 50px;
+    font-weight: 600;
+}
+
+.pokemon1-health-text {
+    font-style: italic;
+    margin-top: -23px;
+}
+
+.pokemon1-name {
+    margin-left: 30px;
+}
+
+.trainer1-image {
+    height: 150px;
+    width: 150px;
+}
+
+.pokemon1-image {
+    width: 200px;
+    height: 200px;
+}
+
+.trainer2-image {
+    height: 150px;
+    width: 100px;
+}
+
+.pokemon-health-icon-2 {
+    margin-top: 4%;
+}
+
+.battle-button-row {
+    margin-top: 2%;
 }

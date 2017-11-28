@@ -1535,7 +1535,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     //=====================//
                     //     NEED TO ADD     //
                     //=====================//
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name + ", but it missed!"
+                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!"
                 }
 
                 // MOVE HITS
@@ -1543,7 +1543,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
 
                     // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
                     damageMoves(move, currentPokemon, enemyPokemon, damage);
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name;
+                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
 
 
                     //===========FOR TESTING=============//
@@ -1591,7 +1591,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
 
                 // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
                 damageMoves(move, currentPokemon, enemyPokemon, damage);
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name;
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
 
                 //===========FOR TESTING=============//
 
@@ -1750,7 +1750,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     //=====================//
                     //     NEED TO ADD     //
                     //=====================//
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name + ", but it missed!"
+                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!"
                 }
 
                 // MOVE HITS
@@ -1758,7 +1758,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
 
                     // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
                     damageMoves(move, currentPokemon, enemyPokemon, damage);
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name;
+                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
                     //===========FOR TESTING=============//
 
                     // SUPER EFFECTIVE
@@ -1800,7 +1800,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
 
                 // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
                 damageMoves(move, currentPokemon, enemyPokemon, damage);
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name;
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
 
                 //===========FOR TESTING=============//
 
@@ -1938,7 +1938,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     //=====================//
                     //     NEED TO ADD     //
                     //=====================//
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name + ", but it missed!"
+                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!"
 
                 }
 
@@ -1950,8 +1950,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                         var statArray = move.data.stat_changes
                         // CHECK TO SEE TYPE OF STATUS MOVE //
                         statusMoves(move, currentPokemon, enemyPokemon);
-                        document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name;
-
+                        document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
+                      
                     }
                 }
             }
@@ -1962,7 +1962,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     var statArray = move.data.stat_changes
                     // CHECK TO SEE TYPE OF STATUS MOVE //
                     statusMoves(move, currentPokemon, enemyPokemon);
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[0].name;
+                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
                 }
             }
         }
@@ -2225,14 +2225,15 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
     $scope.pokemon1MoveSelect = function (url) {
         $http.get(url).then(function (response) {
             selectedMove1 = response
-            console.log(pokemon1.name + " selected the move: " + selectedMove1.data.names[0].name)
+            console.log(pokemon1.name + " selected the move: " + selectedMove1.data.names[2].name)
         })
     }
 
     $scope.pokemon2MoveSelect = function (url) {
         $http.get(url).then(function (response) {
             selectedMove2 = response
-            console.log(pokemon2.name + " selected the move: " + selectedMove2.data.names[0].name)
+            console.log(selectedMove2.data.names)
+            console.log(pokemon2.name + " selected the move: " + selectedMove2.data.names[2].name)
         })
     }
 

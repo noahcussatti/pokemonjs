@@ -9,6 +9,8 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
     $scope.loading = true;
 
 
+    
+
     var _pokemons = pokemonService.getPokemon()
     $scope.pokemon = _pokemons
 
@@ -17,9 +19,13 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         $scope.loading = false;
     })
 
+
+
     $scope.getPokemon = function () {
         $scope.loading = true;
         selectedMoves = []
+        $scope.currentMoves = selectedMoves
+
         return pokemonService.getPokemon()
             .then(function (response) {
                 $scope.everyPokemon = response
@@ -202,11 +208,13 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         if (selectedMoves.length < 4) {
             selectedMoves.push(move);
             console.log(selectedMoves)
+            $scope.currentMoves = selectedMoves
         }
         else {
             selectedMoves.pop();
             selectedMoves.push(move);
             console.log(selectedMoves)
+            $scope.currentMoves = selectedMoves
         }
     }
 
