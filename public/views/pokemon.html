@@ -81,9 +81,13 @@
 
 <div class="col-lg-5 pull-right">
     <!-- Search for Pokemon -->
-    <input type="text" class="pokemon-search-bar" ng-model="pokemonSearch">
-    <button class="fight-button" ui-sref="battle" ng-show="!disableStart"></button>
-    <button class="not-fight-button" ng-show="disableStart" disabled></button>
+    <div>
+        <input type="text" class="pokemon-search-bar" ng-model="pokemonSearch">
+    </div>
+    <div>
+        <button class="fight-button" ui-sref="battle" ng-show="!disableStart"></button>
+        <button class="not-fight-button" ng-show="disableStart" disabled></button>
+    </div>
     <div class="all-pokemon row capitalize">
         <p>
             <div ng-repeat="pokemon in everyPokemon | filter: pokemonSearch" class="view-pokemon col-sm-3 pokemon-container text-center">

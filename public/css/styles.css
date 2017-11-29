@@ -404,16 +404,18 @@ body {
 }
 
 .fight-button {
+    margin-top: 30px;
     width: 248px;
     height: 51px;
-    background: url("../img/fight-button.png");
+    background: url("../img/fight-button.png") no-repeat;
     border: 0;
 }
 
 .not-fight-button {
+    margin-top: 30px;
     width: 248px;
     height: 51px;
-    background: url("../img/waiting-for-fight.png");
+    background: url("../img/waiting-for-fight.png") no-repeat;
     border: 0;
 }
 
@@ -566,9 +568,9 @@ body {
 }
 
 .pokemon-search-bar {
-    background-image: url("../img/search-bar.png");
+    background: url("../img/search-bar.png") no-repeat;
     height: 65px;
-    width: 474px;
+    width: 100%;
     border: 0;
     color: white;
     padding-left:55px;
