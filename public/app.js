@@ -44,4 +44,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: "./views/pokemon-battle.html",
         controller: "battleController"
     })
+    .state("CPUBattle", {
+        url: "/cpu-battle",
+        templateUrl: "./views/cpu-battle.html",
+        controller: "battleCPUController"
+    })
 })

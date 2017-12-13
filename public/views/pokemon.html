@@ -15,7 +15,7 @@
 
     <div class="statName">
         <span>Health: </span>
-        <div class="progress progress-red">
+        <div class="progress progress-outline progress-red">
             <div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="currentPokemon.stats[5].base_stat" aria-valuemin="0"
                 aria-valuemax="200" style="width: {{currentHealth}}%">{{ currentPokemon.stats[5].base_stat }}</div>
         </div>
@@ -23,7 +23,7 @@
 
     <div class="statName">
         <span>Attack: </span>
-        <div class="progress progress-orange">
+        <div class="progress progress-outline progress-orange">
             <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="currentPokemon.stats[4].base_stat" aria-valuemin="0"
                 aria-valuemax="200" style="width: {{currentAttack}}%">{{ currentPokemon.stats[4].base_stat }}</div>
         </div>
@@ -31,7 +31,7 @@
 
     <div class="statName">
         <span>Defense: </span>
-        <div class="progress progress-yellow">
+        <div class="progress progress-outline progress-yellow">
             <div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="currentPokemon.stats[3].base_stat" aria-valuemin="0"
                 aria-valuemax="200" style="width: {{currentDefense}}%">{{ currentPokemon.stats[3].base_stat }}</div>
         </div>
@@ -39,21 +39,21 @@
 
     <div class="statName">
         <span>Sp Atk: </span>
-        <div class="progress progress-blue">
+        <div class="progress progress-outline progress-blue">
             <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="currentPokemon.stats[2].base_stat" aria-valuemin="0"
                 aria-valuemax="200" style="width: {{currentSpAttack}}%">{{ currentPokemon.stats[2].base_stat }}</div>
         </div>
     </div>
     <div class="statName">
         <span>Sp Def: </span>
-        <div class="progress progress-green">
+        <div class="progress progress-outline progress-green">
             <div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="currentPokemon.stats[1].base_stat" aria-valuemin="0"
                 aria-valuemax="200" style="width: {{currentSpDefense}}%">{{ currentPokemon.stats[1].base_stat }}</div>
         </div>
     </div>
     <div class="statName">
         <span>Speed: </span>
-        <div class="progress progress-pink">
+        <div class="progress progress-outline progress-pink">
             <div class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="currentPokemon.stats[0].base_stat" aria-valuemin="0"
                 aria-valuemax="200" style="width: {{currentSpeed}}%">{{ currentPokemon.stats[0].base_stat }}</div>
         </div>
@@ -70,11 +70,56 @@
         <span class="chosen-move">{{ currentMoves[3].name }}</span>
     </div>
 
-    <div class="row">
-        <btn class="move move-list col-sm-2 text-uppercase" ng-click="addMove(t.move)" ng-repeat="t in currentPokemon.moves">
+    <div class="row move-row">
+        <button class="choose-move text-uppercase" ng-click="addMove(t.move)" ng-repeat="t in currentPokemon.moves">
             {{ t.move.name }}
-        </btn>
+        </button>
     </div>
+
+
+
+</div>
+
+<div class="col-lg-4">
+    <div class="col-lg-6 trainer1-col">
+        <img class="trainer1-preview" src="{{ trainer1_img }}">
+        <div>
+            <h2>Trainer 1</h2>
+        </div>
+        <div>
+            <div ng-repeat="p in trainer1Pokemon" class="col-sm-6 trainer-pokemon-container">
+                <h3 class="text-capitalize text-center">{{ p.name }}</h3>
+                <div>
+                    <img src="{{ p.front_img }}"> 
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[0].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[1].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[2].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[3].name }}</div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 trainer1-col">
+        <img class="trainer2-preview" src="{{ trainer2_img }}">
+        <div>
+            <h2>Trainer 2</h2>
+        </div>
+        <div>
+                <div ng-repeat="p in trainer2Pokemon" class="col-sm-6 trainer-pokemon-container">
+                    <h3 class="text-capitalize text-center">{{ p.name }}</h3>
+                    <div>
+                        <img src="{{ p.front_img }}"> 
+                        <div class="pokemon-move-preview text-capitalize">{{ p.moves[0].name }}</div>
+                        <div class="pokemon-move-preview text-capitalize">{{ p.moves[1].name }}</div>
+                        <div class="pokemon-move-preview text-capitalize">{{ p.moves[2].name }}</div>
+                        <div class="pokemon-move-preview text-capitalize">{{ p.moves[3].name }}</div>
+                        
+                    </div>
+                </div>
+            </div>
+    </div>
+
 </div>
 
 

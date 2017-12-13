@@ -35,7 +35,8 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
     $scope.getPokemon();
 
    
-
+    $scope.trainer1Pokemon = pokemonService.getTrainer1();
+    $scope.trainer2Pokemon = pokemonService.getTrainer2();
 
 
     $scope.setCurrentPokemon = function (url) {
@@ -70,6 +71,7 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
             document.getElementById("type").classList.remove("steel")
             document.getElementById("type").classList.remove("fairy")
             document.getElementById("type").classList.remove("psychic")
+            document.getElementById("type").classList.remove("rock")
             document.getElementById("type2").classList.remove("normal")
             document.getElementById("type2").classList.remove("fire")
             document.getElementById("type2").classList.remove("fighting")
@@ -87,6 +89,7 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
             document.getElementById("type2").classList.remove("steel")
             document.getElementById("type2").classList.remove("fairy")
             document.getElementById("type2").classList.remove("psychic")
+            document.getElementById("type2").classList.remove("rock")
 
 
 
@@ -141,6 +144,9 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
             else if (response.data.types[0].type.name == "psychic") {
                 document.getElementById("type").classList.add("psychic")
             }
+            else if (response.data.types[0].type.name == "rock") {
+                document.getElementById("type").classList.add("rock")
+            }
 
             if (response.data.types.length > 1) {
                 $scope.has2Types = true;
@@ -194,6 +200,9 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
                 }
                 else if (response.data.types[1].type.name == "psychic") {
                     document.getElementById("type2").classList.add("psychic")
+                }
+                else if (response.data.types[1].type.name == "rock") {
+                    document.getElementById("type2").classList.add("rock")
                 }
             }
             else {
@@ -290,6 +299,8 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         pokemonService.resetTeams();
     }
 
-    $scope.trainer1img = "../img/trainer-sprites/hilbert/front.png";
-    $scope.trainer2img = "../img/trainer-sprites/hilda/front.png";
+    $scope.trainer1_img = pokemonService.getTrainer1Img();
+    $scope.trainer2_img = pokemonService.getTrainer2ImgFront();
+
+
 })

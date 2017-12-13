@@ -2,6 +2,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
 
     document.getElementById("body").classList.add("selection-background");
     
+    var pokemon1SelectedMove = false;
+    var pokemon2SelectedMove = false;
 
     $scope.show_sleep_1 = false;
     $scope.show_poison_1 = false;
@@ -23,7 +25,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
 
     var beforeCurrentHealth;
 
-    $scope.showFightButton = true;
+    $scope.showFightButton = false;
+    $scope.showBattleButtons = true;
 
     // DEFAULT TYPE MODIFIER VALUE
     var typeModifier = 1;
@@ -2228,6 +2231,12 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
         $http.get(url).then(function (response) {
             selectedMove1 = response
             console.log(pokemon1.name + " selected the move: " + selectedMove1.data.names[2].name)
+            pokemon1SelectedMove = true;
+            if (pokemon1SelectedMove == true && pokemon2SelectedMove == true) {
+                console.log("test")
+                $scope.showFightButton = true;
+            }
+
         })
     }
 
@@ -2236,6 +2245,12 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
             selectedMove2 = response
             console.log(selectedMove2.data.names)
             console.log(pokemon2.name + " selected the move: " + selectedMove2.data.names[2].name)
+            pokemon2SelectedMove = true;
+            console.log(pokemon2SelectedMove)
+            if (pokemon1SelectedMove == true && pokemon2SelectedMove == true) {
+                console.log("test")
+                $scope.showFightButton = true;
+            }
         })
     }
 
@@ -2248,6 +2263,7 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
         document.getElementById("pokemon1").classList.remove("tada");
         document.getElementById("pokemon2").classList.remove("shake");
         $scope.showFightButton = false;
+        $scope.showBattleButtons = false;
         document.getElementById("pokemon-attack-box").classList.add("zoomIn");
         // If pokemon 1 is faster than pokemon 2
         if ((pokemon1.speed * pokemon1.speed_multiplier) > (pokemon2.speed * pokemon2.speed_multiplier)) {
@@ -2405,6 +2421,9 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
         }
         $timeout(function () {
             $scope.showFightButton = true;
+            $scope.showBattleButtons = true;
+            pokemon1SelectedMove = false;
+            pokemon2SelectedMove = false;
             document.getElementById("pokemon-attack-box").classList.remove("zoomIn");
             if (pokemon1.currentHealth <= 0) {
                 trainer1.shift();

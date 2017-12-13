@@ -141,17 +141,17 @@ app.service("pokemonService", function ($http, $state) {
     }
 
     this.getTrainer1 = function () {
-       
-      
-            return _trainer1;
+
+
+        return _trainer1;
 
     }
 
     this.getTrainer2 = function () {
-        
-        
-            return _trainer2;
-      
+
+
+        return _trainer2;
+
     }
 
     this.checkTeams = function () {
@@ -171,7 +171,7 @@ app.service("pokemonService", function ($http, $state) {
     this.addTrainer1 = function (url, url2) {
         _trainer1_img_front = url;
         _trainer1_img_back = url2;
-    } 
+    }
 
     this.addTrainer2 = function (url, url2) {
         _trainer2_img_front = url;
@@ -186,6 +186,11 @@ app.service("pokemonService", function ($http, $state) {
     this.getTrainer2Img = function () {
         return _trainer2_img_back;
     }
+
+    this.getTrainer2ImgFront = function () {
+        return _trainer2_img_front;
+    }
+    
 })
 
 

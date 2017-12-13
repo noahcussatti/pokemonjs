@@ -1,4 +1,9 @@
-<span class="pokemon1-name">{{ pokemon1.name }}</span>
+<!-- <audio autoplay loop>
+    <source src="../audio/battle.mp3" type="audio/mpeg">
+</audio> -->
+
+
+<span class="pokemon1-name">{{ pokemon2.name }}</span>
 <div class="container">
 
      <div class="pokemon-health-icon col-sm-3">
@@ -13,53 +18,54 @@
                     </div>
 
                     <div class="progress">
-                         <div id="pokemon1Bar" class="progress-bar progress-bar-success" role="progressbar" style="width: 100%"></div>
+                         <div id="pokemon2Bar" class="progress-bar progress-bar-success" role="progressbar" style="width: 100%"></div>
                     </div>
                     <div class="pokemon1-health-text">
                          <span>
-                              <strong>{{ pokemon1.currentHealth }}</strong>
+                              <strong>{{ pokemon2.currentHealth }}</strong>
                          </span>
                          /
                          <span>
-                              <strong>{{ pokemon1.maxHealth }}</strong>
+                              <strong>{{ pokemon2.maxHealth }}</strong>
                          </span>
                     </div>
                </p>
           </div>
      </div>
-     <div class="col-sm-2">
-          <button class="text-uppercase battle-button" ng-click="pokemon1MoveSelect(pokemon1move1.url)">{{ pokemon1move1.name }}</button>
-          <button class="text-uppercase battle-button" ng-click="pokemon1MoveSelect(pokemon1move2.url)">{{ pokemon1move2.name }}</button>
+     <div class="col-sm-2" ng-show="showBattleButtons">
+          <button class="text-uppercase battle-button" ng-click="pokemon2MoveSelect(pokemon2move1.url)">{{ pokemon2move1.name }}</button>
+          <button class="text-uppercase battle-button" ng-click="pokemon2MoveSelect(pokemon2move2.url)">{{ pokemon2move2.name }}</button>
+     </div>
+     <div class="col-sm-2" ng-show="showBattleButtons">
+          <button class="battle-button text-uppercase" ng-click="pokemon2MoveSelect(pokemon2move3.url)">{{ pokemon2move3.name }}</button>
+          <button class="battle-button text-uppercase" ng-click="pokemon2MoveSelect(pokemon2move4.url)">{{ pokemon2move4.name }}</button>
+     </div>
+     <div class="col-sm-4" ng-show="!showBattleButtons"></div>
+
+     <div class="col-sm-1">
+          <img class="trainer1-image" src="{{ trainer2img }}">
      </div>
      <div class="col-sm-2">
+          <img id="pokemon1" src="{{ pokemon2.front_img }}" class="pokemon1-img animated">
+     </div>
+
+
+     <div class="col-sm-2">
+          <img id="pokemon2" src="{{ pokemon1.back_img }}" class="pokemon1-image animated">
+     </div>
+     <div class="col-sm-1">
+          <img class="trainer2-image" src="../img/trainer-sprites/hilbert/back.png">
+     </div>
+
+     <div class="col-sm-2 battle-button-row" ng-show="showBattleButtons">
+          <button class="battle-button text-uppercase" ng-click="pokemon1MoveSelect(pokemon1move1.url)">{{ pokemon1move1.name }}</button>
+          <button class="battle-button text-uppercase" ng-click="pokemon1MoveSelect(pokemon1move2.url)">{{ pokemon1move2.name }}</button>
+     </div>
+     <div class="col-sm-2 battle-button-row" ng-show="showBattleButtons">
           <button class="battle-button text-uppercase" ng-click="pokemon1MoveSelect(pokemon1move3.url)">{{ pokemon1move3.name }}</button>
           <button class="battle-button text-uppercase" ng-click="pokemon1MoveSelect(pokemon1move4.url)">{{ pokemon1move4.name }}</button>
      </div>
-
-
-     <div class="col-sm-1">
-          <img class="trainer1-image" src="../img/trainer-sprites/hilbert/front.png">
-     </div>
-     <div class="col-sm-2">
-          <img id="pokemon1" src="{{ pokemon1.front_img }}" class="pokemon1-img animated">
-     </div>
-
-
-     <div class="col-sm-2">
-          <img id="pokemon2" src="{{ pokemon2.back_img }}" class="pokemon1-image animated">
-     </div>
-     <div class="col-sm-1">
-          <img class="trainer2-image" src="../img/trainer-sprites/hilda/back.png">
-     </div>
-
-     <div class="col-sm-2 battle-button-row">
-          <button class="battle-button text-uppercase" ng-click="pokemon2MoveSelect(pokemon2move1.url)">{{ pokemon2move1.name }}</button>
-          <button class="battle-button text-uppercase" ng-click="pokemon2MoveSelect(pokemon2move2.url)">{{ pokemon2move2.name }}</button>
-     </div>
-     <div class="col-sm-2 battle-button-row">
-          <button class="battle-button text-uppercase" ng-click="pokemon2MoveSelect(pokemon2move3.url)">{{ pokemon2move3.name }}</button>
-          <button class="battle-button text-uppercase" ng-click="pokemon2MoveSelect(pokemon2move3.url)">{{ pokemon2move4.name }}</button>
-     </div>
+     <div class="col-sm-4" ng-show="!showBattleButtons"></div>
 
 
      <div class="pokemon-health-icon pokemon-health-icon-2 col-sm-3">
@@ -74,15 +80,15 @@
                     </div>
 
                     <div class="progress">
-                         <div id="pokemon2Bar" class="progress-bar progress-bar-success" role="progressbar" style="width: 100%"></div>
+                         <div id="pokemon1Bar" class="progress-bar progress-bar-success" role="progressbar" style="width: 100%"></div>
                     </div>
                     <div class="pokemon1-health-text">
                          <span>
-                              <strong>{{ pokemon2.currentHealth }}</strong>
+                              <strong>{{ pokemon1.currentHealth }}</strong>
                          </span>
                          /
                          <span>
-                              <strong>{{ pokemon2.maxHealth }}</strong>
+                              <strong>{{ pokemon1.maxHealth }}</strong>
                          </span>
                     </div>
                </p>
