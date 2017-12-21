@@ -7,6 +7,11 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
     $scope.has4Moves = false;
     $scope.disableStart = true;
     $scope.loading = true;
+    var trainer1_selected = false;
+    var trainer2_selected = false;
+
+    $scope.goToPokemon = false;
+    
 
     
     
@@ -285,11 +290,25 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         console.log(url)
         pokemonService.addTrainer1(url, url2);
         $scope.trainer1img = url;
+        trainer1_selected = true;
+        if (trainer1_selected == true && trainer2_selected == true) {
+            $scope.goToPokemon = true;
+        }
+        else {
+            $scope.goToPokemon = false;
+        }
     }
 
     $scope.addTrainer2 = function (url, url2) {
         pokemonService.addTrainer2(url, url2);
         $scope.trainer2img = url;
+        trainer2_selected = true;
+        if (trainer1_selected == true && trainer2_selected == true) {
+            $scope.goToPokemon = true;
+        }
+        else {
+            $scope.goToPokemon = false;
+        }
     }
 
     $scope.trainer1 = pokemonService.getTrainer1();

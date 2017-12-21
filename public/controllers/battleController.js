@@ -2420,8 +2420,9 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
             }
         }
         $timeout(function () {
-            $scope.showFightButton = true;
+            $scope.showFightButton = false;
             $scope.showBattleButtons = true;
+            document.getElementById("pokemon-attack-text").textContent = "";
             pokemon1SelectedMove = false;
             pokemon2SelectedMove = false;
             document.getElementById("pokemon-attack-box").classList.remove("zoomIn");

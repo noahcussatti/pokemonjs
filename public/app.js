@@ -2,7 +2,7 @@ var app = angular.module("pokemonApp", ["ui.router"])
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/pokemon");
+    $urlRouterProvider.otherwise("/trainer-select");
 
     $stateProvider.state("pokemon", {
         url: "/pokemon",

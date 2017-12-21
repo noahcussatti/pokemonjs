@@ -3,6 +3,7 @@ app.service("pokemonService", function ($http, $state) {
     var _trainer1 = []
     var _trainer2 = []
 
+
     var _trainer1_img_front = "../img/trainer-sprites/hilbert/front.png"
     var _trainer1_img_back = "../img/trainer-sprites/hilbert/back.png"
     var _trainer2_img_front = "../img/trainer-sprites/hilda/front.png"
@@ -177,6 +178,8 @@ app.service("pokemonService", function ($http, $state) {
         _trainer2_img_front = url;
         _trainer2_img_back = url2;
     }
+
+
 
 
     this.getTrainer1Img = function () {

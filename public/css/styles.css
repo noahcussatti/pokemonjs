@@ -492,29 +492,83 @@ body {
 
 
 .trainer-select-img {
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
 }
 
-.trainer-select-button-1 {
-    color: white;
-    background-color: black;
-    border-radius: 2px;
-    padding: 2px;
-    padding-right: 4px;
-    padding-left: 4px;
-    font-size: 20px;
+.pokemon-trainer-select-container {
+    margin-bottom: 20px;
 }
+
+
+
+/* Trainer Select Buttons that are pulled to the right */
+.tbr {
+    margin-top: 58px;
+}
+
+
+.trainer-select-button-1, .trainer-select-button-2 {
+    color: white;
+    height: 32px;
+    width: 72px;
+    border: 0;
+}
+
+
+
+/* Trainer 1 Select Button  */
+.trainer-select-button-1 {
+    background: url("../img/trainer1-button.png");
+}
+
+.trainer-select-button-1:hover {
+    background: url("../img/trainer1-button-hover.png");
+}
+
+.trainer-select-button-1:active {
+    background: url("../img/trainer1-button-selected.png");
+}
+
+/* Trainer 2 Select Button */
 
 .trainer-select-button-2 {
-    font-size: 20px;
-    color: white;
-    background-color: black;
-    border-radius: 2px;
-    padding: 2px;
-    padding-right: 4px;
-    padding-left: 4px;
+    background: url("../img/trainer2-button.png");
 }
+
+.trainer-select-button-2:hover {
+    background: url("../img/trainer2-button-hover.png");
+}
+
+.trainer-select-button-2:active {
+    background: url("../img/trainer2-button-selected.png");
+}
+
+
+/* Go to Pokemon Button  */
+
+.go-to-pokemon-select {
+    height: 96px;
+    width: 164px;
+    background: url("../img/pokemon-button.png");
+    border: 0;
+}
+
+.go-to-pokemon-select:hover {
+    background: url("../img/pokemon-button-hover.png");
+}
+
+.go-to-pokemon-select:active {
+    background: url("../img/pokemon-button-selected.png");
+}
+
+.go-to-pokemon-select-disabled {
+    height: 96px;
+    width: 164px;
+    border: 0;
+    background: url("../img/pokemon-button-disabled.png");
+}
+
 
 .select-move-button {
     border: solid 1px white;
