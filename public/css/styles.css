@@ -544,6 +544,43 @@ body {
     background: url("../img/trainer2-button-selected.png");
 }
 
+.go-to-trainer-select {
+    height: 96px;
+    width: 164px;
+    background: url("../img/multiplayer-button.png");
+    border: 0;
+}
+
+.go-to-trainer-select:hover {
+    background: url("../img/multiplayer-button-hover.png");
+}
+
+.go-to-trainer-select:active {
+    background: url("../img/multiplayer-button-selected.png");
+}
+
+.go-to-trainer-select:disabled {
+    background: url("../img/multiplayer-button-disabled.png");
+}
+
+.go-to-cpu-select {
+    height: 96px;
+    width: 164px;
+    background: url("../img/cpu-button.png");
+    border: 0;
+}
+
+.go-to-cpu-select:hover {
+    background: url("../img/cpu-button-hover.png");
+}
+
+.go-to-cpu-select:active {
+    background: url("../img/cpu-button-selected.png");
+}
+
+.go-to-cpu-select:disabled {
+    background: url("../img/cpu-button-disabled.png");
+}
 
 /* Go to Pokemon Button  */
 
@@ -695,4 +732,13 @@ body {
     font-size: 20px;
     width: 100px;
 
+}
+
+.pokemon-trainer1-vs {
+    width: 128px;
+    height: 64px;
+}
+
+.itstimetostop {
+    margin-right: -60px;
 }

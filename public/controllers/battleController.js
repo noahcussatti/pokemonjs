@@ -1,62 +1,111 @@
 app.controller("battleController", function ($scope, $state, $http, $timeout, pokemonService) {
 
+    /**
+     * Adding the background.
+     */
     document.getElementById("body").classList.add("selection-background");
-    
+
+    /**
+     * Creating the booleans that check the state of the selected moves.
+     * Defaulting them to false so the battle doesn't start with no moves selected.
+     */
     var pokemon1SelectedMove = false;
     var pokemon2SelectedMove = false;
 
+    /**
+     * Scope booleans for the status of Pokemon1.
+     */
     $scope.show_sleep_1 = false;
     $scope.show_poison_1 = false;
     $scope.show_frozen_1 = false;
     $scope.show_paralyzed_1 = false;
     $scope.show_burned_1 = false;
+
+    /**
+     * Scope booleans for the status of Pokemon2.
+     */
     $scope.show_sleep_2 = false;
     $scope.show_poison_2 = false;
     $scope.show_frozen_2 = false;
     $scope.show_paralyzed_2 = false;
     $scope.show_burned_2 = false;
 
-
-    // ATTACK CLASS BOLEANS
+    /**
+     * Booleans that check the type of move used (used in the damage calculator).
+     */
     var physicalAttack = false;
     var specialAttack = false;
     var statusAttack = false;
 
+    /**
+     * Status Ailment Timers
+     */
+    var sleepCount = 0;
+    var freezeCount = 0;
 
+    /**
+     * Used in the damageMoves method
+     */
     var beforeCurrentHealth;
 
+    /**
+     * Scope booleans that alternate the Start_Fight_Button and the Select_Moves_Buttons.
+     */
     $scope.showFightButton = false;
     $scope.showBattleButtons = true;
 
-    // DEFAULT TYPE MODIFIER VALUE
+    /**
+     * Doubles and Integers for the damage calculator.
+     * 
+     * The typeModifier defaults to 1 (neutral damage) and changes in the calculateType method.
+     * The STAB (Same Type Attack Bonus) defaults at 1 and goes to 1.5 if active.
+     * The critModifier defaults to 1 and changes when a pokemon rolls a critical hit.
+     * The flinchChance defaults to 0 and changes if a move has a possible chance to flinch.
+     * The statusChance defaults to 0 and changes if a move has a possible chance to   inflict a status ailment.
+     * The damageRoll defaults to 0.85 and alternates between 0.85 and 1 depending the the damage roll. 
+     */
     var typeModifier = 1;
-
-    // STAB MODIFIER
     var STAB = 1;
-
-    // CRIT MODIFIER
     var critModifier = 1;
-
-    // FLINCH CHANCE
     var flinchChance = 0;
-
-    // STATUS CHANCE
     var statusChance = 0;
+    var damageRoll = 0.85;
 
-    // RANDOM ATTACK
-    var randomChance = 0.85
-
-
-    // === CALCULATE TYPE VER 2 === //
-    var calculateType = function (moveType, enemyType1, enemyType2) {
-
-        // Reseting the value of type modifier
+    /**
+     * Calculate the type method.
+     * Calculates the typeModifier.
+     * @param moveType is type from the attacking move.
+     * @param enemyType1 is the opponent's first type.
+     * @param enemyType2 is the opponent's secondary type.
+     */
+    var calculateType = function (moveType, enemyType1, enemyType2)
+    {
+        // Resetting the typeModifier back to 1, just in case it isn't already.
         typeModifier = 1;
 
-
-        // NORMAL
-        if (moveType == "normal") {
-            switch (enemyType1) {
+        /**
+         * If statements start here, they change the typeModifier depending on the move type.
+         * Example:
+         * if (moveType == (name of type)
+         * {
+         *     switch (enemyType1)
+         *     {
+         *          case "name of type":
+         *              typeModifier = typeModifier * (double that changes the modifier);
+         *              break;
+         *     }
+         *     switch (enemyType2)
+         *     {
+         *          case "name of type":
+         *              typeModifier = typeModifier * (double that changes the modifier);
+         *              break;
+         *     }
+         * }
+         */
+        if (moveType == "normal")
+        {
+            switch (enemyType1)
+            {
                 case "rock":
                 case "steel":
                     typeModifier = typeModifier * 0.5;
@@ -65,7 +114,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 0;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "rock":
                 case "steel":
                     typeModifier = typeModifier * 0.5;
@@ -75,10 +125,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // FIRE
-        if (moveType == "fire") {
-            switch (enemyType1) {
+        if (moveType == "fire")
+        {
+            switch (enemyType1)
+            {
                 case "fire":
                 case "water":
                 case "rock":
@@ -92,7 +142,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "fire":
                 case "water":
                 case "rock":
@@ -107,10 +158,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // WATER
-        if (moveType == "water") {
-            switch (enemyType1) {
+        if (moveType == "water")
+        {
+            switch (enemyType1)
+            {
                 case "water":
                 case "grass":
                 case "dragon":
@@ -122,7 +173,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "water":
                 case "grass":
                 case "dragon":
@@ -135,11 +187,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-
-        // ELECTRIC
-        if (moveType == "electric") {
-            switch (enemyType1) {
+        if (moveType == "electric")
+        {
+            switch (enemyType1)
+            {
                 case "electric":
                 case "grass":
                 case "ground":
@@ -154,7 +205,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "electric":
                 case "grass":
                 case "ground":
@@ -170,10 +222,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // GRASS
-        if (moveType == "grass") {
-            switch (enemyType1) {
+        if (moveType == "grass")
+        {
+            switch (enemyType1)
+            {
                 case "fire":
                 case "grass":
                 case "poison":
@@ -189,7 +241,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "fire":
                 case "grass":
                 case "poison":
@@ -206,10 +259,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // ICE
-        if (moveType == "ice") {
-            switch (enemyType1) {
+        if (moveType == "ice")
+        {
+            switch (enemyType1)
+            {
                 case "fire":
                 case "water":
                 case "ice":
@@ -223,7 +276,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "fire":
                 case "water":
                 case "ice":
@@ -238,10 +292,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // FIGHTING
-        if (moveType == "fighting") {
-            switch (enemyType1) {
+        if (moveType == "fighting")
+        {
+            switch (enemyType1)
+            {
                 case "poison":
                 case "flying":
                 case "psychic":
@@ -260,7 +314,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "poison":
                 case "flying":
                 case "psychic":
@@ -280,10 +335,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // POISON
-        if (moveType == "poison") {
-            switch (enemyType1) {
+        if (moveType == "poison")
+        {
+            switch (enemyType1)
+            {
                 case "poison":
                 case "ground":
                 case "rock":
@@ -298,7 +353,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "poison":
                 case "ground":
                 case "rock":
@@ -314,11 +370,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-
-        // GROUND
-        if (moveType == "ground") {
-            switch (enemyType1) {
+        if (moveType == "ground")
+        {
+            switch (enemyType1)
+            {
                 case "grass":
                 case "bug":
                     typeModifier = typeModifier * 0.5;
@@ -334,7 +389,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "grass":
                 case "bug":
                     typeModifier = typeModifier * 0.5;
@@ -351,10 +407,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // FLYING
-        if (moveType == "flying") {
-            switch (enemyType1) {
+        if (moveType == "flying")
+        {
+            switch (enemyType1)
+            {
                 case "electric":
                 case "rock":
                 case "steel":
@@ -366,7 +422,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "electric":
                 case "rock":
                 case "steel":
@@ -379,10 +436,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // PSYCHIC
-        if (moveType == "psychic") {
-            switch (enemyType1) {
+        if (moveType == "psychic")
+        {
+            switch (enemyType1)
+            {
                 case "psychic":
                 case "dark":
                 case "steel":
@@ -396,7 +453,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "psychic":
                 case "dark":
                 case "steel":
@@ -411,10 +469,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // BUG
-        if (moveType == "bug") {
-            switch (enemyType1) {
+        if (moveType == "bug")
+        {
+            switch (enemyType1)
+            {
                 case "fire":
                 case "fighting":
                 case "poison":
@@ -430,7 +488,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "fire":
                 case "fighting":
                 case "poison":
@@ -447,23 +506,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // ROCK
-        if (moveType == "rock") {
-            switch (enemyType1) {
-                case "fighting":
-                case "ground":
-                case "steel":
-                    typeModifier = typeModifier * 0.5;
-                    break;
-                case "fire":
-                case "ice":
-                case "flying":
-                case "bug":
-                    typeModifier = typeModifier * 2;
-                    break;
-            }
-            switch (enemyType2) {
+        if (moveType == "rock")
+        {
+            switch (enemyType1)
+            {
                 case "fighting":
                 case "ground":
                 case "steel":
@@ -476,12 +522,25 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
+            switch (enemyType2)
+            {
+                case "fighting":
+                case "ground":
+                case "steel":
+                    typeModifier = typeModifier * 0.5;
+                    break;
+                case "fire":
+                case "ice":
+                case "flying":
+                case "bug":
+                    typeModifier = typeModifier * 2;
+                    break;
+            }
         }
-
-
-        // GHOST
-        if (moveType == "ghost") {
-            switch (enemyType1) {
+        if (moveType == "ghost")
+        {
+            switch (enemyType1)
+            {
                 case "normal":
                     typeModifier = typeModifier * 0;
                     break;
@@ -493,7 +552,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "normal":
                     typeModifier = typeModifier * 0;
                     break;
@@ -506,11 +566,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-
-        // DRAGON
-        if (moveType == "dragon") {
-            switch (enemyType1) {
+        if (moveType == "dragon")
+        {
+            switch (enemyType1)
+            {
                 case "steel":
                     typeModifier = typeModifier * 0.5;
                     break;
@@ -521,7 +580,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "steel":
                     typeModifier = typeModifier * 0.5;
                     break;
@@ -533,10 +593,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-        // DARK
-        if (moveType == "dark") {
-            switch (enemyType1) {
+        if (moveType == "dark")
+        {
+            switch (enemyType1)
+            {
                 case "fighting":
                 case "dark":
                 case "fairy":
@@ -547,7 +607,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "fighting":
                 case "dark":
                 case "fairy":
@@ -559,11 +620,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-
-        // STEEL
-        if (moveType == "steel") {
-            switch (enemyType1) {
+        if (moveType == "steel")
+        {
+            switch (enemyType1)
+            {
                 case "fire":
                 case "water":
                 case "electric":
@@ -576,7 +636,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "fire":
                 case "water":
                 case "electric":
@@ -590,11 +651,10 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     break;
             }
         }
-
-
-        // FAIRY
-        if (moveType == "fairy") {
-            switch (enemyType1) {
+        if (moveType == "fairy")
+        {
+            switch (enemyType1)
+            {
                 case "fire":
                 case "poison":
                 case "steel":
@@ -606,7 +666,8 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                     typeModifier = typeModifier * 2;
                     break;
             }
-            switch (enemyType2) {
+            switch (enemyType2)
+            {
                 case "fire":
                 case "poison":
                 case "steel":
@@ -621,286 +682,318 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
         }
     }
 
-
-
-
-    var statusMoveChecks = function (pokemon) {
-        if (pokemon.is_poisoned == true) {
-            pokemon.currentHealth = pokemon.currentHealth - Math.round(pokemon.maxHealth / 8)
-            moveHealthBar1();
-            moveHealthBar2();
-        }
-        else if (pokemon.is_burned == true) {
-            pokemon.currentHealth = pokemon.currentHealth - Math.round(pokemon.maxHealth / 8)
+    /**
+     * The statusMoveChecks method.
+     * Checks the status of the pokemon and depletes the pokemon's health if true.
+     * @param pokemon the pokemon that is being status checked.
+     */
+    var statusMoveChecks = function (pokemon)
+    {
+        if (pokemon.is_poisoned == true || pokemon.is_burned == true)
+        {
+            pokemon.currentHealth = pokemon.currentHealth - Math.round(pokemon.maxHealth / 8);
             moveHealthBar1();
             moveHealthBar2();
         }
     }
 
-
-
-    // === CHECK TO SEE IF MOVE IS PHYSICAL OR SPECIAL === //
-    var checkMoveClass = function (move) {
-        if (move.data.damage_class.name == "physical") {
+    /**
+     * The checkMoveClass method.
+     * Checks the move's class (physical, special, or status).
+     * @param move the move being checked.
+     */
+    var checkMoveClass = function (move)
+    {
+        physicalAttack = false;
+        specialAttack = false;
+        statusAttack = false;
+        if (move.data.damage_class.name == "physical")
+        {
             physicalAttack = true;
-            specialAttack = false;
-            statusAttack = false;
         }
-        else if (move.data.damage_class.name == "special") {
-            physicalAttack = false;
+        else if (move.data.damage_class.name == "special")
+        {
             specialAttack = true;
-            statusAttack = false;
         }
-        else if (move.data.damage_class.name == "status") {
-            physicalAttack = false;
-            specialAttack = false;
+        else if (move.data.damage_class.name == "status")
+        {
             statusAttack = true;
         }
     }
 
-    var damageMoves = function (move, currentPokemon, enemyPokemon, damage) {
+    /**
+     * The damageMoves method.
+     * Checks the move category and inflicts damage based on the category.
+     * @param move The attacking move.
+     * @param currentPokemon The pokemon that is using the attacking move.
+     * @param enemyPokemon The pokemon that is inflicted by the attacking move.
+     * @param damage the damage that subtracts from the enemyPokemon's currentHealth.
+     */
+    var damageMoves = function (move, currentPokemon, enemyPokemon, damage)
+    {
         beforeCurrentHealth = currentPokemon.currentHealth;
-        // REGULAR DAMAGE
-        if (move.data.meta.category.name == "damage") {
-            enemyPokemon.currentHealth = enemyPokemon.currentHealth - damage;
-            if (move.data.meta.drain != 0) {
-                currentPokemon.currentHealth = currentPokemon.currentHealth + Math.round((damage * (move.data.meta.drain / 100)))
+        var moveCategory = move.data.meta.category.name;
+
+        // Inflicts Damage, possibly health is drained.
+        if (moveCategory == "damage")
+        {
+            enemyPokemon.currentHealth -= damage;
+            if (move.data.meta.drain != 0)
+            {
+                currentPokemon.currentHealth += Math.round((damage * (move.data.meta.drain / 100)));
             }
         }
 
-        // Inflicts damage; chance to add status effect
-        else if (move.data.meta.category.name == "damage+ailment") {
-            // Calculate Damage
-            enemyPokemon.currentHealth = enemyPokemon.currentHealth - damage;
-
-            // Status Effect Chance
+        // Inflicts Damage, chance to add status ailment
+        else if (moveCategory == "damage+ailment")
+        {
+            enemyPokemon.currentHealth -= damage;
             var ailmentChance = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-            if (move.data.meta.ailment_chance > ailmentChance) {
-                if (enemyPokemon.is_poisoned != true || enemyPokemon.is_burned != true || enemyPokemon.is_frozen != true || enemyPokemon.is_paralyzed != true || enemyPokemon.is_asleep != true) {
-                    if (move.data.meta.ailment.name == "poison") {
-                        enemyPokemon.is_poisoned = true;
-                    }
-                    else if (move.data.meta.ailment.name == "burn") {
-                        enemyPokemon.is_burned = true;
-                    }
-                    else if (move.data.meta.ailment.name == "freeze") {
-                        enemyPokemon.is_frozen = true;
-                    }
-                    else if (move.data.meta.ailment.name == "paralysis") {
-                        enemyPokemon.is_paralyzed = true;
-                    }
-                    else if (move.data.meta.ailment.name == "sleep") {
-                        enemyPokemon.is_asleep = true;
+            if (move.data.meta.ailment_chance > ailmentChance)
+            {
+                if (enemyPokemon.is_poisoned != true || enemyPokemon.is_burned != true || enemyPokemon.is_frozen != true || enemyPokemon.is_sleeping != true || enemyPokemon.is_paralyzed != true)
+                {
+                    switch (move.data.meta.ailment.name)
+                    {
+                        case "poison":
+                            enemyPokemon.is_poisoned = true;
+                            break;
+                        case "burn":
+                            enemyPokemon.is_burned = true;
+                            break;
+                        case "freeze":
+                            enemyPokemon.is_frozen = true;
+                            break;
+                        case "paralysis":
+                            enemyPokemon.is_paralyzed = true;
+                            break;
+                        case "sleep":
+                            enemyPokemon.is_sleeping = true;
+                            break;
                     }
                 }
-                // Checks if Confused
-                if (enemyPokemon.is_confused != true) {
-                    if (move.data.meta.ailment.name == "confusion") {
+                /**
+                 * Since confusion and any other status ailment can be active at the same time,
+                 * confusion is calculated seperately.
+                 */
+                if (enemyPokemon.is_confused != true)
+                {
+                    if (move.data.meta.ailment.name == "confusion")
+                    {
                         enemyPokemon.is_confused = true;
                     }
                 }
             }
         }
 
-
-
-        // Inflicts damage; lowers target's stats
-        else if (move.data.meta.category.name == "damage+lower") {
-            var statArray = move.data.stat_changes
-            // Calculate Power
-            enemyPokemon.currentHealth = enemyPokemon.currentHealth - damage;
-
-            // Lower Stat Chance
+        // Inflicts damage and lowers the enemy's stats
+        else if (moveCategory == "damage+lower")
+        {
+            var statArray = move.data.stat_changes;
+            enemyPokemon.currentHealth -= damage;
             var statChance = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-            if (move.data.meta.stat_chance > statChance) {
-                for (var i = 0; i < statArray.length; i++) {
-                    if (statArray[i].stat.name == "attack") {
-                        enemyPokemon.attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "hp") {
-                        enemyPokemon.health_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "defense") {
-                        enemyPokemon.defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-attack") {
-                        enemyPokemon.special_attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-defense") {
-                        enemyPokemon.special_defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "speed") {
-                        enemyPokemon.speed_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "evasion") {
-                        enemyPokemon.evade_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "accuracy") {
-                        enemyPokemon.accuracy_stage += move.data.stat_changes[i].change
+            if (move.data.meta.stat.chance > statChance)
+            {
+                for (var i = 0; i <  statArray.length; i++)
+                {
+                    switch (statArray[i].stat.name)
+                    {
+                        case "attack":
+                            enemyPokemon.attack_stage += statArray[i].change;
+                            break;
+                        case "defense":
+                            enemyPokemon.defense_stage += statArray[i].change;
+                            break;
+                        case "special-attack":
+                            enemyPokemon.special_attack_stage += statArray[i].change;
+                            break;
+                        case "special-defense":
+                            enemyPokemon.special_defense_stage += statArray[i].change;
+                            break;
+                        case "speed":
+                            enemyPokemon.speed_stage += statArray[i].change;
+                            break;
+                        case "evasion":
+                            enemyPokemon.evade_stage += statArray[i].change;
+                            break;
+                        case "accuracy":
+                            enemyPokemon.accuracy_stage += statArray[i].change;
+                            break;
                     }
                 }
             }
         }
 
-        // Inflicts damage; raises user's stats
-        else if (move.data.meta.category.name == "damage+raise") {
-            var statArray = move.data.stat_changes
-            // Calculate Power
-            enemyPokemon.currentHealth = enemyPokemon.currentHealth - damage;
-
-            // Increase User Stat Chance
+        // Inflicts damage and raises the user's stats
+        else if (moveCategory == "damage+raise")
+        {
+            var statArray = move.data.stat_changes;
+            enemyPokemon.currentHealth -= damage;
             var statChance = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
-            if (move.data.meta.stat_chance > statChance) {
-                for (var i = 0; i < statArray.length; i++) {
-                    if (statArray[i].stat.name == "attack") {
-                        currentPokemon.attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "hp") {
-                        currentPokemon.health_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "defense") {
-                        currentPokemon.defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-attack") {
-                        currentPokemon.special_attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-defense") {
-                        currentPokemon.special_defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "speed") {
-                        currentPokemon.speed_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "evasion") {
-                        currentPokemon.evade_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "accuracy") {
-                        currentPokemon.accuracy_stage += move.data.stat_changes[i].change
+            if (move.data.meta.stat_chance > statChance)
+            {
+                for (var i = 0; i < statArray.length; i++)
+                {
+                    switch (statArray[i].stat.name) {
+                        case "attack":
+                            currentPokemon.attack_stage += statArray[i].change;
+                            break;
+                        case "defense":
+                            currentPokemon.defense_stage += statArray[i].change;
+                            break;
+                        case "special-attack":
+                            currentPokemon.special_attack_stage += statArray[i].change;
+                            break;
+                        case "special-defense":
+                            currentPokemon.special_defense_stage += statArray[i].change;
+                            break;
+                        case "speed":
+                            currentPokemon.speed_stage += statArray[i].change;
+                            break;
+                        case "evasion":
+                            currentPokemon.evade_stage += statArray[i].change;
+                            break;
+                        case "accuracy":
+                            currentPokemon.accuracy_stage += statArray[i].change;
+                            break;
                     }
                 }
             }
         }
 
-        // Inflicts damage; absorbs damage done to heal the user
-        else if (move.data.meta.category.name == "damage+heal") {
-            // Calculate Power
-            enemyPokemon.currentHealth = enemyPokemon.currentHealth - damage;
-
-            // Drain Health
+        // Inflicts damage and absorbs damage done to heal the user
+        else if (moveCategory == "damage+heal")
+        {
+            enemyPokemon.currentHealth -= damage;
             var healSteal = move.data.meta.drain / 100;
             currentPokemon.currentHealth += healSteal;
         }
     }
 
+    /**
+     * The statusMoves method.
+     * Checks the moves category and inflicts the stats/ailments based on the category.
+     * @param move The attacking move.
+     * @param currentPokemon The pokemon that is using the attacking move.
+     * @param enemyPokemon The pokemon that is inflicted by the attacking move.
+     */
+    var statusMoves = function (move, currentPokemon, enemyPokemon)
+    {
+        var statArray = move.data.stat_changes;
+        var moveCategory = move.data.meta.category.name;
 
-    ///////////////////////////////////////////////////////////
-    //                                                       //
-    // === CHECKS WHICH STATUS MOVE CURRENT POKEMON USES === //
-    //                                                       //
-    ///////////////////////////////////////////////////////////
-    var statusMoves = function (move, currentPokemon, enemyPokemon) {
-        var statArray = move.data.stat_changes
-        if (move.data.meta.category.name == "net-good-stats") {
-            console.log(move.data.stat_changes[0].change)
-            if (move.data.stat_changes[0].change > 0) {
-                for (var i = 0; i < move.data.stat_changes.length; i++) {
-                    if (statArray[i].stat.name == "attack") {
-                        console.log(move.data.stat_changes[i].change)
-                        currentPokemon.attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "hp") {
-                        currentPokemon.health_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "defense") {
-                        currentPokemon.defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-attack") {
-                        currentPokemon.special_attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-defense") {
-                        currentPokemon.special_defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "speed") {
-                        currentPokemon.speed_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "evasion") {
-                        currentPokemon.evade_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "accuracy") {
-                        currentPokemon.accuracy_stage += move.data.stat_changes[i].change
+        // Increases stats of the attacking Pokemon.
+        if (moveCategory == "net-good-stats")
+        {
+            if (statArray[0].change > 0)
+            {
+                for (var i = 0; i < statArray.length; i++)
+                {
+                    switch (statArray[i].stat.name)
+                    {
+                        case "attack":
+                            currentPokemon.attack_stage += statArray[i].change;
+                            break;
+                        case "defense":
+                            currentPokemon.defense_stage += statArray[i].change;
+                            break;
+                        case "special-attack":
+                            currentPokemon.special_attack_stage += statArray[i].change;
+                            break;
+                        case "special-defense":
+                            currentPokemon.special_defense_stage += statArray[i].change;
+                            break;
+                        case "speed":
+                            currentPokemon.speed_stage += statArray[i].change;
+                            break;
+                        case "evasion":
+                            currentPokemon.evade_stage += statArray[i].change;
+                            break;
+                        case "accuracy":
+                            currentPokemon.accuracy_stage += statArray[i].change;
+                            break;
                     }
                 }
             }
-            else if (move.data.stat_changes[0].change < 0) {
-                for (var i = 0; i < move.data.stat_changes.length; i++) {
-                    if (statArray[i].stat.name == "attack") {
-                        enemyPokemon.attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "hp") {
-                        enemyPokemon.health_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "defense") {
-                        enemyPokemon.defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-attack") {
-                        enemyPokemon.special_attack_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "special-defense") {
-                        enemyPokemon.special_defense_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "speed") {
-                        enemyPokemon.speed_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "evasion") {
-                        enemyPokemon.evade_stage += move.data.stat_changes[i].change
-                    }
-                    if (statArray[i].stat.name == "accuracy") {
-                        enemyPokemon.accuracy_stage += move.data.stat_changes[i].change
+            else if (statArray[0].change < 0)
+            {
+                for (var i = 0; i < statArray.length; i++) {
+                    switch (statArray[i].stat.name) {
+                        case "attack":
+                            enemyPokemon.attack_stage += statArray[i].change;
+                            break;
+                        case "defense":
+                            enemyPokemon.defense_stage += statArray[i].change;
+                            break;
+                        case "special-attack":
+                            enemyPokemon.special_attack_stage += statArray[i].change;
+                            break;
+                        case "special-defense":
+                            enemyPokemon.special_defense_stage += statArray[i].change;
+                            break;
+                        case "speed":
+                            enemyPokemon.speed_stage += statArray[i].change;
+                            break;
+                        case "evasion":
+                            enemyPokemon.evade_stage += statArray[i].change;
+                            break;
+                        case "accuracy":
+                            enemyPokemon.accuracy_stage += statArray[i].change;
+                            break;
                     }
                 }
             }
         }
 
-        // NO DAMAGE; INFLICTS STATUS AILMENT; RAISES TARGET'S STATS
-        else if (move.data.meta.category.name == "swagger") {
-            // CHECKS TO SEE IF ENEMY POKEMON IS CONFUSED
-            if (enemyPokemon.is_confused != true) {
-                // ADDS CONFUSION TO ENEMY POKEMON
+        // Inflicts Confusion and Raises the Target's Attack or Special Attack.
+        else if (moveCategory == "swagger")
+        {
+            if (enemyPokemon.is_confused != true)
+            {
                 enemyPokemon.is_confused = true;
-                // BOOSTS STATS OF ENEMY POKEMON
-                if (statArray[0].stat.name == "attack") {
-                    enemyPokemon.attack_stage += move.data.state_changes[0].change;
+                if (statArray[0].stat.name == "attack")
+                {
+                    enemyPokemon.attack_stage += statArray[0].change;
                 }
-                if (statArray[0].stat.name == "special-attack") {
-                    enemyPokemon.special_attack_stage += move.data.state_changes[0].change;
+                if (statArray[0].stat.name == "special-attack")
+                {
+                    enemyPokemon.special_attack_stage += statArray[0].change;
                 }
             }
         }
 
-        // NO DAMAGE; INFLICTS STATUS AILMENT
-        else if (move.data.meta.category.name == "ailment") {
-            // CHECKS TO SEE IF ENEMY POKEMON DOES NOT HAVE A CURRENT AILMENT
-            if (enemyPokemon.is_poisoned != true || enemyPokemon.is_burned != true || enemyPokemon.is_frozen != true || enemyPokemon.is_paralyzed != true || enemyPokemon.is_asleep != true) {
-                // CHECKS WHICH AILMENT IS NEEDED AND ADDS TO IT ENEMY POKEMON
-                if (move.data.meta.ailment.name == "poison") {
-                    enemyPokemon.is_poisoned = true;
-                }
-                else if (move.data.meta.ailment.name == "burn") {
-                    enemyPokemon.is_burned = true;
-                }
-                else if (move.data.meta.ailment.name == "freeze") {
-                    enemyPokemon.is_frozen = true;
-                }
-                else if (move.data.meta.ailment.name == "paralysis") {
-                    enemyPokemon.is_paralyzed = true;
-                }
-                else if (move.data.meta.ailment.name == "sleep") {
-                    enemyPokemon.is_asleep = true;
+        // Inflicts Status ailment.
+        else if (moveCategory == "ailment")
+        {
+            if (enemyPokemon.is_poisoned != true || enemyPokemon.is_burned != true || enemyPokemon.is_frozen != true || enemyPokemon.is_paralyzed != true || enemyPokemon.is_sleeping != true)
+            {
+                switch (move.data.meta.ailment.name)
+                {
+                    case "poison":
+                        enemyPokemon.is_poisoned = true;
+                        break;
+                    case "burn":
+                        enemyPokemon.is_burned = true;
+                        break;
+                    case "freeze":
+                        enemyPokemon.is_frozen = true;
+                        break;
+                    case "paralysis":
+                        enemyPokemon.is_paralyzed = true;
+                        break;
+                    case "sleep":
+                        enemyPokemon.is_sleeping = true;
+                        break;
                 }
             }
-            // CHECKS TO SEE IF ENEMY POKEMON IS NOT CONFUSED
-            if (enemyPokemon.is_confused != true) {
-                // ADDS CONFUSION
-                if (move.data.meta.ailment.name == "confusion") {
+            /**
+             * Since confusion and any other status ailment can be active at the same time,
+             * confusion is calculated seperately.
+            */
+            if (enemyPokemon.is_confused != true)
+            {
+                if (move.data.meta.ailment.name == "confusion")
+                {
                     enemyPokemon.is_confused = true;
                 }
             }
@@ -908,1061 +1001,810 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
     }
 
 
-
-
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                                                               //
-    // === CHECK TO SEE IF THE MOVE MADE THE OPPONENT FLINCH (ONLY WORKS IF ATTACKER GOES FIRST) === //
-    //                                                                                               //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    var checkMoveFlinchChance = function (move, enemyPokemon) {
-        // IF MOVE HAS CHANCE TO FLINCH
-        if (move.data.meta.flinch_chance != 0) {
-            // FLINCH RNG
-            flinchChance = Math.floor(Math.random() * (100 - move.data.meta.flinch_chance + move.data.meta.flinch_chance)) + move.data.meta.flinch_chance;
+    /**
+     * The checkMoveFlinchChance method.
+     * Calculates the flinch chance (if there is one).
+     * @param move The attacking move.
+     * @param enemyPokemon The enemy pokemon that is attacked.
+     */
+    var checkMoveFlinchChance = function (move, enemyPokemon)
+    {
+        var moveFliCh = move.data.meta.flinch_chance;
+        if (moveFliCh != 0)
+        {
+            flinchChance = Math.floor(Math.random() * (100 - moveFliCh + moveFliCh)) + moveFliCh;
         }
-        // IF MOVE DOESN'T HAVE CHANCE TO FLINCH
-        else {
-            // CHANGE FLINCH CHANCE TO 0%;
+        else
+        {
             flinchChance = 0;
         }
     }
 
-
-
-
-    ///////////////////////////////////////////////////
-    //                                               //
-    // === CHECK TO SEE IF THE ATTACK WAS A CRIT === //
-    //                                               //
-    ///////////////////////////////////////////////////
-    var checkMoveCrit = function (pokemon) {
-
-        // RNG FOR CRITICAL CHANCE
+    /**
+     * The checkMoveCrit method.
+     * Calculates the crit modifier.
+     * @param pokemon The attacking pokemon.
+     */
+    var checkMoveCrit = function (pokemon)
+    {
         var critChance = Math.floor(Math.random() * (16 - 1 + 1)) + 1;
-
-        // CRITICAL MULTIPLIER
-        if (critChance == 1) {
+        if (critChance == 1)
+        {
             critModifier = ((2 * 50 + 5) / (50 + 5));
         }
-
-        // NO CRITICAL MULTIPLIER
-        else {
+        else
+        {
             critModifier = 1;
         }
     }
 
-
-
-    ////////////////////////////////////////
-    //                                    //
-    // === CHECK RANDOM DAMAGE OUTPUT === //
-    //                                    //
-    ////////////////////////////////////////
-    var checkRandom = function () {
-        // GET RANDOM MULTIPLIER BETWEEN 1 AND 0.85
-        randomChance = Math.random() * (1 - 0.85) + 0.85;
+    /**
+     * The checkRandom method.
+     * Calculates the damageRoll.
+     */
+    var checkRandom = function ()
+    {
+        damageRoll = Math.random() * (1 - 0.85) + 0.85;
     }
 
-
-
-
-
-    /////////////////////////////////////////////////////////////////
-    //                                                             //
-    // === CHECK TO SEE IF MOVE IS SAME TYPE AS POKEMON (STAB) === //
-    //                                                             //
-    /////////////////////////////////////////////////////////////////
-    var checkMoveSTAB = function (move, pokemon) {
-
-        // PUSHING MOVE TYPE INTO A VARIABLE //
+    /**
+     * The checkMoveSTAB method.
+     * Checks if the Move is the same type as the attacking Pokemon.
+     * @param move The attacking move.
+     * @param pokemon The attacking pokemon.
+     */
+    var checkMoveSTAB = function (move, pokemon)
+    {
+        // Pushing the move type into a variable
         var moveType = move.data.type.name;
-
-        // CREATE AREA FOR THE CURRENT POKEMON'S TYPE(S) //
+        
+        // Creating an Array for the current pokemon's type(s)
         var pokemonTypes = [];
 
-        // PUSH THE FIRST POKEMON'S TYPE TO THE ARRAY //
+        // Pushing the pokemon's first type into the array
         pokemonTypes.push(pokemon.types[0]);
 
-        // CHECK TO SEE IF POKEMON HAS 2 TYPES //
-        if (pokemon.types.length > 1) {
+        // Checks to see if the pokemon has a secondary type and pushes it into the array.
+        if (pokemon.types.length > 1)
+        {
             pokemonTypes.push(pokemon.types[1]);
         }
 
-
-        // === STAB CHECKING === //
-
-        // MONO TYPE POKEMON STAB CHECK
-        if (pokemonTypes.length == 1) {
-            // IF POKEMON TYPE EQUALS MOVE TYPE MULTPLIER TO 1.5
-            if (pokemonTypes[0] == moveType) {
+        if (pokemonTypes.length == 1)
+        {
+            if (pokemonTypes[0] == moveType)
+            {
                 STAB = 1.5;
             }
         }
-
-        // DUAL TYPE POKEMON STAB CHECK
-        else if (pokemonTypes.length == 2) {
-
-            // IF POKEMON TYPE EQUALS MOVE TYPE MULTPLIER TO 1.5
-            if (pokemonTypes[0] == moveType) {
+        else if (pokemonTypes.length == 2)
+        {
+            if (pokemonTypes[0] == moveType)
+            {
                 STAB = 1.5;
             }
-            else if (pokemonTypes[1] == moveType) {
+            else if (pokemonTypes[1] == moveType)
+            {
                 STAB = 1.5;
             }
         }
-
-        // IF NO STAB, CHANGE MULTIPLIER TO 1
-        else {
+        else
+        {
             STAB = 1;
         }
     }
 
-
-
-    //////////////////////////////////////////////////////////////////
-    //                                                              //
-    // === CALCULATE STAT STAGES AND CHANGE THEM TO MULTIPLIERS === //
-    //                                                              //
-    //////////////////////////////////////////////////////////////////
-    var checkStatStages = function (currentPokemon) {
-
-        // CALCULATE ATTACK MULTIPLIER
-        if (currentPokemon.attack_stage != 0) {
-            if (currentPokemon.attack_stage = 1 && currentPokemon.attack_multiplier != 1.5) {
-                currentPokemon.attack_multiplier = 1.5;
+    /**
+     * The checkStatStages method.
+     * Checks the stat stages of the current pokemon.
+     * @param pokemon The pokemon being checked
+     */
+    var checkStatStages = function (pokemon)
+    {
+        // Calculating the Attack Multiplier.
+        if (pokemon.attack_stage != 0)
+        {
+            if (pokemon.attack_stage == 1 && pokemon.attack_multiplier != 1.5) 
+            {
+                pokemon.attack_multiplier = 1.5;
             }
-            else if (currentPokemon.attack_stage = 2 && currentPokemon.attack_multiplier != 2) {
-                currentPokemon.attack_multiplier = 2;
+            else if (pokemon.attack_stage == 2 && pokemon.attack_multiplier != 2) 
+            {
+                pokemon.attack_multiplier = 2;
             }
-            else if (currentPokemon.attack_stage = 3 && currentPokemon.attack_multiplier != 2.5) {
-                currentPokemon.attack_multiplier = 2.5;
+            else if (pokemon.attack_stage == 3 && pokemon.attack_multiplier != 2.5) 
+            {
+                pokemon.attack_multiplier = 2.5;
             }
-            else if (currentPokemon.attack_stage = 4 && currentPokemon.attack_multiplier != 3) {
-                currentPokemon.attack_multiplier = 3;
+            else if (pokemon.attack_stage == 4 && pokemon.attack_multiplier != 3) 
+            {
+                pokemon.attack_multiplier = 3;
             }
-            else if (currentPokemon.attack_stage = 5 && currentPokemon.attack_multiplier != 3.5) {
-                currentPokemon.attack_multiplier = 3.5;
+            else if (pokemon.attack_stage == 5 && pokemon.attack_multiplier != 3.5) 
+            {
+                pokemon.attack_multiplier = 3.5;
             }
-            else if (currentPokemon.attack_stage = 6 && currentPokemon.attack_multiplier != 4) {
-                currentPokemon.attack_multiplier = 4;
+            else if (pokemon.attack_stage == 6 && pokemon.attack_multiplier != 4) 
+            {
+                pokemon.attack_multiplier = 4;
             }
-            else if (currentPokemon.attack_stage = -1 && currentPokemon.attack_multiplier != 0.66) {
-                currentPokemon.attack_multiplier = 0.66;
+            else if (pokemon.attack_stage == -1 && pokemon.attack_multiplier != 0.66) 
+            {
+                pokemon.attack_multiplier = 0.66;
             }
-            else if (currentPokemon.attack_stage = -2 && currentPokemon.attack_multiplier != 0.5) {
-                currentPokemon.attack_multiplier = 0.5;
+            else if (pokemon.attack_stage == -2 && pokemon.attack_multiplier != 0.5) 
+            {
+                pokemon.attack_multiplier = 0.5;
             }
-            else if (currentPokemon.attack_stage = -3 && currentPokemon.attack_multiplier != 0.4) {
-                currentPokemon.attack_multiplier = 0.4;
+            else if (pokemon.attack_stage == -3 && pokemon.attack_multiplier != 0.4) 
+            {
+                pokemon.attack_multiplier = 0.4;
             }
-            else if (currentPokemon.attack_stage = -4 && currentPokemon.attack_multiplier != 0.33) {
-                currentPokemon.attack_multiplier = 0.33;
+            else if (pokemon.attack_stage == -4 && pokemon.attack_multiplier != 0.33) 
+            {
+                pokemon.attack_multiplier = 0.33;
             }
-            else if (currentPokemon.attack_stage = -5 && currentPokemon.attack_multiplier != 0.28) {
-                currentPokemon.attack_multiplier = 0.28;
+            else if (pokemon.attack_stage == -5 && pokemon.attack_multiplier != 0.28) 
+            {
+                pokemon.attack_multiplier = 0.28;
             }
-            else if (currentPokemon.attack_stage = -6 && currentPokemon.attack_multiplier != 0.25) {
-                currentPokemon.attack_multiplier = 0.25;
-            }
-
-        }
-
-        // CALCULATE SPECIAL ATTACK MULTIPLIER
-        if (currentPokemon.special_attack_stage != 0) {
-            if (currentPokemon.special_attack_stage = 1 && currentPokemon.special_attack_multiplier != 1.5) {
-                currentPokemon.special_attack_multiplier = 1.5;
-            }
-            else if (currentPokemon.special_attack_stage = 2 && currentPokemon.special_attack_multiplier != 2) {
-                currentPokemon.special_attack_multiplier = 2;
-            }
-            else if (currentPokemon.special_attack_stage = 3 && currentPokemon.special_attack_multiplier != 2.5) {
-                currentPokemon.special_attack_multiplier = 2.5;
-            }
-            else if (currentPokemon.special_attack_stage = 4 && currentPokemon.special_attack_multiplier != 3) {
-                currentPokemon.special_attack_multiplier = 3;
-            }
-            else if (currentPokemon.special_attack_stage = 5 && currentPokemon.special_attack_multiplier != 3.5) {
-                currentPokemon.special_attack_multiplier = 3.5;
-            }
-            else if (currentPokemon.special_attack_stage = 6 && currentPokemon.special_attack_multiplier != 4) {
-                currentPokemon.special_attack_multiplier = 4;
-            }
-            else if (currentPokemon.special_attack_stage = -1 && currentPokemon.special_attack_multiplier != 0.66) {
-                currentPokemon.special_attack_multiplier = 0.66;
-            }
-            else if (currentPokemon.special_attack_stage = -2 && currentPokemon.special_attack_multiplier != 0.5) {
-                currentPokemon.special_attack_multiplier = 0.5;
-            }
-            else if (currentPokemon.special_attack_stage = -3 && currentPokemon.special_attack_multiplier != 0.4) {
-                currentPokemon.special_attack_multiplier = 0.4;
-            }
-            else if (currentPokemon.special_attack_stage = -4 && currentPokemon.special_attack_multiplier != 0.33) {
-                currentPokemon.special_attack_multiplier = 0.33;
-            }
-            else if (currentPokemon.special_attack_stage = -5 && currentPokemon.special_attack_multiplier != 0.28) {
-                currentPokemon.special_attack_multiplier = 0.28;
-            }
-            else if (currentPokemon.special_attack_stage = -6 && currentPokemon.special_attack_multiplier != 0.25) {
-                currentPokemon.special_attack_multiplier = 0.25;
-            }
-
-        }
-
-        // CALCULATE DEFENSE MULTIPLIER
-        if (currentPokemon.defense_stage != 0) {
-            if (currentPokemon.defense_stage = 1 && currentPokemon.defense_multiplier != 1.5) {
-                currentPokemon.defense_multiplier = 1.5;
-            }
-            else if (currentPokemon.defense_stage = 2 && currentPokemon.defense_multiplier != 2) {
-                currentPokemon.defense_multiplier = 2;
-            }
-            else if (currentPokemon.defense_stage = 3 && currentPokemon.defense_multiplier != 2.5) {
-                currentPokemon.defense_multiplier = 2.5;
-            }
-            else if (currentPokemon.defense_stage = 4 && currentPokemon.defense_multiplier != 3) {
-                currentPokemon.defense_multiplier = 3;
-            }
-            else if (currentPokemon.defense_stage = 5 && currentPokemon.defense_multiplier != 3.5) {
-                currentPokemon.defense_multiplier = 3.5;
-            }
-            else if (currentPokemon.defense_stage = 6 && currentPokemon.defense_multiplier != 4) {
-                currentPokemon.defense_multiplier = 4;
-            }
-            else if (currentPokemon.defense_stage = -1 && currentPokemon.defense_multiplier != 0.66) {
-                currentPokemon.defense_multiplier = 0.66;
-            }
-            else if (currentPokemon.defense_stage = -2 && currentPokemon.defense_multiplier != 0.5) {
-                currentPokemon.defense_multiplier = 0.5;
-            }
-            else if (currentPokemon.defense_stage = -3 && currentPokemon.defense_multiplier != 0.4) {
-                currentPokemon.defense_multiplier = 0.4;
-            }
-            else if (currentPokemon.defense_stage = -4 && currentPokemon.defense_multiplier != 0.33) {
-                currentPokemon.defense_multiplier = 0.33;
-            }
-            else if (currentPokemon.defense_stage = -5 && currentPokemon.defense_multiplier != 0.28) {
-                currentPokemon.defense_multiplier = 0.28;
-            }
-            else if (currentPokemon.defense_stage = -6 && currentPokemon.defense_multiplier != 0.25) {
-                currentPokemon.defense_multiplier = 0.25;
-            }
-        }
-        // CALCULATE SPECIAL DEFENSE MULTIPLIER
-        if (currentPokemon.special_defense_stage != 0) {
-            if (currentPokemon.special_defense_stage = 1 && currentPokemon.special_defense_multiplier != 1.5) {
-                currentPokemon.special_defense_multiplier = 1.5;
-            }
-            else if (currentPokemon.special_defense_stage = 2 && currentPokemon.special_defense_multiplier != 2) {
-                currentPokemon.special_defense_multiplier = 2;
-            }
-            else if (currentPokemon.special_defense_stage = 3 && currentPokemon.special_defense_multiplier != 2.5) {
-                currentPokemon.special_defense_multiplier = 2.5;
-            }
-            else if (currentPokemon.special_defense_stage = 4 && currentPokemon.special_defense_multiplier != 3) {
-                currentPokemon.special_defense_multiplier = 3;
-            }
-            else if (currentPokemon.special_defense_stage = 5 && currentPokemon.special_defense_multiplier != 3.5) {
-                currentPokemon.special_defense_multiplier = 3.5;
-            }
-            else if (currentPokemon.special_defense_stage = 6 && currentPokemon.special_defense_multiplier != 4) {
-                currentPokemon.special_defense_multiplier = 4;
-            }
-            else if (currentPokemon.special_defense_stage = -1 && currentPokemon.special_defense_multiplier != 0.66) {
-                currentPokemon.special_defense_multiplier = 0.66;
-            }
-            else if (currentPokemon.special_defense_stage = -2 && currentPokemon.special_defense_multiplier != 0.5) {
-                currentPokemon.special_defense_multiplier = 0.5;
-            }
-            else if (currentPokemon.special_defense_stage = -3 && currentPokemon.special_defense_multiplier != 0.4) {
-                currentPokemon.special_defense_multiplier = 0.4;
-            }
-            else if (currentPokemon.special_defense_stage = -4 && currentPokemon.special_defense_multiplier != 0.33) {
-                currentPokemon.special_defense_multiplier = 0.33;
-            }
-            else if (currentPokemon.special_defense_stage = -5 && currentPokemon.special_defense_multiplier != 0.28) {
-                currentPokemon.special_defense_multiplier = 0.28;
-            }
-            else if (currentPokemon.special_defense_stage = -6 && currentPokemon.special_defense_multiplier != 0.25) {
-                currentPokemon.special_defense_multiplier = 0.25;
+            else if (pokemon.attack_stage == -6 && pokemon.attack_multiplier != 0.25)
+            {
+                pokemon.attack_multiplier = 0.25;
             }
         }
 
-        // CALCULATE HEALTH MULTIPLIER
-        if (currentPokemon.health_stage != 0) {
-            if (currentPokemon.health_stage = 1 && currentPokemon.health_multiplier != 1.5) {
-                currentPokemon.health_multiplier = 1.5;
+        // Calculating the Special Attack Multiplier.
+        if (pokemon.special_attack_stage != 0) {
+            if (pokemon.special_attack_stage == 1 && pokemon.special_attack_multiplier != 1.5)
+             {
+                pokemon.special_attack_multiplier = 1.5;
             }
-            else if (currentPokemon.health_stage = 2 && currentPokemon.health_multiplier != 2) {
-                currentPokemon.health_multiplier = 2;
+            else if (pokemon.special_attack_stage == 2 && pokemon.special_attack_multiplier != 2) 
+            {
+                pokemon.special_attack_multiplier = 2;
             }
-            else if (currentPokemon.health_stage = 3 && currentPokemon.health_multiplier != 2.5) {
-                currentPokemon.health_multiplier = 2.5;
+            else if (pokemon.special_attack_stage == 3 && pokemon.special_attack_multiplier != 2.5) 
+            {
+                pokemon.special_attack_multiplier = 2.5;
             }
-            else if (currentPokemon.health_stage = 4 && currentPokemon.health_multiplier != 3) {
-                currentPokemon.health_multiplier = 3;
+            else if (pokemon.special_attack_stage == 4 && pokemon.special_attack_multiplier != 3) 
+            {
+                pokemon.special_attack_multiplier = 3;
             }
-            else if (currentPokemon.health_stage = 5 && currentPokemon.health_multiplier != 3.5) {
-                currentPokemon.health_multiplier = 3.5;
+            else if (pokemon.special_attack_stage == 5 && pokemon.special_attack_multiplier != 3.5) 
+            {
+                pokemon.special_attack_multiplier = 3.5;
             }
-            else if (currentPokemon.health_stage = 6 && currentPokemon.health_multiplier != 4) {
-                currentPokemon.health_multiplier = 4;
+            else if (pokemon.special_attack_stage == 6 && pokemon.special_attack_multiplier != 4) 
+            {
+                pokemon.special_attack_multiplier = 4;
             }
-            else if (currentPokemon.health_stage = -1 && currentPokemon.health_multiplier != 0.66) {
-                currentPokemon.health_multiplier = 0.66;
+            else if (pokemon.special_attack_stage == -1 && pokemon.special_attack_multiplier != 0.66) 
+            {
+                pokemon.special_attack_multiplier = 0.66;
             }
-            else if (currentPokemon.health_stage = -2 && currentPokemon.health_multiplier != 0.5) {
-                currentPokemon.health_multiplier = 0.5;
+            else if (pokemon.special_attack_stage == -2 && pokemon.special_attack_multiplier != 0.5) 
+            {
+                pokemon.special_attack_multiplier = 0.5;
             }
-            else if (currentPokemon.health_stage = -3 && currentPokemon.health_multiplier != 0.4) {
-                currentPokemon.health_multiplier = 0.4;
+            else if (pokemon.special_attack_stage == -3 && pokemon.special_attack_multiplier != 0.4) 
+            {
+                pokemon.special_attack_multiplier = 0.4;
             }
-            else if (currentPokemon.health_stage = -4 && currentPokemon.health_multiplier != 0.33) {
-                currentPokemon.health_multiplier = 0.33;
+            else if (pokemon.special_attack_stage == -4 && pokemon.special_attack_multiplier != 0.33) 
+            {
+                pokemon.special_attack_multiplier = 0.33;
             }
-            else if (currentPokemon.health_stage = -5 && currentPokemon.health_multiplier != 0.28) {
-                currentPokemon.health_multiplier = 0.28;
+            else if (pokemon.special_attack_stage == -5 && pokemon.special_attack_multiplier != 0.28) 
+            {
+                pokemon.special_attack_multiplier = 0.28;
             }
-            else if (currentPokemon.health_stage = -6 && currentPokemon.health_multiplier != 0.25) {
-                currentPokemon.health_multiplier = 0.25;
+            else if (pokemon.special_attack_stage == -6 && pokemon.special_attack_multiplier != 0.25) 
+            {
+                pokemon.special_attack_multiplier = 0.25;
             }
         }
-        // CALCULATE SPEED MULTIPLIER
-        if (currentPokemon.speed_stage != 0) {
-            if (currentPokemon.speed_stage = 1 && currentPokemon.speed_multiplier != 1.5) {
-                currentPokemon.speed_multiplier = 1.5;
+
+        // Calculating the Defense Multiplier.
+        if (pokemon.defense_stage != 0) {
+            if (pokemon.defense_stage == 1 && pokemon.defense_multiplier != 1.5)
+             {
+                pokemon.defense_multiplier = 1.5;
             }
-            else if (currentPokemon.speed_stage = 2 && currentPokemon.speed_multiplier != 2) {
-                currentPokemon.speed_multiplier = 2;
+            else if (pokemon.defense_stage == 2 && pokemon.defense_multiplier != 2) 
+            {
+                pokemon.defense_multiplier = 2;
             }
-            else if (currentPokemon.speed_stage = 3 && currentPokemon.speed_multiplier != 2.5) {
-                currentPokemon.speed_multiplier = 2.5;
+            else if (pokemon.defense_stage == 3 && pokemon.defense_multiplier != 2.5) 
+            {
+                pokemon.defense_multiplier = 2.5;
             }
-            else if (currentPokemon.speed_stage = 4 && currentPokemon.speed_multiplier != 3) {
-                currentPokemon.speed_multiplier = 3;
+            else if (pokemon.defense_stage == 4 && pokemon.defense_multiplier != 3) 
+            {
+                pokemon.defense_multiplier = 3;
             }
-            else if (currentPokemon.speed_stage = 5 && currentPokemon.speed_multiplier != 3.5) {
-                currentPokemon.speed_multiplier = 3.5;
+            else if (pokemon.defense_stage == 5 && pokemon.defense_multiplier != 3.5) 
+            {
+                pokemon.defense_multiplier = 3.5;
             }
-            else if (currentPokemon.speed_stage = 6 && currentPokemon.speed_multiplier != 4) {
-                currentPokemon.speed_multiplier = 4;
+            else if (pokemon.defense_stage == 6 && pokemon.defense_multiplier != 4) 
+            {
+                pokemon.defense_multiplier = 4;
             }
-            else if (currentPokemon.speed_stage = -1 && currentPokemon.speed_multiplier != 0.66) {
-                currentPokemon.speed_multiplier = 0.66;
+            else if (pokemon.defense_stage == -1 && pokemon.defense_multiplier != 0.66) 
+            {
+                pokemon.defense_multiplier = 0.66;
             }
-            else if (currentPokemon.speed_stage = -2 && currentPokemon.speed_multiplier != 0.5) {
-                currentPokemon.speed_multiplier = 0.5;
+            else if (pokemon.defense_stage == -2 && pokemon.defense_multiplier != 0.5) 
+            {
+                pokemon.defense_multiplier = 0.5;
             }
-            else if (currentPokemon.speed_stage = -3 && currentPokemon.speed_multiplier != 0.4) {
-                currentPokemon.speed_multiplier = 0.4;
+            else if (pokemon.defense_stage == -3 && pokemon.defense_multiplier != 0.4) 
+            {
+                pokemon.defense_multiplier = 0.4;
             }
-            else if (currentPokemon.speed_stage = -4 && currentPokemon.speed_multiplier != 0.33) {
-                currentPokemon.speed_multiplier = 0.33;
+            else if (pokemon.defense_stage == -4 && pokemon.defense_multiplier != 0.33) 
+            {
+                pokemon.defense_multiplier = 0.33;
             }
-            else if (currentPokemon.speed_stage = -5 && currentPokemon.speed_multiplier != 0.28) {
-                currentPokemon.speed_multiplier = 0.28;
+            else if (pokemon.defense_stage == -5 && pokemon.defense_multiplier != 0.28) 
+            {
+                pokemon.defense_multiplier = 0.28;
             }
-            else if (currentPokemon.speed_stage = -6 && currentPokemon.speed_multiplier != 0.25) {
-                currentPokemon.speed_multiplier = 0.25;
+            else if (pokemon.defense_stage == -6 && pokemon.defense_multiplier != 0.25) 
+            {
+                pokemon.defense_multiplier = 0.25;
+            }
+        }
+
+        // Calculating the Special Defense Multiplier.
+        if (pokemon.special_defense_stage != 0) {
+            if (pokemon.special_defense_stage == 1 && pokemon.special_defense_multiplier != 1.5) 
+            {
+                pokemon.special_defense_multiplier = 1.5;
+            }
+            else if (pokemon.special_defense_stage == 2 && pokemon.special_defense_multiplier != 2) 
+            {
+                pokemon.special_defense_multiplier = 2;
+            }
+            else if (pokemon.special_defense_stage == 3 && pokemon.special_defense_multiplier != 2.5) 
+            {
+                pokemon.special_defense_multiplier = 2.5;
+            }
+            else if (pokemon.special_defense_stage == 4 && pokemon.special_defense_multiplier != 3) 
+            {
+                pokemon.special_defense_multiplier = 3;
+            }
+            else if (pokemon.special_defense_stage == 5 && pokemon.special_defense_multiplier != 3.5) 
+            {
+                pokemon.special_defense_multiplier = 3.5;
+            }
+            else if (pokemon.special_defense_stage == 6 && pokemon.special_defense_multiplier != 4) 
+            {
+                pokemon.special_defense_multiplier = 4;
+            }
+            else if (pokemon.special_defense_stage == -1 && pokemon.special_defense_multiplier != 0.66) 
+            {
+                pokemon.special_defense_multiplier = 0.66;
+            }
+            else if (pokemon.special_defense_stage == -2 && pokemon.special_defense_multiplier != 0.5) 
+            {
+                pokemon.special_defense_multiplier = 0.5;
+            }
+            else if (pokemon.special_defense_stage == -3 && pokemon.special_defense_multiplier != 0.4) 
+            {
+                pokemon.special_defense_multiplier = 0.4;
+            }
+            else if (pokemon.special_defense_stage == -4 && pokemon.special_defense_multiplier != 0.33) 
+            {
+                pokemon.special_defense_multiplier = 0.33;
+            }
+            else if (pokemon.special_defense_stage == -5 && pokemon.special_defense_multiplier != 0.28) 
+            {
+                pokemon.special_defense_multiplier = 0.28;
+            }
+            else if (pokemon.special_defense_stage == -6 && pokemon.special_defense_multiplier != 0.25) 
+            {
+                pokemon.special_defense_multiplier = 0.25;
+            }
+        }
+
+        // Calculating the Speed Multiplier.
+        if (pokemon.speed_stage != 0) {
+            if (pokemon.speed_stage == 1 && pokemon.speed_multiplier != 1.5)
+            {
+                pokemon.speed_multiplier = 1.5;
+            }
+            else if (pokemon.speed_stage == 2 && pokemon.speed_multiplier != 2) 
+            {
+                pokemon.speed_multiplier = 2;
+            }
+            else if (pokemon.speed_stage == 3 && pokemon.speed_multiplier != 2.5) 
+            {
+                pokemon.speed_multiplier = 2.5;
+            }
+            else if (pokemon.speed_stage == 4 && pokemon.speed_multiplier != 3) 
+            {
+                pokemon.speed_multiplier = 3;
+            }
+            else if (pokemon.speed_stage == 5 && pokemon.speed_multiplier != 3.5) 
+            {
+                pokemon.speed_multiplier = 3.5;
+            }
+            else if (pokemon.speed_stage == 6 && pokemon.speed_multiplier != 4) 
+            {
+                pokemon.speed_multiplier = 4;
+            }
+            else if (pokemon.speed_stage == -1 && pokemon.speed_multiplier != 0.66) 
+            {
+                pokemon.speed_multiplier = 0.66;
+            }
+            else if (pokemon.speed_stage == -2 && pokemon.speed_multiplier != 0.5) 
+            {
+                pokemon.speed_multiplier = 0.5;
+            }
+            else if (pokemon.speed_stage == -3 && pokemon.speed_multiplier != 0.4) 
+            {
+                pokemon.speed_multiplier = 0.4;
+            }
+            else if (pokemon.speed_stage == -4 && pokemon.speed_multiplier != 0.33) 
+            {
+                pokemon.speed_multiplier = 0.33;
+            }
+            else if (pokemon.speed_stage == -5 && pokemon.speed_multiplier != 0.28) 
+            {
+                pokemon.speed_multiplier = 0.28;
+            }
+            else if (pokemon.speed_stage == -6 && pokemon.speed_multiplier != 0.25) 
+            {
+                pokemon.speed_multiplier = 0.25;
             }
         }
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    var sleepCount = 0;
-    var freezeCount = 0;
-
-
-
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                                                            //
-    //                                     BATTLE FUNCTION                                        //
-    //                                                                                            //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    var battleFunction = function (move, currentPokemon, enemyPokemon) {
-
-        // CHECKS TO SEE IS MOVE TYPE IS THE SAME AS CURRENT POKEMON //
-        checkMoveSTAB(move, currentPokemon);
-
-        // CALCULATES RANDOM DAMAGE MULTIPLIER 0.85-1 //
-        checkRandom();
-
-        // BURN MULTIPLIER //
+    /**
+     * The battleFunction method.
+     * This is the function that calculates *MOST* of the battle
+     * @param move The attacking move.
+     * @param currentPokemon The pokemon attacking.
+     * @param enemyPokemon The pokemon getting attacked.
+     */
+    var battleFunction = function (move, currentPokemon, enemyPokemon)
+    {
         var burn = 1;
-        // CHECKS TO SEE IF POKEMON IS BURNED //
-        if (currentPokemon.is_burned == true && physicalAttack == true) {
+        checkStatStages(currentPokemon);
+        checkStatStages(enemyPokemon);
+        checkMoveClass(move);
+        checkMoveSTAB(move, currentPokemon);
+        checkRandom();
+        checkMoveCrit(currentPokemon);
+        
+        // Halves the damage of physical moves if the user is burned.
+        if (currentPokemon.is_burned == true && physicalAttack == true)
+        {
             burn = 0.5;
         }
 
-        // CALCULATES STAT MULTIPLIERS //
-        checkStatStages(currentPokemon);
-        checkStatStages(enemyPokemon);
-
-
-        // CHECKS TO SEE IF MOVE IS CRITICAL //
-        checkMoveCrit(currentPokemon);
-
-        // CHECKS TO SEE IF MOVE IS PHYSICAL OR SPECIAL //
-        checkMoveClass(move);
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-        // === CALCULATES THE TYPE ADVANTAGE OR DISADVANTAGE FOR THE MOVE AND ENEMY POKEMON === //
-        //////////////////////////////////////////////////////////////////////////////////////////
-
-        // IF ENEMY POKEMON HAS 2 TYPES
-        if (enemyPokemon.types.length > 1) {
-            // CALCULATES THE TYPE ADVANTAGES USING THE calculateType() FUNCTION //
+        /**
+         * Calculating the Type Advantage/Disadvantage for the Move and Enemy Pokemon.
+         */
+        if (enemyPokemon.types.length > 1)
+        {
             calculateType(move.data.type.name, enemyPokemon.types[0].type.name, enemyPokemon.types[1].type.name);
-
-            // TESTING AREA //
-            console.log("enemy has 2 types");
-            console.log("Move Type: " + move.data.type.name);
-            // END TESTING  //
         }
-        // IF ENEMY POKEMON HAS 1 TYPE
-        else {
-            // CALCULATES THE TYPE ADVANTAGES USING THE calculateType() FUNCTION //
+        else 
+        {
             calculateType(move.data.type.name, enemyPokemon.types[0].type.name, null);
-
-            // TESTING AREA //
-            console.log("enemy has 1 type");
-            console.log("Move Type: " + move.data.type.name);
-            // END TESTING  //
         }
 
-        console.log("Type Modifier: ", typeModifier)
-
-
-        // SETTING ATTACK AND DEFENSE POWER TO 0 (DEFAULT) //
+        /**
+         * Setting the Attack and Defense power to 0 (Default)
+         */
         var attackPower = 0;
         var defensePower = 0;
 
+        /**
+         * Calculating the modifier used in the Damage Calculation
+         */
+        var modifier = critModifier * damageRoll * STAB * typeModifier * burn;
 
-        ////////////////////////////////////////////////////////////
-        // === CALCULATES MODIFIER FOR THE DAMAGE CALCULATION === //
-        ////////////////////////////////////////////////////////////
-        var modifier = critModifier * randomChance * STAB * typeModifier * burn;
-
-
+        /**
+         * Creating the skipTurn boolean used in status ailments check.
+         */
         var skipTurn = false;
 
-        // CHECKS IF ASLEEP
-        if (currentPokemon.is_asleep == true) {
-            // SLEEP RNG
-            var sleepRNG = Math.floor(Math.random() * (2 - 1 + 1)) + 1
-
-            // POKEMON SLEEPS FOR THE TURN
-            if (sleepRNG = 1 && sleepCount < 4) {
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " continues to sleep!"
+        /**
+         * Checking the Sleep RNG.
+         */
+        if (currentPokemon.is_sleeping == true)
+        {
+            var sleepRNG = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+            if (sleepRNG == 1 && sleepCount < 4)
+            {
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " continues to sleep!";
                 sleepCount++;
                 skipTurn = true;
             }
-            // POKEMON WAKES UP
-            else {
-                currentPokemon.is_asleep = false;
+            else
+            {
+                currentPokemon.is_sleeping = false;
                 skipTurn = false;
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " woke up!"
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " woke up!";
+                sleepCount = 0;
             }
         }
 
-        // CHECKS IF PARALYZED
-        if (currentPokemon.is_paralyzed == true) {
-            // PARALYZE RNG
+        /**
+         * Checking the Paralysis RNG.
+         */
+        if (currentPokemon.is_paralyzed == true)
+        {
             var paralysisRNG = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-
-            // POKEMON IS PARALYZED FOR THE TURN
-            if (paralysisRNG == 1) {
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " is stuck in paralysis!"
+            if (paralysisRNG == 1)
+            {
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " is fully paralyzed!";
                 skipTurn = true;
             }
-            else {
+            else
+            {
                 skipTurn = false;
             }
         }
 
-        // CHECKS IF FROZEN
-        if (currentPokemon.is_frozen == true) {
-            // FREEZE RNG
+        /**
+         * Checking the Freeze RNG.
+         */
+        if (currentPokemon.is_frozen == true)
+        {
             var freezeRNG = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
-
-            // POKEMON IS FROZEN FOR THE TURN
-            if (freezeRNG > 2 && freezeCount < 5) {
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " is frozen solid!"
+            if (freezeRNG == 2 && freezeCount < 5)
+            {
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " if frozen solid!";
                 skipTurn = true;
                 freezeCount++;
             }
-            else {
+            else
+            {
                 currentPokemon.is_frozen = false;
                 skipTurn = false;
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " thawed out of the ice!"
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " thawed out of the ice!";
+                freezeCount = 0;
             }
         }
 
-        ////////////////////////////////////
-        // === PHYSICAL ATTACK DAMAGE === //
-        ////////////////////////////////////
-        if (physicalAttack == true && skipTurn == false) {
+        /**
+         * Damage Calculator
+         * 
+         * Damage = (((((2 * Level) / 5) * Power * Attack / Defense) / 50) + 2) * Modifier
+         * 
+         * Modifier = Critical * random * STAB * typeModifier * burn
+         * 
+         * random = A random number between 0.85 and 1.00
+         * 
+         * burn is 0.5 if the attacker is burned and used a physical move, otherwise it's a 1
+         */
 
-            // MAKES ATTACK AND DEFENSE POWER PHYSICALS
-            console.log(currentPokemon)
-            attackPower = currentPokemon.attack * currentPokemon.attack_multiplier  // MULTIPLY BY THE ATTACK STAGE FOR STAT MOVES
-            defensePower = enemyPokemon.defense * enemyPokemon.defense_multiplier  // MULTIPLY BY THE DEFENSE STAGE FOR STAT MOVES
+        /**
+         * Calculating the Physical Attack or Special Attack Damage.
+         */
+        if (physicalAttack == true && skipTurn == false || specialAttack == true && skipTurn == false)
+        {
+            console.log(currentPokemon);
+            if (physicalAttack == true)
+            {
+                attackPower = currentPokemon.attack * currentPokemon.attack_multiplier;
+                defensePower = enemyPokemon.defense * enemyPokemon.defense_multiplier;
+            }
+            else if (specialAttack == true)
+            {
+                attackPower = currentPokemon.special_attack * currentPokemon.special_attack_multiplier;
+                defensePower = enemyPokemon.special_defense * enemyPokemon.special_defense_multiplier;
+            }
+            
             console.log("Attack Power: " + attackPower);
 
-            //                          CALCULATE DAMAGE
-            /*///////////////////////////////////////////////////////////////////////////////////////////////
-            //                                                                                             //
-            //    Damage = ( ((((2 * Level) / 5) * Power * Attack / Defense) / 50) + 2) * Modifier         //
-            //                                                                                             //
-            //    Modifier = Critical * random * STAB * TypeModifier * Burn                                //
-            //                                                                                             //
-            //    random = random number between 0.85 and 1.00                                             //
-            //                                                                                             //
-            //    burn is 0.5 if the attacker is burned and used a physical move, otherwise it's 1         //
-            //                                                                                             //
-            *////////////////////////////////////////////////////////////////////////////////////////////////
             var calculatedDamage = (((((2 * 50) / 5) * move.data.power * attackPower / defensePower) / 50) + 2) * modifier;
-
-            // ROUND DAMAGE TO THE NEAREST INTEGER //
             var damage = Math.round(calculatedDamage);
 
-            // === ACCURACY CHECK === //
-
-            // IF MOVE IS NOT A GUARANTEED HIT //
-            if (move.data.accuracy != null) {
-
-                // VARIABLE TO STORE MOVE ACCURACY
                 var moveAccuracy = move.data.accuracy;
+                var moveRNG = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
 
-                // RNG FOR MOVE ACCURACY
-                var moveRNG = Math.floor(Math.random() * (100 - 1 + 1)) + 1
-
-                // START EVADE STAGE CHECKER
-                if (enemyPokemon.evade_stage == 1) {
-                    moveAccuracy * 0.66;
+                /**
+                 * Evade Stage Checker.
+                 */
+                switch (enemyPokemon.evade_stage)
+                {
+                    case 1:
+                        moveAccuracy *= 0.66;
+                        break;
+                    case 2:
+                        moveAccuracy *= 0.5;
+                        break;
+                    case 3:
+                        moveAccuracy *= 0.4;
+                        break;
+                    case 4:
+                        moveAccuracy *= 0.33;
+                        break;
+                    case 5:
+                        moveAccuracy *= 0.28;
+                        break;
+                    case 6:
+                        moveAccuracy *= 0.25;
+                        break;
+                    case -1:
+                        moveAccuracy *= 1.5;
+                        break;
+                    case -2:
+                        moveAccuracy *= 2;
+                        break;
+                    case -3:
+                        moveAccuracy *= 2.5;
+                        break;
+                    case -4:
+                        moveAccuracy *= 3;
+                        break;
+                    case -5:
+                        moveAccuracy *= 3.5;
+                        break;
+                    case -6:
+                        moveAccuracy *= 4;
+                        break;
                 }
-                if (enemyPokemon.evade_stage == 2) {
-                    moveAccuracy * 0.5;
+                // Can't have infinite cases.
+                if (enemyPokemon.evade_stage > 6)
+                {
+                    moveAccuracy *= 0.25
                 }
-                if (enemyPokemon.evade_stage == 3) {
-                    moveAccuracy * 0.4;
-                }
-                if (enemyPokemon.evade_stage == 4) {
-                    moveAccuracy * 0.33;
-                }
-                if (enemyPokemon.evade_stage == 5) {
-                    moveAccuracy * 0.28;
-                }
-                if (enemyPokemon.evade_stage == 6) {
-                    moveAccuracy * 0.25;
-                }
-                if (enemyPokemon.evade_stage == -1) {
-                    moveAccuracy * 1.5
-                }
-                if (enemyPokemon.evade_stage == -2) {
-                    moveAccuracy * 2;
-                }
-                if (enemyPokemon.evade_stage == -3) {
-                    moveAccuracy * 2.5;
-                }
-                if (enemyPokemon.evade_stage == -4) {
-                    moveAccuracy * 3;
-                }
-                if (enemyPokemon.evade_stage == -5) {
-                    moveAccuracy * 3.5;
-                }
-                if (enemyPokemon.evade_stage == -6) {
-                    moveAccuracy * 4;
-                }
-                // END EVADE STAGE CHECKER
-
-                // START ACCURACY STAGE CHECKER //
-                if (currentPokemon.accuracy_stage == 1) {
-                    moveAccuracy * 1.5;
-                }
-                if (currentPokemon.accuracy_stage == 2) {
-                    moveAccuracy * 2;
-                }
-                if (currentPokemon.accuracy_stage == 3) {
-                    moveAccuracy * 2.5;
-                }
-                if (currentPokemon.accuracy_stage == 4) {
-                    moveAccuracy * 3;
-                }
-                if (currentPokemon.accuracy_stage == 5) {
-                    moveAccuracy * 3.5;
-                }
-                if (currentPokemon.accuracy_stage == 6) {
-                    moveAccuracy * 4;
-                }
-                if (currentPokemon.accuracy_stage == -1) {
-                    moveAccuracy * 0.66;
-                }
-                if (currentPokemon.accuracy_stage == -2) {
-                    moveAccuracy * 0.5;
-                }
-                if (currentPokemon.accuracy_stage == -3) {
-                    moveAccuracy * 0.4;
-                }
-                if (currentPokemon.accuracy_stage == -4) {
-                    moveAccuracy * 0.33;
-                }
-                if (currentPokemon.accuracy_stage == -5) {
-                    moveAccuracy * 0.28;
-                }
-                if (currentPokemon.accuracy_stage == -6) {
-                    moveAccuracy * 0.25;
-                }
-                // END ACCURACY STAGE CHECKER //
-
-                // MOVE MISSES
-                if (moveRNG > moveAccuracy) {
-                    //=====================//
-                    //     NEED TO ADD     //
-                    //=====================//
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!"
+                if (enemyPokemon.evade_stage < -6)
+                {
+                    moveAccuracy *= 4;
                 }
 
-                // MOVE HITS
-                else if (moveRNG <= moveAccuracy) {
+                /**
+                 * Accuracy Stage Checker.
+                 */
+                switch (currentPokemon.accuracy_stage)
+                {
+                    case 1:
+                        moveAccuracy *= 1.5;
+                        break;
+                    case 2:
+                        moveAccuracy *= 2;
+                        break;
+                    case 3:
+                        moveAccuracy *= 2.5;
+                        break;
+                    case 4:
+                        moveAccuracy *= 3;
+                        break;
+                    case 5:
+                        moveAccuracy *= 3.5;
+                        break;
+                    case 6:
+                        moveAccuracy *= 4;
+                        break;
+                    case -1:
+                        moveAccuracy *= 0.66;
+                        break;
+                    case -2:
+                        moveAccuracy *= 0.5;
+                        break;
+                    case -3:
+                        moveAccuracy *= 0.4;
+                        break;
+                    case -4:
+                        moveAccuracy *= 0.33;
+                        break;
+                    case -5:
+                        moveAccuracy *= 0.28;
+                        break;
+                    case -6:
+                        moveAccuracy *= 0.25;
+                        break;
+                }
+                // Can't have infinite cases.
+                if (currentPokemon.accuracy_stage > 6)
+                {
+                    moveAccuracy *= 4;
+                }
+                if (currentPokemon.accuracy_stage < -6)
+                {
+                    moveAccuracy *= 0.25;
+                }
 
-                    // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
+                /**
+                 * The Move Misses.
+                 */
+                if (moveRNG > moveAccuracy && moveAccurancy != null)
+                {
+                    // Probably need to add something.
+                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!";
+                }
+
+                /**
+                 * This is where the shit truly begings.
+                 * 
+                 * The Move Hits.
+                 */
+                else if (moveRNG <= moveAccuracy || moveAccuracy == null) 
+                {
                     damageMoves(move, currentPokemon, enemyPokemon, damage);
                     document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
 
-
-                    //===========FOR TESTING=============//
-
-                    // SUPER EFFECTIVE
-                    if (typeModifier > 1) {
+                    /**
+                     * Move is Super Effective!
+                     */
+                    if (typeModifier > 1)
+                    {
                         setTimeout(function () {
-
-                            document.getElementById("pokemon-attack-text").textContent = "It was super effective"
+                            document.getElementById("pokemon-attack-text").textContent = "It was super effective!";
                             console.log(currentPokemon + " did super effective damage against " + enemyPokemon.name);
                         }, 4000)
-
                     }
 
-                    // EFFECTIVE
-                    else if (typeModifier == 1) {
-
+                    /**
+                     * Move is neutral effective.
+                     */
+                    else if (typeModifier == 1)
+                    {
                         setTimeout(function () {
-                            console.log(currentPokemon + " did normal damage against " + enemyPokemon.name);
+                            console.log(currentPokemon.name + " did normal damage against " + enemyPokemon.name);
                         }, 4000)
                     }
 
-                    else if (typeModifier == 0) {
+                    /**
+                     * Move does no damage.
+                     */
+                    else if (typeModifier == 0)
+                    {
                         setTimeout(function () {
-                            document.getElementById("pokemon-attack-text").textContent = "There was no effect!"
+                            document.getElementById("pokemon-attack-text").textContent = "There was no effect!";
                         }, 4000)
                     }
-
-                    // NOT VERY EFFECTIVE
-                    else if (typeModifier < 1) {
+                    
+                    /**
+                     * Move is not very effective...
+                     */
+                    else if (typeModifier < 1)
+                    {
                         setTimeout(function () {
-                            document.getElementById("pokemon-attack-text").textContent = "It wasn't very effective..."
-                            console.log(currentPokemon + " was not very effective " + enemyPokemon.name)
+                            document.getElementById("pokemon-attack-text").textContent = "It wasn't very effective...";
+                            console.log(currentPokemon.name + " was not very effective " + enemyPokemon.name);
                         }, 4000)
                     }
-
-
-
-                    //===========END TESTING=============//
                 }
-            }
-
-            // IF ACCURACY IS NULL, THE MOVE WILL ALWAYS HIT //
-            else {
-
-                // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
-                damageMoves(move, currentPokemon, enemyPokemon, damage);
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
-
-                //===========FOR TESTING=============//
-
-                // SUPER EFFECTIVE
-                if (typeModifier > 1) {
-                    setTimeout(function () {
-                        document.getElementById("pokemon-attack-text").textContent = "It was super effective"
-                    }, 4000)
-                    console.log(currentPokemon + " did super effective damage against " + enemyPokemon.name);
-                }
-
-                // EFFECTIVE
-                else if (typeModifier == 1) {
-                    console.log(currentPokemon + " did normal damage against " + enemyPokemon.name);
-                    setTimeout(function () {
-
-                    }, 4000)
-                }
-
-                else if (typeModifier == 0) {
-                    setTimeout(function () {
-                        document.getElementById("pokemon-attack-text").textContent = "There was no effect!"
-                    }, 4000)
-                }
-
-                // NOT VERY EFFECTIVE
-                else if (typeModifier < 1) {
-                    setTimeout(function () {
-                        document.getElementById("pokemon-attack-text").textContent = "It wasn't very effective..."
-                    }, 4000)
-                    console.log(currentPokemon + " was not very effective " + enemyPokemon.name)
-                }
-
-                //===========END TESTING=============//
-            }
         }
 
-
-        ///////////////////////////////////
-        // === SPECIAL ATTACK DAMAGE === //
-        ///////////////////////////////////
-        else if (specialAttack == true && skipTurn == false) {
-
-            // MAKES ATTACK AND DEFENSE POWER SPECIALS
-            attackPower = currentPokemon.special_attack * currentPokemon.special_attack_multiplier; // MULTIPLY BY THE SPECIAL ATTACK STAGE FOR STAT MOVES
-            defensePower = currentPokemon.special_defense * enemyPokemon.special_defense_multiplier;    // MULTIPLY BY THE SPECIAL DEFENSE STAGE FOR STAT MOVES
-
-            //                                  CALCULATE DAMAGE
-            /*///////////////////////////////////////////////////////////////////////////////////////////////
-            //                                                                                             //
-            //    Damage = ( ((((2 * Level) / 5) * Power * Attack / Defense) / 50) + 2) * Modifier         //
-            //                                                                                             //
-            //    Modifier = Critical * random * STAB * TypeModifier * Burn                                //
-            //                                                                                             //
-            //    random = random number between 0.85 and 1.00                                             //
-            //                                                                                             //
-            //    burn is 0.5 if the attacker is burned and used a physical move, otherwise it's 1         //
-            //                                                                                             //
-            *////////////////////////////////////////////////////////////////////////////////////////////////
-            var calculatedDamage = (((((2 * 50) / 5) * move.data.power * attackPower / defensePower) / 50) + 2) * modifier;
-
-            // ROUND DAMAGE TO THE NEAREST INTEGER
-            var damage = Math.round(calculatedDamage);
-
-            // === ACCURACY CHECK === //
-
-            // IF MOVE IS NOT A GUARANTEED HIT //
-            if (move.data.accuracy != null) {
-
-                // VARIABLE TO STORE MOVE ACCURACY
-                var moveAccuracy = move.data.accuracy;
-
-                // RNG FOR MOVE ACCURACY
-                var moveRNG = Math.floor(Math.random() * (100 - 1 + 1)) + 1
-
-                // START EVADE STAGE CHECKER
-                if (enemyPokemon.evade_stage == 1) {
-                    moveAccuracy * 0.66;
-                }
-                if (enemyPokemon.evade_stage == 2) {
-                    moveAccuracy * 0.5;
-                }
-                if (enemyPokemon.evade_stage == 3) {
-                    moveAccuracy * 0.4;
-                }
-                if (enemyPokemon.evade_stage == 4) {
-                    moveAccuracy * 0.33;
-                }
-                if (enemyPokemon.evade_stage == 5) {
-                    moveAccuracy * 0.28;
-                }
-                if (enemyPokemon.evade_stage == 6) {
-                    moveAccuracy * 0.25;
-                }
-                if (enemyPokemon.evade_stage == -1) {
-                    moveAccuracy * 1.5
-                }
-                if (enemyPokemon.evade_stage == -2) {
-                    moveAccuracy * 2;
-                }
-                if (enemyPokemon.evade_stage == -3) {
-                    moveAccuracy * 2.5;
-                }
-                if (enemyPokemon.evade_stage == -4) {
-                    moveAccuracy * 3;
-                }
-                if (enemyPokemon.evade_stage == -5) {
-                    moveAccuracy * 3.5;
-                }
-                if (enemyPokemon.evade_stage == -6) {
-                    moveAccuracy * 4;
-                }
-                // END EVADE STAGE CHECKER
-
-                // START ACCURACY STAGE CHECKER //
-                if (currentPokemon.accuracy_stage == 1) {
-                    moveAccuracy * 1.5;
-                }
-                if (currentPokemon.accuracy_stage == 2) {
-                    moveAccuracy * 2;
-                }
-                if (currentPokemon.accuracy_stage == 3) {
-                    moveAccuracy * 2.5;
-                }
-                if (currentPokemon.accuracy_stage == 4) {
-                    moveAccuracy * 3;
-                }
-                if (currentPokemon.accuracy_stage == 5) {
-                    moveAccuracy * 3.5;
-                }
-                if (currentPokemon.accuracy_stage == 6) {
-                    moveAccuracy * 4;
-                }
-                if (currentPokemon.accuracy_stage == -1) {
-                    moveAccuracy * 0.66;
-                }
-                if (currentPokemon.accuracy_stage == -2) {
-                    moveAccuracy * 0.5;
-                }
-                if (currentPokemon.accuracy_stage == -3) {
-                    moveAccuracy * 0.4;
-                }
-                if (currentPokemon.accuracy_stage == -4) {
-                    moveAccuracy * 0.33;
-                }
-                if (currentPokemon.accuracy_stage == -5) {
-                    moveAccuracy * 0.28;
-                }
-                if (currentPokemon.accuracy_stage == -6) {
-                    moveAccuracy * 0.25;
-                }
-                // END ACCURACY STAGE CHECKER //
-
-                // MOVE MISSES
-                if (moveRNG > moveAccuracy) {
-                    //=====================//
-                    //     NEED TO ADD     //
-                    //=====================//
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!"
-                }
-
-                // MOVE HITS
-                else if (moveRNG <= moveAccuracy) {
-
-                    // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
-                    damageMoves(move, currentPokemon, enemyPokemon, damage);
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
-                    //===========FOR TESTING=============//
-
-                    // SUPER EFFECTIVE
-                    if (typeModifier > 1) {
-                        setTimeout(function () {
-                            document.getElementById("pokemon-attack-text").textContent = "It was super effective"
-                        }, 4000)
-                        console.log(currentPokemon + " did super effective damage against " + enemyPokemon.name);
-                    }
-
-                    // EFFECTIVE
-                    else if (typeModifier == 1) {
-                        console.log(currentPokemon + " did normal damage against " + enemyPokemon.name);
-                        setTimeout(function () {
-
-                        }, 4000)
-                    }
-
-                    else if (typeModifier == 0) {
-                        setTimeout(function () {
-                            document.getElementById("pokemon-attack-text").textContent = "There was no effect!"
-                        }, 4000)
-                    }
-
-                    // NOT VERY EFFECTIVE
-                    else if (typeModifier < 1) {
-                        setTimeout(function () {
-                            document.getElementById("pokemon-attack-text").textContent = "It wasn't very effective..."
-                        }, 4000)
-                        console.log(currentPokemon + " was not very effective " + enemyPokemon.name)
-                    }
-
-                    //===========END TESTING=============//
-                }
+        /**
+         * Calculating the Status Attack Stuff.
+         */
+        else if (statusAttack == true && skipTurn == false)
+        {
+            var moveAccuracy = move.data.accuracy;
+            var moveRNG = Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+            /**
+            * Evade Stage Checker.
+            */
+            switch (enemyPokemon.evade_stage)
+            {
+                case 1:
+                    moveAccuracy *= 0.66;
+                    break;
+                case 2:
+                    moveAccuracy *= 0.5;
+                    break;
+                case 3:
+                    moveAccuracy *= 0.4;
+                    break;
+                case 4:
+                    moveAccuracy *= 0.33;
+                    break;
+                case 5:
+                    moveAccuracy *= 0.28;
+                    break;
+                case 6:
+                    moveAccuracy *= 0.25;
+                    break;
+                case -1:
+                    moveAccuracy *= 1.5;
+                    break;
+                case -2:
+                    moveAccuracy *= 2;
+                    break;
+                case -3:
+                    moveAccuracy *= 2.5;
+                    break;
+                case -4:
+                    moveAccuracy *= 3;
+                    break;
+                case -5:
+                    moveAccuracy *= 3.5;
+                    break;
+                case -6:
+                    moveAccuracy *= 4;
+                    break;
+            }
+            // Can't have infinite cases.
+            if (enemyPokemon.evade_stage > 6)
+            {
+                moveAccuracy *= 0.25
+            }
+            if (enemyPokemon.evade_stage < -6)
+            {
+                moveAccuracy *= 4;
             }
 
-            // IF ACCURACY IS NULL, THE MOVE WILL ALWAYS HIT //
-            else {
-
-                // CHECKS TO SEE WHAT TYPE OF MOVE THE MOVE IS //
-                damageMoves(move, currentPokemon, enemyPokemon, damage);
-                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
-
-                //===========FOR TESTING=============//
-
-                // SUPER EFFECTIVE
-                if (typeModifier > 1) {
-                    setTimeout(function () {
-                        document.getElementById("pokemon-attack-text").textContent = "It was super effective"
-                    }, 4000)
-                    console.log(currentPokemon + " did super effective damage against " + enemyPokemon.name);
-                }
-
-                // EFFECTIVE
-                else if (typeModifier == 1) {
-                    console.log(currentPokemon + " did normal damage against " + enemyPokemon.name);
-                    setTimeout(function () {
-
-                    }, 4000)
-                }
-
-                else if (typeModifier == 0) {
-                    setTimeout(function () {
-                        document.getElementById("pokemon-attack-text").textContent = "There was no effect!"
-                    }, 4000)
-                }
-
-                // NOT VERY EFFECTIVE
-                else if (typeModifier < 1) {
-                    setTimeout(function () {
-                        document.getElementById("pokemon-attack-text").textContent = "It wasn't very effective..."
-                    }, 4000)
-                    console.log(currentPokemon + " was not very effective " + enemyPokemon.name)
-                }
-
-                //===========END TESTING=============//
+            /**
+             * Accuracy Stage Checker.
+             */
+            switch (currentPokemon.accuracy_stage)
+            {
+                case 1:
+                    moveAccuracy *= 1.5;
+                    break;
+                case 2:
+                    moveAccuracy *= 2;
+                    break;
+                case 3:
+                    moveAccuracy *= 2.5;
+                    break;
+                case 4:
+                    moveAccuracy *= 3;
+                    break;
+                case 5:
+                    moveAccuracy *= 3.5;
+                    break;
+                case 6:
+                    moveAccuracy *= 4;
+                    break;
+                case -1:
+                    moveAccuracy *= 0.66;
+                    break;
+                case -2:
+                    moveAccuracy *= 0.5;
+                    break;
+                case -3:
+                    moveAccuracy *= 0.4;
+                    break;
+                case -4:
+                    moveAccuracy *= 0.33;
+                    break;
+                case -5:
+                    moveAccuracy *= 0.28;
+                    break;
+                case -6:
+                    moveAccuracy *= 0.25;
+                    break;
             }
-        }
-
-        ///////////////////////////
-        // === STATUS ATTACK === //
-        ///////////////////////////
-        else if (statusAttack == true && skipTurn == false) {
-            // === ACCURACY CHECK === //
-
-            // IF MOVE IS NOT A GUARANTEED HIT //
-            if (move.data.accuracy != null) {
-
-                // VARIABLE TO STORE MOVE ACCURACY
-                var moveAccuracy = move.data.accuracy;
-
-                // RNG FOR MOVE ACCURACY
-                var moveRNG = Math.floor(Math.random() * (100 - 1 + 1)) + 1
-
-                // START EVADE STAGE CHECKER
-                if (enemyPokemon.evade_stage == 1) {
-                    moveAccuracy * 0.66;
-                }
-                if (enemyPokemon.evade_stage == 2) {
-                    moveAccuracy * 0.5;
-                }
-                if (enemyPokemon.evade_stage == 3) {
-                    moveAccuracy * 0.4;
-                }
-                if (enemyPokemon.evade_stage == 4) {
-                    moveAccuracy * 0.33;
-                }
-                if (enemyPokemon.evade_stage == 5) {
-                    moveAccuracy * 0.28;
-                }
-                if (enemyPokemon.evade_stage == 6) {
-                    moveAccuracy * 0.25;
-                }
-                if (enemyPokemon.evade_stage == -1) {
-                    moveAccuracy * 1.5
-                }
-                if (enemyPokemon.evade_stage == -2) {
-                    moveAccuracy * 2;
-                }
-                if (enemyPokemon.evade_stage == -3) {
-                    moveAccuracy * 2.5;
-                }
-                if (enemyPokemon.evade_stage == -4) {
-                    moveAccuracy * 3;
-                }
-                if (enemyPokemon.evade_stage == -5) {
-                    moveAccuracy * 3.5;
-                }
-                if (enemyPokemon.evade_stage == -6) {
-                    moveAccuracy * 4;
-                }
-                // END EVADE STAGE CHECKER
-
-                // START ACCURACY STAGE CHECKER //
-                if (currentPokemon.accuracy_stage == 1) {
-                    moveAccuracy * 1.5;
-                }
-                if (currentPokemon.accuracy_stage == 2) {
-                    moveAccuracy * 2;
-                }
-                if (currentPokemon.accuracy_stage == 3) {
-                    moveAccuracy * 2.5;
-                }
-                if (currentPokemon.accuracy_stage == 4) {
-                    moveAccuracy * 3;
-                }
-                if (currentPokemon.accuracy_stage == 5) {
-                    moveAccuracy * 3.5;
-                }
-                if (currentPokemon.accuracy_stage == 6) {
-                    moveAccuracy * 4;
-                }
-                if (currentPokemon.accuracy_stage == -1) {
-                    moveAccuracy * 0.66;
-                }
-                if (currentPokemon.accuracy_stage == -2) {
-                    moveAccuracy * 0.5;
-                }
-                if (currentPokemon.accuracy_stage == -3) {
-                    moveAccuracy * 0.4;
-                }
-                if (currentPokemon.accuracy_stage == -4) {
-                    moveAccuracy * 0.33;
-                }
-                if (currentPokemon.accuracy_stage == -5) {
-                    moveAccuracy * 0.28;
-                }
-                if (currentPokemon.accuracy_stage == -6) {
-                    moveAccuracy * 0.25;
-                }
-
-
-                // END ACCURACY STAGE CHECKER //
-
-                // MOVE MISSES
-                if (moveRNG > moveAccuracy) {
-                    //=====================//
-                    //     NEED TO ADD     //
-                    //=====================//
-                    document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!"
-
-                }
-
-                // MOVE HITS
-                else if (moveRNG <= moveAccuracy) {
-
-                    // MAKES SURE THERE IS A STAT CHANGE //
-                    if (move.data.stat_changes != [] || move.data.stat_changes != null) {
-                        var statArray = move.data.stat_changes
-                        // CHECK TO SEE TYPE OF STATUS MOVE //
-                        statusMoves(move, currentPokemon, enemyPokemon);
-                        document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
-                      
-                    }
-                }
+            // Can't have infinite cases.
+            if (currentPokemon.accuracy_stage > 6)
+            {
+                moveAccuracy *= 4;
             }
-            // IF ACCURACY IS NULL, THE MOVE WILL ALWAYS HIT //
-            else {
-                // MAKES SURE THERE IS A STAT CHANGE //
-                if (move.data.stat_changes != [] || move.data.stat_changes != null) {
-                    var statArray = move.data.stat_changes
-                    // CHECK TO SEE TYPE OF STATUS MOVE //
+            if (currentPokemon.accuracy_stage < -6)
+            {
+                moveAccuracy *= 0.25;
+            }
+
+            /**
+             * Move misses.
+             */
+            if (moveRNG > moveAccuracy && moveAccuracy != null)
+            {
+                document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name + ", but it missed!";
+            }
+
+            /**
+             * Move Hits.
+             */
+            else if (moveRNG <= moveAccuracy || moveAccuracy == null)
+            {
+                if (move.data.stat_changes != [] || move.data.stat_changes != null)
+                {
+                    var statArray = move.data.stat_changes;
                     statusMoves(move, currentPokemon, enemyPokemon);
                     document.getElementById("pokemon-attack-text").textContent = currentPokemon.name + " used " + move.data.names[2].name;
                 }
@@ -1971,25 +1813,75 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
     }
 
 
+    /** 
+     * The moveHealthBar1 function.
+     * Moves the health bar of pokemon 1.
+    */
+    function moveHealthBar1()
+    {
+        var elem = document.getElementById("pokemon1Bar");
+        var width = 100;
 
-    var randomizePokemon2 = function () {
-        var healthRNG2 = Math.random() * (3.377 - 2.333) + 2.333;
-        var attackRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
-        var specialAttackRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
-        var defenseRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
-        var specialDefenseRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
-        var speedRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
-
-        trainer2[0].maxHealth = Math.round(trainer2[0].maxHealth * healthRNG2);
-        trainer2[0].currentHealth = Math.round(trainer2[0].currentHealth * healthRNG2);
-        trainer2[0].attack = Math.round(trainer2[0].attack * attackRNG2);
-        trainer2[0].special_attack = Math.round(trainer2[0].special_attack * specialAttackRNG2);
-        trainer2[0].defense = Math.round(trainer2[0].defense * defenseRNG2);
-        trainer2[0].special_defense = Math.round(trainer2[0].special_defense * specialDefenseRNG2);
-        trainer2[0].speed = Math.round(trainer2[0].speed * speedRNG2);
+        while (width >= ((pokemon1.currentHealth / pokemon1.maxHealth) * 100))
+        {
+            width--;
+            elem.style.width = width + "%";
+            if (width >= 50)
+            {
+                elem.classList.add("progress-bar-success");
+                elem.classList.remove("progress-bar-danger");
+            }
+            if (width < 50 && width > 21)
+            {
+                elem.classList.add("progress-bar-warning");
+                elem.classList.remove("progress-bar-success");
+            }
+            if (width < 21)
+            {
+                elem.classList.add("progress-bar-danger");
+                elem.classList.remove("progress-bar-warning");
+            }
+        }
     }
 
-    var randomizePokemon1 = function () {
+    /** 
+     * The moveHealthBar2 function.
+     * Moves the health bar of pokemon 2.
+    */
+    function moveHealthBar2() 
+    {
+        var elem = document.getElementById("pokemon2Bar");
+        var width = 100;
+
+        while (width >= ((pokemon2.currentHealth / pokemon2.maxHealth) * 100)) 
+        {
+            width--;
+            elem.style.width = width + "%";
+            if (width >= 50) 
+            {
+                elem.classList.add("progress-bar-success");
+                elem.classList.remove("progress-bar-danger");
+            }
+            if (width < 50 && width > 21) 
+            {
+                elem.classList.add("progress-bar-warning");
+                elem.classList.remove("progress-bar-success");
+            }
+            if (width < 21) 
+            {
+                elem.classList.add("progress-bar-danger");
+                elem.classList.remove("progress-bar-warning");
+            }
+        }
+    }
+
+
+    /**
+     * The randomizePokemon1 function.
+     * Randomizes the first pokemon's stats.
+     */
+    var randomizePokemon1 = function ()
+    {
         var healthRNG1 = Math.random() * (3.377 - 2.333) + 2.333;
         var attackRNG1 = Math.random() * (2.265 - 0.979) + 0.979;
         var specialAttackRNG1 = Math.random() * (2.265 - 0.979) + 0.979;
@@ -2006,14 +1898,43 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
         trainer1[0].speed = Math.round(trainer1[0].speed * speedRNG1);
     }
 
-    // ========= DELCARING AND RANDOMIZING STATS ============ //
+    /**
+     * The randomizePokemon2 function.
+     * Randomizes the second pokemon's stats.
+     */
+    var randomizePokemon2 = function ()
+    {
+        var healthRNG2 = Math.random() * (3.377 - 2.333) + 2.333;
+        var attackRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
+        var specialAttackRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
+        var defenseRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
+        var specialDefenseRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
+        var speedRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
+
+        trainer2[0].maxHealth = Math.round(trainer2[0].maxHealth * healthRNG2);
+        trainer2[0].currentHealth = Math.round(trainer2[0].currentHealth * healthRNG2);
+        trainer2[0].attack = Math.round(trainer2[0].attack * attackRNG2);
+        trainer2[0].special_attack = Math.round(trainer2[0].special_attack * specialAttackRNG2);
+        trainer2[0].defense = Math.round(trainer2[0].defense * defenseRNG2);
+        trainer2[0].special_defense = Math.round(trainer2[0].special_defense * specialDefenseRNG2);
+        trainer2[0].speed = Math.round(trainer2[0].speed * speedRNG2);
+    }
+
+    /**
+     * Declaring the Trainers
+     * Add the Pokemon to the Trainers and randomizing their Stats.
+     */
     var trainer1 = pokemonService.getTrainer1();
     var trainer2 = pokemonService.getTrainer2();
-
     $scope.trainer1img = pokemonService.getTrainer1Img();
     $scope.trainer2img = pokemonService.getTrainer2Img();
-    
-    if (trainer1.length == 0) {
+
+    /**
+     * Adding place holder pokemon inccase the player didn't add any pokemon.
+     * This is here just so the game doesn't crash.
+     */
+    if (trainer1.length <= 0)
+    {
         trainer1 = [
             {
                 "name": "?",
@@ -2075,13 +1996,9 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                 "speed_multiplier": 1
             }
         ]
-        
     }
-
-
-
-
-    if (trainer2.length == 0) {
+    if (trainer2.length <= 0)
+    {
         trainer2 = [
             {
                 "name": "?",
@@ -2145,10 +2062,15 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
         ]
     }
 
-    console.log(trainer1)
-    console.log(trainer2)
+    /**
+     * Outputting the trainer for testing.
+     */
+    console.log(trainer1);
+    console.log(trainer2);
 
-    // POKEMON 1 STAT RNG //
+    /**
+     * Pokemon 1 Stat RNG.
+     */
     var healthRNG1 = Math.random() * (3.377 - 2.333) + 2.333;
     var attackRNG1 = Math.random() * (2.265 - 0.979) + 0.979;
     var specialAttackRNG1 = Math.random() * (2.265 - 0.979) + 0.979;
@@ -2164,9 +2086,9 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
     trainer1[0].special_defense = Math.round(trainer1[0].special_defense * specialDefenseRNG1);
     trainer1[0].speed = Math.round(trainer1[0].speed * speedRNG1);
 
-
-
-    // POKEMON 2 STAT RNG //
+    /**
+     * Pokemon 2 Stat RNG.
+     */
     var healthRNG2 = Math.random() * (3.377 - 2.333) + 2.333;
     var attackRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
     var specialAttackRNG2 = Math.random() * (2.265 - 0.979) + 0.979;
@@ -2183,182 +2105,230 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
     trainer2[0].speed = Math.round(trainer2[0].speed * speedRNG2);
 
 
-
-
+    /**
+     * Declaring the pokemon 1 and 2 variables.
+     */
     var pokemon1 = trainer1[0];
     var pokemon2 = trainer2[0];
 
-
+    /**
+     * Declaring the selectMove1 and 2 variables.
+     */
     var selectedMove1;
     var selectedMove2;
-    // $http.get("https://pokeapi.co/api/v2/move/1/").then(function(response) {
-    //     console.log(response)
-    //     selectedMove1 = response;
-    //     battleFunction(selectedMove1, pokemon1, pokemon2);
-    //     console.log(pokemon1);
-    //     console.log(pokemon2);
 
-    //     $http.get("https://pokeapi.co/api/v2/move/fire-punch/").then(function (response) {
-    //             selectedMove2 = response;
-    //             battleFunction(selectedMove2, pokemon2, pokemon1)
-    //             console.log(pokemon1);
-    //             console.log(pokemon2);
-    //         })
-
-    // })
-
-    // Pokemon 1 $scope moves
-    $scope.pokemon1move1 = pokemon1.moves[0]
-    $scope.pokemon1move2 = pokemon1.moves[1]
-    $scope.pokemon1move3 = pokemon1.moves[2]
-    $scope.pokemon1move4 = pokemon1.moves[3]
-
-    // Pokemon 2 $scope moves
-    $scope.pokemon2move1 = pokemon2.moves[0]
-    $scope.pokemon2move2 = pokemon2.moves[1]
-    $scope.pokemon2move3 = pokemon2.moves[2]
-    $scope.pokemon2move4 = pokemon2.moves[3]
-
-    // Pokemon 1 Scope
+    /**
+     * Declaring the Pokemon1 $scope and moves.
+     */
+    $scope.pokemon1move1 = pokemon1.moves[0];
+    $scope.pokemon1move2 = pokemon1.moves[1];
+    $scope.pokemon1move3 = pokemon1.moves[2];
+    $scope.pokemon1move4 = pokemon1.moves[3];
     $scope.pokemon1 = pokemon1;
 
-    // Pokemon 2 Scope
-    $scope.pokemon2 = pokemon2
+    /**
+     * Declaring the Pokemon2 $scope and moves.
+     */
+    $scope.pokemon2move1 = pokemon2.moves[0];
+    $scope.pokemon2move2 = pokemon2.moves[1];
+    $scope.pokemon2move3 = pokemon2.moves[2];
+    $scope.pokemon2move4 = pokemon2.moves[3];
+    $scope.pokemon2 = pokemon2;
 
 
-
-    $scope.pokemon1MoveSelect = function (url) {
+    /**
+     * The pokemon1MoveSelect $scope function.
+     * Selects pokemon1's move from the web browser.
+     * If pokemon1SelectedMove and pokemonSelectedMove2 are true, the fight button is unhidden.
+     * @param url is the data of the move selected.
+     */
+    $scope.pokemon1MoveSelect = function (url)
+    {
         $http.get(url).then(function (response) {
-            selectedMove1 = response
-            console.log(pokemon1.name + " selected the move: " + selectedMove1.data.names[2].name)
+            selectedMove1 = response;
+            console.log(pokemon1.name + " selected the move: " + selectedMove1.data.names[2].name);
             pokemon1SelectedMove = true;
-            if (pokemon1SelectedMove == true && pokemon2SelectedMove == true) {
-                console.log("test")
+            if (pokemon1SelectedMove == true && pokemon2SelectedMove == true)
+            {
                 $scope.showFightButton = true;
             }
-
         })
     }
 
-    $scope.pokemon2MoveSelect = function (url) {
+    /**
+     * The pokemon2MoveSelect $scope function.
+     * Selects pokemon2's move from the web browser.
+     * If pokemon1SelectedMove and pokemonSelectedMove2 are true, the fight button is unhidden.
+     * @param url is the data of the move selected.
+     */
+    $scope.pokemon2MoveSelect = function (url)
+    {
         $http.get(url).then(function (response) {
-            selectedMove2 = response
-            console.log(selectedMove2.data.names)
-            console.log(pokemon2.name + " selected the move: " + selectedMove2.data.names[2].name)
+            selectedMove2 = response;
+            console.log(pokemon2.name + " selected the move: " + selectedMove2.data.names[2].name);
             pokemon2SelectedMove = true;
-            console.log(pokemon2SelectedMove)
-            if (pokemon1SelectedMove == true && pokemon2SelectedMove == true) {
-                console.log("test")
+            if (pokemon1SelectedMove == true && pokemon2SelectedMove == true)
+            {
                 $scope.showFightButton = true;
             }
         })
     }
 
-
-
-    // == START FIGHTING == //
-    $scope.startFight = function () {
+    /**
+     * The startFight $scope function.
+     * Starts the turn of the battle.
+     */
+    $scope.startFight = function ()
+    {
+        /**
+         * Removing the animations before the turn starts.
+         */
         document.getElementById("pokemon2").classList.remove("tada");
         document.getElementById("pokemon1").classList.remove("shake");
         document.getElementById("pokemon1").classList.remove("tada");
         document.getElementById("pokemon2").classList.remove("shake");
+
+        /**
+         * Hiding the fight and battle buttons as the turn takes place.
+         * They come back once the turn is over.
+         */
         $scope.showFightButton = false;
         $scope.showBattleButtons = false;
+
         document.getElementById("pokemon-attack-box").classList.add("zoomIn");
-        // If pokemon 1 is faster than pokemon 2
-        if ((pokemon1.speed * pokemon1.speed_multiplier) > (pokemon2.speed * pokemon2.speed_multiplier)) {
-            console.log("Pokemon 1 is faster than Pokemon 2")
+
+        /**
+         * Pokemon 1 is faster than Pokemon 2.
+         */
+        if ((pokemon1.speed * pokemon1.speed_multiplier) > (pokemon2.speed * pokemon2.speed_multiplier))
+        {
+            console.log("Pokemon 1 is faster than Pokemon 2");
+
             $scope.showFightButton = false;
-            if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0) {
+
+            if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0)
+            {
                 checkStatStages(pokemon1);
                 checkStatStages(pokemon2);
+
+                // Pokemon 1 Attack Animation.
                 document.getElementById("pokemon1").classList.add("tada");
+
+                // Pokemon 2 Getting Hit Animation.
                 document.getElementById("pokemon2").classList.add("shake");
+
                 battleFunction(selectedMove1, pokemon1, pokemon2);
+                showStatusOnView();
                 moveHealthBar2();
+                // Incase there is any recoil damage or life drain.
                 moveHealthBar1();
+
                 $timeout(function () {
                     document.getElementById("pokemon1").classList.remove("tada");
                     document.getElementById("pokemon2").classList.remove("shake");
-                    if (pokemon2.currentHealth > 0) {
+                    if (pokemon2.currentHealth > 0)
+                    {
                         checkStatStages(pokemon1);
                         checkStatStages(pokemon2);
-
                         battleFunction(selectedMove2, pokemon2, pokemon1);
+                        showStatusOnView();
                         $timeout(function () {
                             document.getElementById("pokemon2").classList.add("tada");
                             document.getElementById("pokemon1").classList.add("shake");
-
-                            statusMoveChecks(pokemon1)
-                            statusMoveChecks(pokemon2)
+                            statusMoveChecks(pokemon1);
+                            statusMoveChecks(pokemon2);
                             moveHealthBar1();
                             moveHealthBar2();
-                            console.log(pokemon1)
-                            console.log(pokemon2)
+                            console.log(pokemon1);
+                            console.log(pokemon2);
                         }), 1000
                     }
-
                 }, 9000)
-
             }
         }
+        
+        /**
+         * Pokemon 2 is faster than Pokemon 1.
+         */
+        else if ((pokemon2.speed * pokemon2.speed_multiplier) > (pokemon1.speed * pokemon1.speed_multiplier)) 
+        {
+            console.log("Pokemon 2 is faster than Pokemon 1");
 
-
-        // If pokemon 1 is slower than pokemon 2
-        else if ((pokemon1.speed * pokemon1.speed_multiplier) < (pokemon2.speed * pokemon2.speed_multiplier)) {
-            console.log("Pokemon 1 is slower than Pokemon 2")
             $scope.showFightButton = false;
-            if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0) {
+
+            if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0) 
+            {
                 checkStatStages(pokemon1);
                 checkStatStages(pokemon2);
+
+                // Pokemon 2 Attack Animation.
                 document.getElementById("pokemon2").classList.add("tada");
+
+                // Pokemon 1 Getting Hit Animation.
                 document.getElementById("pokemon1").classList.add("shake");
+
                 battleFunction(selectedMove2, pokemon2, pokemon1);
                 showStatusOnView();
                 moveHealthBar1();
+                // Incase there is any recoil damage or life drain.
                 moveHealthBar2();
+
                 $timeout(function () {
                     document.getElementById("pokemon2").classList.remove("tada");
                     document.getElementById("pokemon1").classList.remove("shake");
-                    if (pokemon1.currentHealth > 0) {
+                    if (pokemon1.currentHealth > 0) 
+                    {
                         checkStatStages(pokemon1);
                         checkStatStages(pokemon2);
-
                         battleFunction(selectedMove1, pokemon1, pokemon2);
                         showStatusOnView();
                         $timeout(function () {
                             document.getElementById("pokemon1").classList.add("tada");
                             document.getElementById("pokemon2").classList.add("shake");
-                            statusMoveChecks(pokemon1)
-                            statusMoveChecks(pokemon2)
-                            moveHealthBar2();
+                            statusMoveChecks(pokemon1);
+                            statusMoveChecks(pokemon2);
                             moveHealthBar1();
-                            console.log(pokemon1)
-                            console.log(pokemon2)
+                            moveHealthBar2();
+                            console.log(pokemon1);
+                            console.log(pokemon2);
                         }), 1000
                     }
                 }, 9000)
             }
         }
-        // If pokemon 1 and pokemon 2 have the same speed
-        else {
-            console.log("RNG")
+        
+        /**
+         * Pokemon 1 and Pokemon 2 have the same speed.
+         */
+        else
+        {
+            console.log("RNG");
             $scope.showFightButton = false;
-            var speedTie = Math.random()
-            if (speedTie > 0.5) {
-                if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0) {
+            var speedTie = Math.random();
+            if (speedTie > 0.5)
+            {
+                if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0) 
+                {
                     checkStatStages(pokemon1);
                     checkStatStages(pokemon2);
-                    battleFunction(selectedMove1, pokemon1, pokemon2);
+
+                    // Pokemon 1 Attack Animation.
                     document.getElementById("pokemon1").classList.add("tada");
+
+                    // Pokemon 2 Getting Hit Animation.
                     document.getElementById("pokemon2").classList.add("shake");
+
+                    battleFunction(selectedMove1, pokemon1, pokemon2);
                     showStatusOnView();
                     moveHealthBar2();
+                    // Incase there is any recoil damage or life drain.
                     moveHealthBar1();
+
                     $timeout(function () {
                         document.getElementById("pokemon1").classList.remove("tada");
                         document.getElementById("pokemon2").classList.remove("shake");
-                        if (pokemon2.currentHealth > 0) {
+                        if (pokemon2.currentHealth > 0) 
+                        {
                             checkStatStages(pokemon1);
                             checkStatStages(pokemon2);
                             battleFunction(selectedMove2, pokemon2, pokemon1);
@@ -2366,59 +2336,66 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
                             $timeout(function () {
                                 document.getElementById("pokemon2").classList.add("tada");
                                 document.getElementById("pokemon1").classList.add("shake");
-                                statusMoveChecks(pokemon1)
-                                statusMoveChecks(pokemon2)
+                                statusMoveChecks(pokemon1);
+                                statusMoveChecks(pokemon2);
                                 moveHealthBar1();
                                 moveHealthBar2();
-                                console.log(pokemon1)
-                                console.log(pokemon2)
+                                console.log(pokemon1);
+                                console.log(pokemon2);
                             }), 1000
                         }
-
                     }, 9000)
-
                 }
-
             }
-            else {
+            else
+            {
                 $scope.showFightButton = false;
-                if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0) {
+                if (pokemon1.currentHealth > 0 && pokemon2.currentHealth > 0) 
+                {
                     checkStatStages(pokemon1);
                     checkStatStages(pokemon2);
+
+                    // Pokemon 2 Attack Animation.
                     document.getElementById("pokemon2").classList.add("tada");
+
+                    // Pokemon 1 Getting Hit Animation.
                     document.getElementById("pokemon1").classList.add("shake");
+
                     battleFunction(selectedMove2, pokemon2, pokemon1);
                     showStatusOnView();
                     moveHealthBar1();
+                    // Incase there is any recoil damage or life drain.
                     moveHealthBar2();
-                    $timeout(function () {
+
+                    $timeout(function () 
+                    {
                         document.getElementById("pokemon2").classList.remove("tada");
                         document.getElementById("pokemon1").classList.remove("shake");
-                        if (pokemon1.currentHealth > 0) {
+                        if (pokemon1.currentHealth > 0) 
+                        {
                             checkStatStages(pokemon1);
                             checkStatStages(pokemon2);
-
                             battleFunction(selectedMove1, pokemon1, pokemon2);
                             showStatusOnView();
                             $timeout(function () {
                                 document.getElementById("pokemon1").classList.add("tada");
                                 document.getElementById("pokemon2").classList.add("shake");
-                                statusMoveChecks(pokemon1)
-                                statusMoveChecks(pokemon2)
-                                moveHealthBar2();
+                                statusMoveChecks(pokemon1);
+                                statusMoveChecks(pokemon2);
                                 moveHealthBar1();
-                                console.log(pokemon1)
-                                console.log(pokemon2)
-
+                                moveHealthBar2();
+                                console.log(pokemon1);
+                                console.log(pokemon2);
                             }), 1000
                         }
-
                     }, 9000)
-
-
                 }
             }
         }
+
+        /**
+         * End of the turn.
+         */
         $timeout(function () {
             $scope.showFightButton = false;
             $scope.showBattleButtons = true;
@@ -2426,149 +2403,129 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
             pokemon1SelectedMove = false;
             pokemon2SelectedMove = false;
             document.getElementById("pokemon-attack-box").classList.remove("zoomIn");
-            if (pokemon1.currentHealth <= 0) {
+
+            /**
+             * if pokemon 1 is dead.
+             */
+            if (pokemon1.currentHealth <= 0)
+            {
                 trainer1.shift();
-                console.log(trainer1)
-                if (trainer1.length <= 0) {
+                console.log(trainer1);
+                /**
+                 * checking to see if trainer 1 is out of pokemon.
+                 */
+                if (trainer1.length <= 0)
+                {
                     trainer1 = [];
                     trainer2 = [];
-                    $state.go("trainer2Wins")
+                    $state.go("trainer2Wins");
                 }
-                else {
-                    pokemon1 = trainer1[0]
+                else
+                {
+                    pokemon1 = trainer[0];
                     randomizePokemon1();
                     $scope.pokemon1 = pokemon1;
-                    $scope.pokemon1move1 = pokemon1.moves[0]
-                    $scope.pokemon1move2 = pokemon1.moves[1]
-                    $scope.pokemon1move3 = pokemon1.moves[2]
-                    $scope.pokemon1move4 = pokemon1.moves[3]
+                    $scope.pokemon1 = pokemon1;
+                    $scope.pokemon1move1 = pokemon1.moves[0];
+                    $scope.pokemon1move2 = pokemon1.moves[1];
+                    $scope.pokemon1move3 = pokemon1.moves[2];
+                    $scope.pokemon1move4 = pokemon1.moves[3];
                     moveHealthBar1();
                 }
             }
-            if (pokemon2.currentHealth <= 0) {
+            /**
+             * if pokemon 2 is dead.
+             */
+            if (pokemon2.currentHealth <= 0)
+            {
                 trainer2.shift();
-                console.log(trainer2)
-                if (trainer2.length <= 0) {
+                console.log(trainer2);
+                /**
+                 * checking to see if trainer 2 is out of pokemon.
+                 */
+                if (trainer2.length <= 0)
+                {
                     trainer1 = [];
                     trainer2 = [];
-                    $state.go("trainer1Wins")
+                    $state.go("trainer1Wins");
                 }
-                else {
+                else
+                {
                     pokemon2 = trainer2[0]
                     randomizePokemon2();
                     $scope.pokemon2 = pokemon2;
-                    $scope.pokemon2move1 = pokemon2.moves[0]
-                    $scope.pokemon2move2 = pokemon2.moves[1]
-                    $scope.pokemon2move3 = pokemon2.moves[2]
-                    $scope.pokemon2move4 = pokemon2.moves[3]
+                    $scope.pokemon2move1 = pokemon2.moves[0];
+                    $scope.pokemon2move2 = pokemon2.moves[1];
+                    $scope.pokemon2move3 = pokemon2.moves[2];
+                    $scope.pokemon2move4 = pokemon2.moves[3];
                     moveHealthBar2();
                 }
-
-
             }
         }, 18000)
-
     }
 
+    /**
+     * Scope currentHealth
+     */
     $scope.pokemon2CurrentHealth = pokemon2.maxHealth;
     $scope.pokemon1CurrentHealth = pokemon2.maxHealth;
 
-    function moveHealthBar2() {
-        var elem = document.getElementById("pokemon2Bar");
-        var width = 100
-
-        // var id = setInterval(frame, 10);
-        while (width >= ((pokemon2.currentHealth / pokemon2.maxHealth) * 100)) {
-            width--;
-            elem.style.width = width + "%";
-            if (width >= 50) {
-                elem.classList.add("progress-bar-success");
-            }
-            if (width < 50 && width > 21) {
-                elem.classList.add("progress-bar-warning");
-                elem.classList.remove("progress-bar-success");
-            }
-            if (width < 21) {
-                elem.classList.add("progress-bar-danger");
-                elem.classList.remove("progress-bar-warning");
-            }
-        }
-    }
-
-    function moveHealthBar1() {
-        var elem = document.getElementById("pokemon1Bar");
-        var width = 100
-
-        // var id = setInterval(frame, 10);
-        while (width >= ((pokemon1.currentHealth / pokemon1.maxHealth) * 100)) {
-            width--;
-            elem.style.width = width + "%";
-            if (width >= 50) {
-                elem.classList.add("progress-bar-success");
-                elem.classList.remove("progress-bar-danger");
-            }
-            if (width < 50 && width > 21) {
-                elem.classList.add("progress-bar-warning");
-                elem.classList.remove("progress-bar-success");
-            }
-            if (width < 21) {
-                elem.classList.add("progress-bar-danger");
-                elem.classList.remove("progress-bar-warning");
-            }
-        }
-
-    }
-
+    /**
+     * Scope for default text box.
+     */
     $scope.whatWillPokemon1Do = "What will " + pokemon1.name + " do?";
     $scope.whatWillPokemon2Do = "What will " + pokemon2.name + " do?";
 
-
-
-
-
-
-
-
-
-    var showAnimation1 = function (move) {
+    /**
+     * showAnimation1 method. ||| WORK IN PROGRESS |||
+     */
+    var showAnimation1 = function (move) 
+    {
         moveType = move.data.type.name;
-        if (moveType == "fire") {
+        if (moveType == "fire") 
+        {
             $scope.showFire1 = true;
             $timeout(function () {
                 $scope.showFire1 = false;
             }, 3000)
         }
-        else if (moveType == "water") {
+        else if (moveType == "water") 
+        {
             $scope.showWater1 = true;
             $timeout(function () {
                 $scope.showWater1 = false;
             }, 3000)
         }
-        else if (moveType == "dark" || moveType == "psychic") {
+        else if (moveType == "dark" || moveType == "psychic") 
+        {
             $scope.showPsychic1 = true;
             $timeout(function () {
                 $scope.showPsychic1 = false;
             }, 3000)
         }
-        else if (moveType == "electric") {
+        else if (moveType == "electric") 
+        {
             $scope.showElectric1 = true;
             $timeout(function () {
                 $scope.showElectric1 = false;
             }, 3000)
         }
-        else if (moveType == "rock" || moveType == "ground") {
+        else if (moveType == "rock" || moveType == "ground") 
+        {
             $scope.showRock1 = true;
             $timeout(function () {
                 $scope.showRock1 = false;
             }, 3000)
         }
-        else if (moveType == "ice") {
+        else if (moveType == "ice") 
+        {
             $scope.showIce1 = true;
             $timeout(function () {
                 $scope.showIce1 = false;
             }, 3000)
         }
-        else {
+        else 
+        {
             $scope.showDefaultAttack1 = true;
             document.getElementById("pokemon1").classList.add("defaultAttack1");
             $timeout(function () {
@@ -2578,55 +2535,94 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
         }
     }
 
-
-
-    var showStatusOnView = function () {
-        if (pokemon1.is_asleep == true) {
+    /**
+     * The showStatusOnView function.
+     * Shows the status ailments next to the pokemon's healthbar.
+     */
+    var showStatusOnView = function () 
+    {
+        if (pokemon1.is_sleeping == true) 
+        {
             $scope.show_sleep_1 = true;
         }
-        if (pokemon1.is_poisoned == true) {
+        else if (pokemon1.is_sleeping == false)
+        {
+            $scope.show_sleep_1 = false;
+        }
+        if (pokemon1.is_poisoned == true) 
+        {
             $scope.show_poison_1 = true;
         }
-        if (pokemon1.is_frozen == true) {
+        else if (pokemon1.is_poisoned == false) 
+        {
+            $scope.show_poison_1 = false;
+        }
+        if (pokemon1.is_frozen == true) 
+        {
             $scope.show_frozen_1 = true;
         }
-        if (pokemon1.is_paralyzed == true) {
+        else if (pokemon1.is_frozen == false) 
+        {
+            $scope.show_frozen_1 = false;
+        }
+        if (pokemon1.is_paralyzed == true) 
+        {
             $scope.show_paralyzed_1 = true;
         }
-        if (pokemon1.is_burned == true) {
+        else if (pokemon1.is_paralyzed == false) 
+        {
+            $scope.show_paralyzed_1 = false;
+        }
+        if (pokemon1.is_burned == true) 
+        {
             $scope.show_burned_1 = true;
         }
-        if (pokemon2.is_asleep == true) {
+        else if (pokemon1.is_burned == false) 
+        {
+            $scope.show_burned_1 = false;
+        }
+        if (pokemon2.is_sleeping == true) 
+        {
             $scope.show_sleep_2 = true;
         }
-        if (pokemon2.is_poisoned == true) {
+        else if (pokemon2.is_sleeping == false) 
+        {
+            $scope.show_sleep_2 = false;
+        }
+        if (pokemon2.is_poisoned == true) 
+        {
             $scope.show_poison_2 = true;
         }
-        if (pokemon2.is_frozen == true) {
+        else if (pokemon2.is_poisoned == false) 
+        {
+            $scope.show_poison_2 = false;
+        }
+        if (pokemon2.is_frozen == true) 
+        {
             $scope.show_frozen_2 = true;
         }
-        if (pokemon2.is_paralyzed == true) {
+        else if (pokemon2.is_frozen == false) 
+        {
+            $scope.show_frozen_2 = false;
+        }
+        if (pokemon2.is_paralyzed == true) 
+        {
             $scope.show_paralyzed_2 = true;
         }
-        if (pokemon2.is_burned == true) {
+        else if (pokemon2.is_paralyzed == false) 
+        {
+            $scope.show_paralyzed_2 = false;
+        }
+        if (pokemon2.is_burned == true) 
+        {
             $scope.show_burned_2 = true;
         }
+        else if (pokemon2.is_burned == false) 
+        {
+            $scope.show_burned_2 = false;
+        }
     }
-
-
-
-
-
-
-
-})
-
-
-
-
-
-
-
+    
     // STRETCH GOALS
     // var stretchGoals = function () {
     //     // Inflicts damage; absorbs damage done to heal the user
@@ -2661,3 +2657,4 @@ app.controller("battleController", function ($scope, $state, $http, $timeout, po
 
     //     }
     // }
+});

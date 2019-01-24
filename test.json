@@ -1,0 +1,1567 @@
+  ____            _                   _       _        __       _            _     
+ / ___|    __ _  | |_    ___    ___  | |__   (_)      / /      / \     ___  | |__  
+ \___ \   / _` | | __|  / _ \  / __| | '_ \  | |     / /      / _ \   / __| | '_ \ 
+  ___) | | (_| | | |_  | (_) | \__ \ | | | | | |    / /      / ___ \  \__ \ | | | |
+ |____/   \__,_|  \__|  \___/  |___/ |_| |_| |_|   /_/      /_/   \_\ |___/ |_| |_|
+                                                                                   
+
+
+[
+    {
+        "name": "Greninja",
+        "currentHealth": 72,
+        "maxHealth": 72,
+        "attack": 145,
+        "special_attack": 153,
+        "defense": 67,
+        "special_defense": 71,
+        "speed": 132,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/11",
+                    "name": "water"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/17",
+                    "name": "dark"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "water-shuriken",
+                "url": "http://pokeapi.co/api/v2/move/water-shuriken/"
+            },
+            {
+                "name": "cut",
+                "url": "https://pokeapi.co/api/v2/move/cut/"
+            },
+            {
+                "name": "double-team",
+                "url": "https://pokeapi.co/api/v2/move/double-team/"
+            },
+            {
+                "name": "aerial-ace",
+                "url": "https://pokeapi.co/api/v2/move/aerial-ace/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "../img/ash_greninja.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Infernape",
+        "currentHealth": 76,
+        "maxHealth": 76,
+        "attack": 104,
+        "special_attack": 104,
+        "defense": 71,
+        "special_defense": 71,
+        "speed": 108,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/fire",
+                    "name": "fire"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/fighting",
+                    "name": "fighting"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "dig",
+                "url": "http://pokeapi.co/api/v2/move/dig/"
+            },
+            {
+                "name": "flamethrower",
+                "url": "https://pokeapi.co/api/v2/move/flamethrower/"
+            },
+            {
+                "name": "mach-punch",
+                "url": "https://pokeapi.co/api/v2/move/mach-punch/"
+            },
+            {
+                "name": "flare-blitz",
+                "url": "https://pokeapi.co/api/v2/move/flare-blitz/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/392.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Snorlax",
+        "currentHealth": 160,
+        "maxHealth": 160,
+        "attack": 110,
+        "special_attack": 65,
+        "defense": 65,
+        "special_defense": 110,
+        "speed": 30,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/normal",
+                    "name": "normal"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "ice-punch",
+                "url": "http://pokeapi.co/api/v2/move/ice-punch/"
+            },
+            {
+                "name": "body-slam",
+                "url": "https://pokeapi.co/api/v2/move/body-slam/"
+            },
+            {
+                "name": "hyper-beam",
+                "url": "https://pokeapi.co/api/v2/move/hyper-beam/"
+            },
+            {
+                "name": "head-butt",
+                "url": "https://pokeapi.co/api/v2/move/head-butt/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Sceptile",
+        "currentHealth": 70,
+        "maxHealth": 70,
+        "attack": 85,
+        "special_attack": 105,
+        "defense": 65,
+        "special_defense": 85,
+        "speed": 120,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/grass",
+                    "name": "grass"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "quick-attack",
+                "url": "http://pokeapi.co/api/v2/move/quick-attack/"
+            },
+            {
+                "name": "leaf-blade",
+                "url": "https://pokeapi.co/api/v2/move/leaf-blade/"
+            },
+            {
+                "name": "leaf-storm",
+                "url": "https://pokeapi.co/api/v2/move/leaf-storm/"
+            },
+            {
+                "name": "agility",
+                "url": "https://pokeapi.co/api/v2/move/agility/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/254.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Goodra",
+        "currentHealth": 90,
+        "maxHealth": 90,
+        "attack": 100,
+        "special_attack": 110,
+        "defense": 70,
+        "special_defense": 150,
+        "speed": 80,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "rain-dance",
+                "url": "http://pokeapi.co/api/v2/move/rain-dance/"
+            },
+            {
+                "name": "bide",
+                "url": "https://pokeapi.co/api/v2/move/bide/"
+            },
+            {
+                "name": "dragon-pulse",
+                "url": "https://pokeapi.co/api/v2/move/dragon-pulse/"
+            },
+            {
+                "name": "ice-beam",
+                "url": "https://pokeapi.co/api/v2/move/ice-beam/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/706.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Pikachu",
+        "currentHealth": 70,
+        "maxHealth": 70,
+        "attack": 100,
+        "special_attack": 120,
+        "defense": 70,
+        "special_defense": 70,
+        "speed": 150,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/electric",
+                    "name": "electric"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "thunderbolt",
+                "url": "http://pokeapi.co/api/v2/move/thunderbolt/"
+            },
+            {
+                "name": "quick-attack",
+                "url": "https://pokeapi.co/api/v2/move/quick-attack/"
+            },
+            {
+                "name": "iron-tail",
+                "url": "https://pokeapi.co/api/v2/move/iron-tail/"
+            },
+            {
+                "name": "electro-ball",
+                "url": "https://pokeapi.co/api/v2/move/electro-ball/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    }
+]
+
+
+
+
+
+
+
+
+
+  ____               _ 
+ |  _ \    ___    __| |
+ | |_) |  / _ \  / _` |
+ |  _ <  |  __/ | (_| |
+ |_| \_\  \___|  \__,_|
+
+Red
+[
+    {
+        "name": "Pikachu",
+        "currentHealth": 35,
+        "maxHealth": 35,
+        "attack": 55,
+        "special_attack": 50,
+        "defense": 40,
+        "special_defense": 50,
+        "speed": 90,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/electric",
+                    "name": "electric"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "volt-tackle",
+                "url": "http://pokeapi.co/api/v2/move/volt-tackle/"
+            },
+            {
+                "name": "iron-tail",
+                "url": "https://pokeapi.co/api/v2/move/iron-tail/"
+            },
+            {
+                "name": "brick-break",
+                "url": "https://pokeapi.co/api/v2/move/brick-break/"
+            },
+            {
+                "name": "fake-out",
+                "url": "https://pokeapi.co/api/v2/move/fake-out/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Venusaur",
+        "currentHealth": 80,
+        "maxHealth": 80,
+        "attack": 82,
+        "special_attack": 100,
+        "defense": 83,
+        "special_defense": 100,
+        "speed": 80,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/grass",
+                    "name": "grass"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/poison",
+                    "name": "poison"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "leaf-storm",
+                "url": "http://pokeapi.co/api/v2/move/leaf-storm/"
+            },
+            {
+                "name": "sludge-bomb",
+                "url": "https://pokeapi.co/api/v2/move/sludge-bomb/"
+            },
+            {
+                "name": "earthquake",
+                "url": "https://pokeapi.co/api/v2/move/earthquake/"
+            },
+            {
+                "name": "sleep-powder",
+                "url": "https://pokeapi.co/api/v2/move/sleep-powder/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Charizard",
+        "currentHealth": 78,
+        "maxHealth": 78,
+        "attack": 130,
+        "special_attack": 130,
+        "defense": 111,
+        "special_defense": 85,
+        "speed": 100,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/fire",
+                    "name": "fire"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "fire-blast",
+                "url": "http://pokeapi.co/api/v2/move/fire-blast/"
+            },
+            {
+                "name": "focus-blast",
+                "url": "https://pokeapi.co/api/v2/move/focus-blast/"
+            },
+            {
+                "name": "air-slash",
+                "url": "https://pokeapi.co/api/v2/move/air-slash/"
+            },
+            {
+                "name": "dragon-pulse",
+                "url": "https://pokeapi.co/api/v2/move/dragon-pulse/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10034.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Blastoise",
+        "currentHealth": 79,
+        "maxHealth": 79,
+        "attack": 83,
+        "special_attack": 85,
+        "defense": 100,
+        "special_defense": 105,
+        "speed": 78,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/water",
+                    "name": "water"
+                }
+            },
+        ],
+        "moves": [
+            {
+                "name": "water-spout",
+                "url": "http://pokeapi.co/api/v2/move/water-spout/"
+            },
+            {
+                "name": "hydro-pump",
+                "url": "https://pokeapi.co/api/v2/move/hydro-pump/"
+            },
+            {
+                "name": "blizzard",
+                "url": "https://pokeapi.co/api/v2/move/blizzard/"
+            },
+            {
+                "name": "focus-blast",
+                "url": "https://pokeapi.co/api/v2/move/focus-blast/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Snorlax",
+        "currentHealth": 160,
+        "maxHealth": 160,
+        "attack": 110,
+        "special_attack": 65,
+        "defense": 65,
+        "special_defense": 110,
+        "speed": 30,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/normal",
+                    "name": "normal"
+                }
+            },
+        ],
+        "moves": [
+            {
+                "name": "body-slam",
+                "url": "http://pokeapi.co/api/v2/move/body-slam/"
+            },
+            {
+                "name": "earthquake",
+                "url": "https://pokeapi.co/api/v2/move/earthquake/"
+            },
+            {
+                "name": "crunch",
+                "url": "https://pokeapi.co/api/v2/move/crunch/"
+            },
+            {
+                "name": "seed-bomb",
+                "url": "https://pokeapi.co/api/v2/move/seed-bomb/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Lapras",
+        "currentHealth": 130,
+        "maxHealth": 130,
+        "attack": 85,
+        "special_attack": 85,
+        "defense": 80,
+        "special_defense": 95,
+        "speed": 60,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/water",
+                    "name": "water"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/ice",
+                    "name": "ice"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "ice-beam",
+                "url": "http://pokeapi.co/api/v2/move/ice-beam/"
+            },
+            {
+                "name": "hydro-pump",
+                "url": "https://pokeapi.co/api/v2/move/hydro-pump/"
+            },
+            {
+                "name": "ice-shard",
+                "url": "https://pokeapi.co/api/v2/move/ice-shard/"
+            },
+            {
+                "name": "thunderbolt",
+                "url": "https://pokeapi.co/api/v2/move/thunderbolt/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    }
+]
+
+
+
+  ____    _                
+ | __ )  | |  _   _    ___ 
+ |  _ \  | | | | | |  / _ \
+ | |_) | | | | |_| | |  __/
+ |____/  |_|  \__,_|  \___|
+                           
+[
+    {
+        "name": "Exeggutor",
+        "currentHealth": 95,
+        "maxHealth": 95,
+        "attack": 95,
+        "special_attack": 125,
+        "defense": 85,
+        "special_defense": 65,
+        "speed": 55,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/grass",
+                    "name": "grass"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/psychic",
+                    "name": "psychic"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "leaf-storm",
+                "url": "http://pokeapi.co/api/v2/move/leaf-storm/"
+            },
+            {
+                "name": "psychic",
+                "url": "https://pokeapi.co/api/v2/move/psychic/"
+            },
+            {
+                "name": "explosion",
+                "url": "https://pokeapi.co/api/v2/move/explosion/"
+            },
+            {
+                "name": "trick-room",
+                "url": "https://pokeapi.co/api/v2/move/trick-room/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/103.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Machamp",
+        "currentHealth": 90,
+        "maxHealth": 90,
+        "attack": 130,
+        "special_attack": 65,
+        "defense": 80,
+        "special_defense": 85,
+        "speed": 55,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/fighting",
+                    "name": "fighting"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "dynamic-punch",
+                "url": "http://pokeapi.co/api/v2/move/dynamic-punch/"
+            },
+            {
+                "name": "stone-edge",
+                "url": "https://pokeapi.co/api/v2/move/stone-edge/"
+            },
+            {
+                "name": "fling",
+                "url": "https://pokeapi.co/api/v2/move/fling/"
+            },
+            {
+                "name": "attract",
+                "url": "https://pokeapi.co/api/v2/move/attract/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/68.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Rhyperior",
+        "currentHealth": 115,
+        "maxHealth": 115,
+        "attack": 140,
+        "special_attack": 55,
+        "defense": 130,
+        "special_defense": 55,
+        "speed": 40,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/rock",
+                    "name": "rock"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/ground",
+                    "name": "ground"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "megahorn",
+                "url": "http://pokeapi.co/api/v2/move/megahorn/"
+            },
+            {
+                "name": "stone-edge",
+                "url": "https://pokeapi.co/api/v2/move/stone-edge/"
+            },
+            {
+                "name": "thunder-fang",
+                "url": "https://pokeapi.co/api/v2/move/thunder-fang/"
+            },
+            {
+                "name": "earthquake",
+                "url": "https://pokeapi.co/api/v2/move/earthquake/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/464.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Arcanine",
+        "currentHealth": 90,
+        "maxHealth": 90,
+        "attack": 110,
+        "special_attack": 100,
+        "defense": 80,
+        "special_defense": 80,
+        "speed": 95,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/fire",
+                    "name": "fire"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "flare-blitz",
+                "url": "http://pokeapi.co/api/v2/move/flare-blitz/"
+            },
+            {
+                "name": "extreme-speed",
+                "url": "https://pokeapi.co/api/v2/move/extreme-speed/"
+            },
+            {
+                "name": "thunder-fang",
+                "url": "https://pokeapi.co/api/v2/move/thunder-fang/"
+            },
+            {
+                "name": "crunch",
+                "url": "https://pokeapi.co/api/v2/move/crunch/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/59.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Tyranitar",
+        "currentHealth": 100,
+        "maxHealth": 100,
+        "attack": 134,
+        "special_attack": 95,
+        "defense": 110,
+        "special_defense": 100,
+        "speed": 61,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/rock",
+                    "name": "rock"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dark",
+                    "name": "dark"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "low-kick",
+                "url": "http://pokeapi.co/api/v2/move/low-kick/"
+            },
+            {
+                "name": "fire-fang",
+                "url": "https://pokeapi.co/api/v2/move/fire-fang/"
+            },
+            {
+                "name": "rock-slide",
+                "url": "https://pokeapi.co/api/v2/move/rock-slide/"
+            },
+            {
+                "name": "earthquake",
+                "url": "https://pokeapi.co/api/v2/move/earthquake/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/248.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Pidgeot",
+        "currentHealth": 83,
+        "maxHealth": 83,
+        "attack": 80,
+        "special_attack": 135,
+        "defense": 80,
+        "special_defense": 80,
+        "speed": 121,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/normal",
+                    "name": "normal"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/flying",
+                    "name": "flying"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "air-slash",
+                "url": "http://pokeapi.co/api/v2/move/air-slash/"
+            },
+            {
+                "name": "double-team",
+                "url": "https://pokeapi.co/api/v2/move/double-team/"
+            },
+            {
+                "name": "hyper-beam",
+                "url": "https://pokeapi.co/api/v2/move/hyper-beam/"
+            },
+            {
+                "name": "steel-wing",
+                "url": "https://pokeapi.co/api/v2/move/steel-wing/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10073.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    }
+]
+
+
+
+
+
+  _                                   
+ | |       __ _   _ __     ___    ___ 
+ | |      / _` | | '_ \   / __|  / _ \
+ | |___  | (_| | | | | | | (__  |  __/
+ |_____|  \__,_| |_| |_|  \___|  \___|
+                                      
+
+[
+    {
+        "name": "Salamence",
+        "currentHealth": 95,
+        "maxHealth": 95,
+        "attack": 135,
+        "special_attack": 110,
+        "defense": 80,
+        "special_defense": 80,
+        "speed": 100,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/flying",
+                    "name": "flying"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "dragon-claw",
+                "url": "http://pokeapi.co/api/v2/move/dragon-claw/"
+            },
+            {
+                "name": "crunch",
+                "url": "https://pokeapi.co/api/v2/move/crunch/"
+            },
+            {
+                "name": "earthquake",
+                "url": "https://pokeapi.co/api/v2/move/earthquake/"
+            },
+            {
+                "name": "stone-edge",
+                "url": "https://pokeapi.co/api/v2/move/stone-edge/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/373.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Kingdra",
+        "currentHealth": 75,
+        "maxHealth": 75,
+        "attack": 95,
+        "special_attack": 95,
+        "defense": 95,
+        "special_defense": 95,
+        "speed": 85,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/water",
+                    "name": "water"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "surf",
+                "url": "http://pokeapi.co/api/v2/move/surf/"
+            },
+            {
+                "name": "ice-beam",
+                "url": "https://pokeapi.co/api/v2/move/ice-beam/"
+            },
+            {
+                "name": "dragon-pulse",
+                "url": "https://pokeapi.co/api/v2/move/dragon-pulse/"
+            },
+            {
+                "name": "flash-cannon",
+                "url": "https://pokeapi.co/api/v2/move/flash-cannon/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/230.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Hydreigon",
+        "currentHealth": 92,
+        "maxHealth": 92,
+        "attack": 105,
+        "special_attack": 125,
+        "defense": 90,
+        "special_defense": 90,
+        "speed": 98,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dark",
+                    "name": "dark"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "draco-meteor",
+                "url": "http://pokeapi.co/api/v2/move/draco-meteor/"
+            },
+            {
+                "name": "fire-blast",
+                "url": "https://pokeapi.co/api/v2/move/fire-blast/"
+            },
+            {
+                "name": "earth-power",
+                "url": "https://pokeapi.co/api/v2/move/earth-power/"
+            },
+            {
+                "name": "dark-pulse",
+                "url": "https://pokeapi.co/api/v2/move/dark-pulse/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/635.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Haxorus",
+        "currentHealth": 76,
+        "maxHealth": 76,
+        "attack": 147,
+        "special_attack": 90,
+        "defense": 60,
+        "special_defense": 70,
+        "speed": 97,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "outrage",
+                "url": "http://pokeapi.co/api/v2/move/outrage/"
+            },
+            {
+                "name": "superpower",
+                "url": "https://pokeapi.co/api/v2/move/superpower/"
+            },
+            {
+                "name": "earthquake",
+                "url": "https://pokeapi.co/api/v2/move/earthquake/"
+            },
+            {
+                "name": "rock-slide",
+                "url": "https://pokeapi.co/api/v2/move/rock-slide/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/612.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Flygon",
+        "currentHealth": 80,
+        "maxHealth": 80,
+        "attack": 100,
+        "special_attack": 80,
+        "defense": 80,
+        "special_defense": 80,
+        "speed": 100,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/ground",
+                    "name": "ground"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "solar-beam",
+                "url": "http://pokeapi.co/api/v2/move/solar-beam/"
+            },
+            {
+                "name": "draco-meteor",
+                "url": "https://pokeapi.co/api/v2/move/draco-meteor/"
+            },
+            {
+                "name": "earth-power",
+                "url": "https://pokeapi.co/api/v2/move/earth-power/"
+            },
+            {
+                "name": "u-turn",
+                "url": "https://pokeapi.co/api/v2/move/u-turn/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/330.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    },
+    {
+        "name": "Dragonite",
+        "currentHealth": 91,
+        "maxHealth": 91,
+        "attack": 134,
+        "special_attack": 100,
+        "defense": 95,
+        "special_defense": 100,
+        "speed": 80,
+        "types": [
+            {
+                "slot": 1,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/dragon",
+                    "name": "dragon"
+                }
+            },
+            {
+                "slot": 2,
+                "type": {
+                    "url": "https://pokeapi.co/api/v2/type/flying",
+                    "name": "flying"
+                }
+            }
+        ],
+        "moves": [
+            {
+                "name": "extreme-speed",
+                "url": "http://pokeapi.co/api/v2/move/extreme-speed/"
+            },
+            {
+                "name": "ice-punch",
+                "url": "https://pokeapi.co/api/v2/move/ice-punch/"
+            },
+            {
+                "name": "fire-punch",
+                "url": "https://pokeapi.co/api/v2/move/fire-punch/"
+            },
+            {
+                "name": "draco-meteor",
+                "url": "https://pokeapi.co/api/v2/move/draco-meteor/"
+            }
+        ],
+        "health_stage": 0,
+        "attack_stage": 0,
+        "special_attack_stage": 0,
+        "defense_stage": 0,
+        "special_defense_stage": 0,
+        "speed_stage": 0,
+        "evade_stage": 0,
+        "accuracy_stage": 0,
+        "is_burned": false,
+        "is_frozen": false,
+        "is_paralyzed": false,
+        "is_poisoned": false,
+        "is_sleeping": false,
+        "is_confused": false,
+        "front_img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png",
+        "back_img": null,
+        "health_multiplier": 1,
+        "attack_multiplier": 1,
+        "special_attack_multiplier": 1,
+        "defense_multiplier": 1,
+        "special_defense_multiplier": 1,
+        "speed_multiplier": 1
+    }
+]

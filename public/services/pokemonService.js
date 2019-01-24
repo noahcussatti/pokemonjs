@@ -3,6 +3,7 @@ app.service("pokemonService", function ($http, $state) {
     var _trainer1 = []
     var _trainer2 = []
 
+    var _selectCpu = {};
 
     var _trainer1_img_front = "../img/trainer-sprites/hilbert/front.png"
     var _trainer1_img_back = "../img/trainer-sprites/hilbert/back.png"
@@ -61,7 +62,7 @@ app.service("pokemonService", function ($http, $state) {
     this.addPokemon1 = function (newPokemon, moves) {
         var shinyChance = Math.round(Math.random() * (8192 - 1) + 1);
         if (shinyChance != 2) {
-            _trainer1.unshift(new Pokemon(newPokemon.name, newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
+            _trainer1.unshift(new Pokemon(newPokemon.name.toUpperCase(), newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
                 newPokemon.stats[4].base_stat, newPokemon.stats[2].base_stat,
                 newPokemon.stats[0].base_stat, newPokemon.stats[3].base_stat,
                 newPokemon.stats[1].base_stat,
@@ -73,7 +74,7 @@ app.service("pokemonService", function ($http, $state) {
         }
 
         else {
-            _trainer1.unshift(new Pokemon(newPokemon.name, newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
+            _trainer1.unshift(new Pokemon(newPokemon.name.toUpperCase(), newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
                 newPokemon.stats[4].base_stat, newPokemon.stats[2].base_stat,
                 newPokemon.stats[0].base_stat, newPokemon.stats[3].base_stat,
                 newPokemon.stats[1].base_stat,
@@ -102,7 +103,7 @@ app.service("pokemonService", function ($http, $state) {
     this.addPokemon2 = function (newPokemon, moves) {
         var shinyChance = Math.round(Math.random() * (8192 - 1) + 1);
         if (shinyChance != 2) {
-            _trainer2.unshift(new Pokemon(newPokemon.name, newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
+            _trainer2.unshift(new Pokemon(newPokemon.name.toUpperCase(), newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
                 newPokemon.stats[4].base_stat, newPokemon.stats[2].base_stat,
                 newPokemon.stats[0].base_stat, newPokemon.stats[3].base_stat,
                 newPokemon.stats[1].base_stat,
@@ -114,7 +115,7 @@ app.service("pokemonService", function ($http, $state) {
         }
 
         else {
-            _trainer2.unshift(new Pokemon(newPokemon.name, newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
+            _trainer2.unshift(new Pokemon(newPokemon.name.toUpperCase(), newPokemon.stats[5].base_stat, newPokemon.stats[5].base_stat,
                 newPokemon.stats[4].base_stat, newPokemon.stats[2].base_stat,
                 newPokemon.stats[0].base_stat, newPokemon.stats[3].base_stat,
                 newPokemon.stats[1].base_stat,
@@ -155,6 +156,15 @@ app.service("pokemonService", function ($http, $state) {
 
     }
 
+    this.checkTrainer1 = function () {
+        if (_trainer1.length > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     this.checkTeams = function () {
         if (_trainer1.length > 0 && _trainer2.length > 0) {
             return true;
@@ -186,6 +196,10 @@ app.service("pokemonService", function ($http, $state) {
         return _trainer1_img_front;
     }
 
+    this.getTrainer1ImgBack = function () {
+        return _trainer1_img_back;
+    }
+
     this.getTrainer2Img = function () {
         return _trainer2_img_back;
     }
@@ -193,7 +207,32 @@ app.service("pokemonService", function ($http, $state) {
     this.getTrainer2ImgFront = function () {
         return _trainer2_img_front;
     }
+
+
+    this.getCpus = function() {
+        return $http.get("../cputrainers.json")
+        .then(function (response) {
+            return response.data
+        })
+    }
+
+
+
+    this.getSelectedCPU = function (response) {
+        _selectCpu = response;
+    }
+
+    this.returnRival = function () {
+        return _selectCpu.team
+    }
+
+    this.returnRivalSprite = function () {
+        return _selectCpu.front_sprite;
+    }
     
+    this.returnTrainer2CPU = function () {
+        return _selectCPU
+    }
 })
 
 

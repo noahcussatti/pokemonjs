@@ -11,18 +11,66 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
     var trainer2_selected = false;
 
     $scope.goToPokemon = false;
-    
 
-    
-    
 
-    var _pokemons = pokemonService.getPokemon()
-    $scope.pokemon = _pokemons
 
+
+
+    var _pokemons = pokemonService.getPokemon();
+    $scope.pokemon = _pokemons;
+    console.log(_pokemons);
+
+    /**
+     * Getting the pokemon.
+     * @param response 
+     */
     pokemonService.getPokemon(function (response) {
-        $scope.pokemons = response
+        $scope.pokemons = response;
         $scope.loading = false;
     })
+
+    var _cpus = pokemonService.getCpus()
+    $scope.cpu = _cpus
+
+    pokemonService.getCpus(function (response) {
+        $scope.cpu = response
+        $scope.loading = false
+    })
+
+
+    $scope.getCpus = function () {
+        $scope.loading = true;
+        return pokemonService.getCpus()
+            .then(function (response) {
+                $scope.cpus = response
+                _cpus = response;
+                $scope.loading = false
+            })
+    }
+
+    $scope.getCpus();
+
+    $scope.getRival = function () {
+        $scope.loading = true;
+        return pokemonService.returnRival()
+            .then (function (response) {
+                if (response == null) {
+                    $scope.currentCpu = _cpus[0]
+                    $scope.rival_sprite = _cpus[0].front_sprite
+                    $scope.loading = false;
+                }
+                else {
+                    $scope.currentCpu = response;
+                    $scope.rival_sprite = response.front_sprite;
+                    $scope.loading = false;
+                }
+                
+            })
+    }
+
+    $scope.currentCpu = pokemonService.returnRival();
+    $scope.rival_sprite = pokemonService.returnRivalSprite();
+
 
 
 
@@ -39,7 +87,7 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
     }
     $scope.getPokemon();
 
-   
+
     $scope.trainer1Pokemon = pokemonService.getTrainer1();
     $scope.trainer2Pokemon = pokemonService.getTrainer2();
 
@@ -50,7 +98,7 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         $scope.loading = true;
         $http.get(url).then(function (response) {
             console.log(response);
-            $scope.currentPokemon = response.data
+            $scope.currentPokemon = response.data;
             $scope.currentAttack = ((response.data.stats[4].base_stat / 200) * 100)
             $scope.currentHealth = ((response.data.stats[5].base_stat / 200) * 100)
             $scope.currentDefense = ((response.data.stats[3].base_stat / 200) * 100)
@@ -253,6 +301,22 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         }, 4000)
     }
 
+    $scope.checkTrainer1 = function () {
+        $scope.loading = true;
+        $timeout(function () {
+            var checkTrainer1 = pokemonService.checkTrainer1()
+            if (checkTrainer1 == true) {
+                console.log(checkTrainer1)
+                $scope.disableStart = false;
+                $scope.loading = false;
+            }
+            else {
+                console.log(checkTrainer1)
+                $scope.disableStart = true;
+                $scope.loading = false;
+            }
+        }, 4000)
+    }
 
 
 
@@ -271,6 +335,7 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
         }
     }
 
+
     $scope.addPokemon2 = function (p) {
         console.log(p)
         if (selectedMoves.length == 4) {
@@ -284,6 +349,14 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
                     $scope.showCurrent = false;
                 });
         }
+    }
+
+    $scope.addTrainer1CPU = function (url, url2) {
+        console.log(url)
+        pokemonService.addTrainer1(url, url2);
+        $scope.trainer1img = url;
+        trainer1_selected = true;
+        $scope.goToPokemon = true;   
     }
 
     $scope.addTrainer1 = function (url, url2) {
@@ -320,6 +393,16 @@ app.controller("pokemonController", function ($scope, $http, $state, $timeout, p
 
     $scope.trainer1_img = pokemonService.getTrainer1Img();
     $scope.trainer2_img = pokemonService.getTrainer2ImgFront();
+    
+
+
+    $scope.addCurrentCpu = function (response) {
+        $scope.currentCpu = response;
+        $scope.rival_sprite = response.front_sprite;
+        console.log(response);
+        pokemonService.getSelectedCPU(response);
+    }
+
 
 
 })

@@ -1,0 +1,146 @@
+<!-- Pokemon Stats -->
+
+<div class="col-lg-3" ng-show="showCurrent">
+    <h1 class="text-capitalize">{{ currentPokemon.name }}</h1>
+
+    <span id="type" class="span-card text-uppercase text-center"> {{ currentPokemon.types[0].type.name }}</span>
+    <span ng-show="has2Types" id="type2" class="span-card text-uppercase text-center"> {{ currentPokemon.types[1].type.name }}</span>
+
+    <img class="selected-pokemon-img" src="{{ currentPokemon.sprites.front_default }}" />
+
+    <button ng-click="addPokemon1(currentPokemon.id); checkTrainer1()" class="trainer-select-button-1">Trainer 1</button>
+
+
+
+    <div class="statName">
+        <span>Health: </span>
+        <div class="progress progress-outline progress-red">
+            <div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="currentPokemon.stats[5].base_stat" aria-valuemin="0"
+                aria-valuemax="200" style="width: {{currentHealth}}%">{{ currentPokemon.stats[5].base_stat }}</div>
+        </div>
+    </div>
+
+    <div class="statName">
+        <span>Attack: </span>
+        <div class="progress progress-outline progress-orange">
+            <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="currentPokemon.stats[4].base_stat" aria-valuemin="0"
+                aria-valuemax="200" style="width: {{currentAttack}}%">{{ currentPokemon.stats[4].base_stat }}</div>
+        </div>
+    </div>
+
+    <div class="statName">
+        <span>Defense: </span>
+        <div class="progress progress-outline progress-yellow">
+            <div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="currentPokemon.stats[3].base_stat" aria-valuemin="0"
+                aria-valuemax="200" style="width: {{currentDefense}}%">{{ currentPokemon.stats[3].base_stat }}</div>
+        </div>
+    </div>
+
+    <div class="statName">
+        <span>Sp Atk: </span>
+        <div class="progress progress-outline progress-blue">
+            <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="currentPokemon.stats[2].base_stat" aria-valuemin="0"
+                aria-valuemax="200" style="width: {{currentSpAttack}}%">{{ currentPokemon.stats[2].base_stat }}</div>
+        </div>
+    </div>
+    <div class="statName">
+        <span>Sp Def: </span>
+        <div class="progress progress-outline progress-green">
+            <div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="currentPokemon.stats[1].base_stat" aria-valuemin="0"
+                aria-valuemax="200" style="width: {{currentSpDefense}}%">{{ currentPokemon.stats[1].base_stat }}</div>
+        </div>
+    </div>
+    <div class="statName">
+        <span>Speed: </span>
+        <div class="progress progress-outline progress-pink">
+            <div class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="currentPokemon.stats[0].base_stat" aria-valuemin="0"
+                aria-valuemax="200" style="width: {{currentSpeed}}%">{{ currentPokemon.stats[0].base_stat }}</div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="text-uppercase chosen-moves">Moves Chosen:
+        <span class="chosen-move">{{ currentMoves[0].name }}</span>
+        <span class="chosen-move">{{ currentMoves[1].name }}</span>
+        <span class="chosen-move">{{ currentMoves[2].name }}</span>
+        <span class="chosen-move">{{ currentMoves[3].name }}</span>
+    </div>
+
+    <div class="row move-row">
+        <button class="choose-move text-uppercase" ng-click="addMove(t.move)" ng-repeat="t in currentPokemon.moves">
+            {{ t.move.name }}
+        </button>
+    </div>
+
+
+
+</div>
+
+<div class="col-lg-4">
+    <div class="col-lg-6 trainer1-col">
+        <img class="trainer1-preview" src="{{ trainer1_img }}">
+        <div>
+            <h2>Trainer 1</h2>
+        </div>
+        <div>
+            <div ng-repeat="p in trainer1Pokemon" class="col-sm-6 trainer-pokemon-container">
+                <h3 class="text-capitalize text-center">{{ p.name }}</h3>
+                <div>
+                    <img src="{{ p.front_img }}">
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[0].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[1].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[2].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[3].name }}</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 trainer1-col">
+        <img class="trainer2-preview" src="{{ rival_sprite }}">
+        <div>
+            <h2>CPU</h2>
+        </div>
+        <div>
+            <div ng-repeat="p in currentCpu" class="col-sm-6 trainer-pokemon-container">
+                <h3 class="text-capitalize text-center">{{ p.name }}</h3>
+                <div>
+                    <img src="{{ p.front_img }}">
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[0].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[1].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[2].name }}</div>
+                    <div class="pokemon-move-preview text-capitalize">{{ p.moves[3].name }}</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="col-lg-5 pull-right">
+    <!-- Search for Pokemon -->
+    <div>
+        <input type="text" class="pokemon-search-bar" ng-model="pokemonSearch">
+    </div>
+    <div>
+        <button class="fight-button" ui-sref="CPUBattle" ng-show="!disableStart"></button>
+        <button class="not-fight-button" ng-show="disableStart" disabled></button>
+    </div>
+    <div class="all-pokemon row capitalize">
+        <p>
+            <div ng-repeat="pokemon in everyPokemon | filter: pokemonSearch" class="view-pokemon col-sm-3 pokemon-container text-center">
+                <div>
+                    <button class="pokemon-view-button text-capitalize" style="font-size: 30px;" ng-click="setCurrentPokemon(pokemon.url)">{{ pokemon.name }}</button>
+                </div>
+            </div>
+        </p>
+    </div>
+</div>
+
+<img ng-show="loading" class="pokeball-loading" src="../img/pokeball.gif">

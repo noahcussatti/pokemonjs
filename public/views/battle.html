@@ -1,6 +1,6 @@
-<!-- <audio autoplay loop>
+<audio autoplay loop>
     <source src="../audio/battle.mp3" type="audio/mpeg">
-</audio> -->
+</audio>
 
 
 <span class="pokemon1-name">{{ pokemon1.name }}</span>
@@ -66,8 +66,7 @@
           <button class="battle-button text-uppercase" ng-click="pokemon2MoveSelect(pokemon2move4.url)">{{ pokemon2move4.name }}</button>
      </div>
      <div class="col-sm-4" ng-show="!showBattleButtons"></div>
-
-
+     
      <div class="pokemon-health-icon pokemon-health-icon-2 col-sm-3">
           <div class="pokemon1-health">
                <p>
@@ -100,6 +99,6 @@
 
 <div ng-show="!showFightButton" id="pokemon-attack-box" class="pokemon-attack-box">
      <span>
-          <p class="text-capitalize text-center" id="pokemon-attack-text"></p>
+          <p class="text-center" id="pokemon-attack-text"></p>
      </span>
 </div>

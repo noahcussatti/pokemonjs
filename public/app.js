@@ -2,11 +2,16 @@ var app = angular.module("pokemonApp", ["ui.router"])
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/trainer-select");
+    $urlRouterProvider.otherwise("/");
 
     $stateProvider.state("pokemon", {
         url: "/pokemon",
         templateUrl: "./views/pokemon.html",
+        controller: "pokemonController"
+    })
+    .state("mode-select", {
+        url: "/",
+        templateUrl: "./views/mode-select.html",
         controller: "pokemonController"
     })
     .state("battle", {
@@ -48,5 +53,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
         url: "/cpu-battle",
         templateUrl: "./views/cpu-battle.html",
         controller: "battleCPUController"
+    })
+    .state("CPUOpponentSelect", {
+        url: "/opponent-select",
+        templateUrl: "./views/cpu-opponent-select.html",
+        controller: "pokemonController"
+    })
+    .state("CPUSelect", {
+        url: "/cpu-select",
+        templateUrl: "./views/cpu-select.html",
+        controller: "pokemonController"
+    })
+    .state("CPUTrainerSelect", {
+        url: "/cpu-trainer-select",
+        templateUrl: "./views/cpu-trainer-select.html",
+        controller: "pokemonController"
     })
 })
